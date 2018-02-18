@@ -1,0 +1,5 @@
+#Put all required python modules here
+#run pip install -r modules.txt to install all
+
+django==2.0.2
+pandas==0.22.0
