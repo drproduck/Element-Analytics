@@ -25,8 +25,13 @@ from django.conf.urls import url
 urlpatterns = [
     path('', RedirectView.as_view(url='index/')),
     path('admin/', admin.site.urls),
+
     path('index/', include('apps.index.urls')),
-    url('uploads/', include('apps.core.urls'))
+
+    url('uploads/', include('apps.core.urls')),
+
+    path('login/', include('apps.login.urls'))
+
 ]
 
 if settings.DEBUG:
