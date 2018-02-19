@@ -26,7 +26,6 @@ from apps.core import views
 urlpatterns = [
     path('', RedirectView.as_view(url='index/')),
     path('admin/', admin.site.urls),
-    path('index/', include('apps.index.urls'))
     path('index/', include('apps.index.urls')),
                
     url(r'^$', views.home, name='home'),
