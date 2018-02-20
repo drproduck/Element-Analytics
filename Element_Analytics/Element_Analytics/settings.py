@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'apps.analytics',
+    'apps.index',
     'apps.core'
 
 ]
