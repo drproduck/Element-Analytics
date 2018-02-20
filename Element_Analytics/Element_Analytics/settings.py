@@ -17,8 +17,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 #Absolute filesystem path to the directory that will hold user-uploaded files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 #URL that handles the media served from MEDIA_ROOT, used for managing stored files
 MEDIA_URL = 'media/'
+
+#Redirect from after login
+LOGIN_REDIRECT_URL = 'main'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -44,7 +48,8 @@ INSTALLED_APPS = [
 
     'apps.index',
     'apps.analytics',
-    'apps.core'
+    'apps.core',
+    'apps.login'
 ]
 
 MIDDLEWARE = [
