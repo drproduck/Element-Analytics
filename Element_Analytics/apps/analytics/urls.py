@@ -5,5 +5,5 @@ from apps.analytics import views
 
 app_name = 'analytics'
 urlpatterns = [
-    re_path(r'(?P<file_name>\w+)/', views.file_home, name='file_home'),
+    path('<file_name>/', views.file_home, name='file_home'),
 ]
