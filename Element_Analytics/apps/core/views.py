@@ -5,7 +5,6 @@ from django.core.files.storage import FileSystemStorage
 from apps.core.models import Document
 from apps.core.forms import DocumentForm
 
-
 def home(request):
     documents = Document.objects.all()
     return render(request, 'core/home.html', { 'documents': documents })
