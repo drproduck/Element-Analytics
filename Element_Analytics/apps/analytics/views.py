@@ -6,11 +6,14 @@ import pandas as pd
 # Create your views here.
 
 current_file = None
+current_frame = None
 
 def file_home(request, file_name):
-    print(file_name)
+    global current_file, current_frame
     path = os.path.join(MEDIA_URL, 'documents/'+file_name)
-    if path.endswith(('.csv', '.log')):
-        print('file ok')
-    # current_file = pd.read_csv(path)
-    return HttpResponse("Hello")
+    if not path.endswith(('.csv', '.log')):
+        return HttpResponse("incorrect format")
+    current_file = path
+    current_frame = pd.read_csv(path)
+
+    return render(request, 'analytics/file_home.html', {'frame':current_frame})
