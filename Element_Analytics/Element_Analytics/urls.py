@@ -31,7 +31,9 @@ urlpatterns = [
 
     url('uploads/', include('apps.core.urls')),
 
-    path('login/', include('apps.login.urls'))
+    path('login/', include('apps.login.urls')),
+
+    path('analytics/', include('apps.analytics.urls'))
 
 ]
 

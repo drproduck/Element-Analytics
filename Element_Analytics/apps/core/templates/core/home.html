@@ -14,7 +14,7 @@
   <ul>
     {% for obj in documents %}
       <li>
-        <a href="{% url 'analytics:file_home' 'obj.document.name'%}">{{ obj.document.name }}</a>
+        <a href="{% url 'analytics:file_home' file_name=obj.document.name %}">{{ obj.document.name }}</a>
         <small>(Uploaded at: {{ obj.uploaded_at }})</small>
       </li>
     {% endfor %}
