@@ -7,6 +7,6 @@ from django.views import View
 
 class MainView(View):
     def get(self, request, *args, **kwargs):
-        page = loader.get_template('index.html')
+        page = loader.get_template('index/index.html')
         return HttpResponse(page.render())
 
