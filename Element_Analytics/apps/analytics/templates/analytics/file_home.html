@@ -2,3 +2,14 @@
 <pre>{{ frame.head }}</pre>
 <h1>summary statistics</h1>
 <pre>{{ frame.describe }}</pre>
+<h1>variable distribution</h1>
+<form action="{% url "analytics:variableplot"%}" method="post">{% csrf_token %}
+    <select name="value">
+    {% for head in headers %}
+        <option value={{ head }}>{{ head }}</option>
+    {% endfor %}
+    </select>
+    <input type="submit" value="OK" />
+</form>
+
+<img src="variableplot.png">
