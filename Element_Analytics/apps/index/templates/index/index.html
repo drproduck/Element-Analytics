@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <link rel="shortcut icon" href="../static/index/favicon.png"/>
     <title>Element Analytics</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//fonts.googleapis.com/css?family=Roboto:400,300,200,100&subset=latin,cyrillic" rel="stylesheet">
@@ -35,43 +36,6 @@
 
       #headline #blurb {
         font-weight: 300;
-        font-size: 18px;
-      }
-
-      #headline #register {
-        background-color: #0055A2;
-        background-color: rgba(57,177, 164, 0.7);
-        padding: 1em;
-      }
-
-      #headline #register h2 {
-        font-weight: 100;
-        padding: 0;
-        margin: 0;
-      }
-
-      #headline #register label {
-        font-size: 1.2em;
-        font-weight: 200;
-        padding-top: 12px;
-        display: block;
-      }
-
-      #headline #register input {
-        width: 100%;
-        font-size: 18px;
-        font-weight: 200;
-        padding: 10px;
-        box-sizing: border-box;
-      }
-
-      #headline #register input[type=submit] {
-        background-color: hsl(8, 70%, 54%);
-        color: white;
-        margin-top: 20px;
-        padding: 10px;
-        border: none;
-        box-sizing: border-box;
         font-size: 18px;
       }
 
@@ -124,14 +88,6 @@
         text-align: center;
       }
 
-      #section2 div {
-        text-align: center;
-      }
-
-      #section2 div img {
-        width: 100%
-      }
-
       #section3 {
         background-color: #f5f5f5;
         font-family: Material Icons;
@@ -152,15 +108,6 @@
         text-align: center;
       }
 
-      #section3 figure {
-        text-align: center;
-      }
-
-      #section3 figure figcaption {
-        text-align: center;
-        font-weight: 400;
-      }
-
       footer {
         font-family: Material Icons;
         font-weight: 300;
@@ -171,13 +118,6 @@
         padding-top: 20px;
       }
 
-      thead {
-        font-weight: bold;
-      }
-
-      tbody {
-        text-align: center;
-      }
 
       @media screen and (min-width: 600px) {
           #headline {
@@ -240,6 +180,7 @@
           <a href="/register" style="color:#E5A823">Sign up</a>&nbsp;&nbsp;&nbsp;&nbsp;
           <a href="/uploads/simple" style="color:#E5A823">Upload simple</a>&nbsp;&nbsp;&nbsp;&nbsp;
           <a href="/uploads/form" style="color:#E5A823">Upload form</a>&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="/analytics" style="color:#E5A823">Analytics</a>&nbsp;&nbsp;&nbsp;&nbsp;
         </header>
         <div id="blurb">
           <p></p>
@@ -277,7 +218,6 @@
           <p>Luis Pamintuan</p>
           <p>Weimeng Pu</p>
         </div>
-
       </div>
     </div>
     <!-- // [END section2] -->
@@ -302,28 +242,10 @@
       </div>
     </footer>
     <!-- // [END footer] -->
-    <script>
-  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-  e.src='//www.google-analytics.com/analytics.js';
-  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-  ga('create','UA-52746336-1');ga('send','pageview');
-  var isCompleted = {};
-  function sampleCompleted(sampleName){
-    if (ga && !isCompleted.hasOwnProperty(sampleName)) {
-      ga('send', 'event', 'WebCentralSample', sampleName, 'completed');
-      isCompleted[sampleName] = true;
-    }
-  }
-</script>
+
     <script type="text/javascript">
       function init() {
         window.matchMedia("(max-width: 600px)").addListener(hitMQ);
-      }
-
-      function hitMQ(evt) {
-        sampleCompleted("GettingStarted-ContentWithStyles");
       }
 
       init();

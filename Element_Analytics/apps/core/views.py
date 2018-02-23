@@ -7,7 +7,7 @@ from apps.core.forms import DocumentForm
 
 def home(request):
     documents = Document.objects.all()
-    return render(request, 'core/home.html', { 'documents': documents })
+    return render(request, 'index/index.html', { 'documents': documents })
 
 
 def simple_upload(request):
