@@ -1,255 +1,334 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <link rel="shortcut icon" href="../static/index/favicon.png"/>
-    <title>Element Analytics</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="//fonts.googleapis.com/css?family=Roboto:400,300,200,100&subset=latin,cyrillic" rel="stylesheet">
-    <!-- // [start style] -->
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-      }
+<head>
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="../static/index/favicon.png"/>
+  <title>Element Analytics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="//fonts.googleapis.com/css?family=Roboto:400,300,200,100&subset=latin,cyrillic" rel="stylesheet">
+  <!-- // [start style] -->
+  <style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
 
-      #headline {
-        padding: 0.8em;
-        color: white;
-        font-family: Material Icons;
-        background-color: #504F5B;
-        background-size: cover;
-      }
+  #headline {
+    padding: 0.8em;
+    color: white;
+    font-family: Material Icons;
+    background-color: #504F5B;
+    background-size: cover;
+  }
 
-      #headline h1 {
-        font-weight: 200;
-        font-size: 60px;
-        line-height: 1em;
-        margin-bottom: 0;
-      }
+  #headline h1 {
+    font-weight: 200;
+    font-size: 60px;
+    line-height: 1em;
+    margin-bottom: 0;
+  }
 
-      #headline h2 {
-        font-weight: 200;
-        font-size: 30px;
-        margin-top: 5px;
-      }
+  #headline h2 {
+    font-weight: 200;
+    font-size: 30px;
+    margin-top: 5px;
+  }
 
-      #headline #blurb {
-        font-weight: 300;
-        font-size: 18px;
-      }
+  #headline #blurb {
+    font-weight: 300;
+    font-size: 18px;
+  }
 
-      #section1, #section2, #section3 {
-        box-sizing: border-box;
-        padding: 20px;
-      }
+  #section1, #section2, #section3 {
+    box-sizing: border-box;
+    padding: 20px;
+  }
 
-      #section1 h2, #section2 h2, #section3 h2  {
-        margin-top: 0;
-        font-size: 24px
-      }
+  #section1 h2, #section2 h2, #section3 h2  {
+    margin-top: 0;
+    font-size: 24px
+  }
 
-      #section1 {
-        background-color: white;
-        font-family: Material Icons;
-        font-weight: 100;
-        font-size: 18px;
-        text-align: center;
-        margin: auto;
-      }
+  #section1 {
+    background-color: white;
+    font-family: Material Icons;
+    font-weight: 100;
+    font-size: 18px;
+    text-align: center;
+    margin: auto;
+  }
 
-      #section1 h2 {
-        font-weight: 300;
-        text-align: center;
-        margin-bottom: 0px;
-        margin-top: 20px;
-      }
+  #section1 h2 {
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 0px;
+    margin-top: 20px;
+  }
 
-      #section1 h2 + p {
-      }
+  #section1 h2 + p {
+  }
 
-      #section2 {
-        background-color: #e9e9e9;
-        font-family: Material Icons;
-        font-weight: 100;
-        font-size: 18px;
-        text-align: center;
-        margin: auto;
-      }
+  #section2 {
+    background-color: #e9e9e9;
+    font-family: Material Icons;
+    font-weight: 100;
+    font-size: 18px;
+    text-align: center;
+    margin: auto;
+  }
 
-      #section2 h2 {
-        font-weight: 300;
-        text-align: center;
-        margin-bottom: 0px;
-        margin-top: 20px;
-      }
+  #section2 h2 {
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 0px;
+    margin-top: 20px;
+  }
 
-      #section2 h2 + p {
-        text-align: center;
-      }
+  #section2 h2 + p {
+    text-align: center;
+  }
 
-      #section3 {
-        background-color: #f5f5f5;
-        font-family: Material Icons;
-        font-weight: 100;
-        font-size: 18px;
-        text-align: center;
-        margin: auto;
-      }
+  #section3 {
+    background-color: #f5f5f5;
+    font-family: Material Icons;
+    font-weight: 100;
+    font-size: 18px;
+    text-align: center;
+    margin: auto;
+  }
 
-      #section3 h2 {
-        font-weight: 300;
-        text-align: center;
-        margin-bottom: 0px;
-        margin-top: 20px;
-      }
+  #section3 h2 {
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 0px;
+    margin-top: 20px;
+  }
 
-      #section3 h2 + p {
-        text-align: center;
-      }
+  #section3 h2 + p {
+    text-align: center;
+  }
 
-      footer {
-        font-family: Material Icons;
-        font-weight: 300;
-        text-align: center;
-        background-color: #0055A2;
-        color: white;
-        padding-bottom: 20px;
-        padding-top: 20px;
-      }
+  footer {
+    font-family: Material Icons;
+    font-weight: 300;
+    text-align: center;
+    background-color: #0055A2;
+    color: white;
+    padding-bottom: 20px;
+    padding-top: 20px;
+  }
 
+  @media screen and (min-width: 600px) {
+    #headline {
+      padding: 20px 5%;
+    }
 
-      @media screen and (min-width: 600px) {
-          #headline {
-            padding: 20px 5%;
-          }
+    .container {
+      margin: auto;
+      max-width: 800px;
+    }
 
-          .container {
-            margin: auto;
-            max-width: 800px;
-          }
+    #headline #blurb {
+      float: left;
+      font-weight: 200;
+      width: 50%;
+      font-size: 18px;
+      box-sizing: border-box;
+      padding-right: 10px;
+    }
 
-          #headline #blurb {
-            float: left;
-            font-weight: 200;
-            width: 50%;
-            font-size: 18px;
-            box-sizing: border-box;
-            padding-right: 10px;
-          }
+    #headline br {
+      clear: both;
+    }
 
-          #headline br {
-            clear: both;
-          }
+    #headline #register {
+      float:right;
+      padding: 20px;
+      width: 50%;
+      box-sizing: border-box;
+      font-weight: 300;
+    }
 
-          #headline #register {
-            float:right;
-            padding: 20px;
-            width: 50%;
-            box-sizing: border-box;
-            font-weight: 300;
-          }
+    #section1 #section2, #section3 {
+      box-sizing: border-box;
+      padding: 10px 20% 80px 20%;
+    }
 
-          #section1 #section2, #section3 {
-            box-sizing: border-box;
-            padding: 10px 20% 80px 20%;
-          }
+    #section1 h2, #section2 h2, #section3 h2  {
+      margin-top: 0;
+      font-size: 60px
+    }
 
-          #section1 h2, #section2 h2, #section3 h2  {
-            margin-top: 0;
-            font-size: 60px
-          }
+    #section1 br {
+      clear: both;
+    }
+  }
 
-          #section1 br {
-            clear: both;
-          }
-        }
-    </style>
-    <!-- // [END style] -->
-  </head>
-  <body>
-    <!-- // [START headline] -->
-    <div id="headline">
-      <div class="container">
-        <header>
-          <h1>Hi, I'm Element</h1>
-          <br>
-          <h2>The only ML-driven log analytics service that automatically maintains logs and identifies insight for you.</h2>
-          <br>
-          <a href="/login" style="color:#E5A823">Login</a>&nbsp;&nbsp;&nbsp;&nbsp;
-          <a href="/register" style="color:#E5A823">Sign up</a>&nbsp;&nbsp;&nbsp;&nbsp;
-          <a href="/uploads/simple" style="color:#E5A823">Upload simple</a>&nbsp;&nbsp;&nbsp;&nbsp;
-          <a href="/uploads/form" style="color:#E5A823">Upload form</a>&nbsp;&nbsp;&nbsp;&nbsp;
-          <a href="/analytics" style="color:#E5A823">Analytics</a>&nbsp;&nbsp;&nbsp;&nbsp;
-        </header>
-        <div id="blurb">
-          <p></p>
-        </div>
+  /* Add a black background color to the top navigation */
+  .topnav {
+    background-color: #504F5B;
+    overflow: hidden;
+    display: -webkit-flex; /* Safari */
+    -webkit-justify-content: center; /* Safari 6.1+ */
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Style the links inside the navigation bar */
+  .topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+
+  /* Add an active class to highlight the current page */
+  .active {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  /* Hide the link that should open and close the topnav on small screens */
+  .topnav .icon {
+    display: none;
+  }
+
+  /* Add a dark background on topnav links on hover */
+  .topnav a:hover {
+    background-color: #E5A823;
+    color: white;
+  }
+
+  /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
+  @media screen and (max-width: 600px) {
+    .topnav a {display: none;}
+    .topnav a.icon {
+      float: right;
+      display: block;
+    }
+  }
+
+  /* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
+  @media screen and (max-width: 600px) {
+    .topnav.responsive {position: relative;}
+    .topnav.responsive a.icon {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+    .topnav.responsive a {
+      float: none;
+      display: block;
+      text-align: left;
+    }
+    .topnav.responsive {float: none;}
+    .topnav.responsive {position: relative;}
+    .topnav.responsive {
+      display: block;
+      width: 100%;
+      text-align: left;
+    }
+  }
+
+  </style>
+  <!-- // [END style] -->
+</head>
+<body>
+
+  <!-- // [START headline] -->
+  <div id="headline">
+    <div class="container">
+      <header>
+        <h1>Hi, I'm Element</h1>
         <br>
+        <h2>The only ML-driven log analytics service that automatically maintains logs and identifies insight for you.</h2>
+      </header>
+    </div>
+  </div>
+  <!-- // [END headline] -->
+
+  <!-- // [START topnav] -->
+  <div class="topnav" id="myTopnav">
+    <a href="/login">Log in</a>
+    <a href="/register">Sign up</a>
+    <a href="/uploads/simple">Upload simple</a>
+    <a href="/uploads/form">Upload form</a>
+    <a href="/analytics">Analytics</a>
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
+  </div>
+  <!-- // [END topnav] -->
+
+  <!-- // [START section1] -->
+  <div id="section1">
+    <div class="container">
+      <h2>I make log analytics easy...</h2>
+      <p>Create analytics without scripting. Get results in minutes.</p>
+      <p>Quickly detect anomalies such as...</p>
+      <p>Automatically compare visual diffs at every timestamp of a log for changes</p>
+      <p>Run tests in parallel with no infrastructure to manage or provision</p>
+      <p>Identify and surface problems fast, before your customers are impacted</p>
+      <p>Encrypted data, secure credentials, robust firewall support, and more</p>
+      <p>Realize the potential of continuous delivery with Element</p>
+    </div>
+  </div>
+  <!-- // [END section1] -->
+
+  <!-- // [START section2] -->
+  <div id="section2">
+    <div class="container">
+      <h2>Who are the brains behind?</h2>
+      <p>Some of the <strike>world's leading</strike> software developers:</p>
+      <div id="images">
+        <p>Cole Sakamoto</p>
+        <p>Khiem Pham</p>
+        <p>Ly Nguyen</p>
+        <p>Luis Pamintuan</p>
+        <p>Weimeng Pu</p>
       </div>
     </div>
-    <!-- // [END headline] -->
+  </div>
+  <!-- // [END section2] -->
 
-    <!-- // [START section1] -->
-    <div id="section1">
-      <div class="container">
-        <h2>I make log analytics easy...</h2>
-        <p>Create analytics without scripting. Get results in minutes.</p>
-        <p>Quickly detect anomalies such as...</p>
-        <p>Automatically compare visual diffs at every timestamp of a log for changes</p>
-        <p>Run tests in parallel with no infrastructure to manage or provision</p>
-        <p>Identify and surface problems fast, before your customers are impacted</p>
-        <p>Encrypted data, secure credentials, robust firewall support, and more</p>
-        <p>Realize the potential of continuous delivery with Element</p>
-        <br>
-      </div>
+  <!-- // [START section3] -->
+  <div id="section3">
+    <div class="container">
+      <h2>Why should I care?</h2>
+      <br>
+      <p>As consumers, machine intelligence plays an important role in making routine decisions on our behalf every day, from choosing a route to work to selecting which music to play to setting our thermostats and beyond.</p>
+      <br>
+      <p>As software engineers, on the other hand, we find our time at work consumed by routine tasks that would be more efficiently handled with machine intelligence. That's why we're building Element, to deliver ml-driven log analytics.</p>
     </div>
-    <!-- // [END section1] -->
+  </div>
+  <!-- // [END section3] -->
 
-    <!-- // [START section2] -->
-    <div id="section2">
-      <div class="container">
-        <h2>Who are the brains behind?</h2>
-        <p>Some of the <strike>world's leading</strike> software developers:</p>
-        <div id="images">
-          <p>Cole Sakamoto</p>
-          <p>Khiem Pham</p>
-          <p>Ly Nguyen</p>
-          <p>Luis Pamintuan</p>
-          <p>Weimeng Pu</p>
-        </div>
-      </div>
+  <!-- // [START footer] -->
+  <footer>
+    <div class="container">
+      <p>Terms of services | Privacy policy</p>
+      <p>Element Analytics © 2018</p>
     </div>
-    <!-- // [END section2] -->
+  </footer>
+  <!-- // [END footer] -->
 
-    <!-- // [START section3] -->
-    <div id="section3">
-      <div class="container">
-        <h2>Why should I care?</h2>
-        <br>
-        <p>As consumers, machine intelligence plays an important role in making routine decisions on our behalf every day, from choosing a route to work to selecting which music to play to setting our thermostats and beyond.</p>
-        <br>
-        <p>As software engineers, on the other hand, we find our time at work consumed by routine tasks that would be more efficiently handled with machine intelligence. That's why we're building Element, to deliver ml-driven log analytics.</p>
-      </div>
-    </div>
-    <!-- // [END section3] -->
+  <script type="text/javascript">
+  function init() {
+    window.matchMedia("(max-width: 600px)").addListener(hitMQ);
+  }
 
-    <!-- // [START footer] -->
-    <footer>
-      <div class="container">
-        <p>Terms of services | Privacy policy</p>
-        <p>Element Analytics © 2018</p>
-      </div>
-    </footer>
-    <!-- // [END footer] -->
+  function myFunction() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+      x.className += " responsive";
+    } else {
+      x.className = "topnav";
+    }
+  }
 
-    <script type="text/javascript">
-      function init() {
-        window.matchMedia("(max-width: 600px)").addListener(hitMQ);
-      }
+  init();
 
-      init();
-
-    </script>
-  </body>
+  </script>
+</body>
 </html>
