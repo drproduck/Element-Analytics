@@ -48,7 +48,7 @@ INSTALLED_APPS = [
 
     'apps.index',
     'apps.analytics',
-    'apps.core',
+    'apps.upload',
     'apps.login'
 ]
 

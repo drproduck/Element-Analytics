@@ -29,7 +29,7 @@ urlpatterns = [
 
     path('index/', include('apps.index.urls')),
 
-    url('uploads/', include('apps.core.urls')),
+    path('upload/', include('apps.upload.urls')),
 
     path('login/', include('apps.login.urls')),
 
@@ -39,4 +39,3 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
