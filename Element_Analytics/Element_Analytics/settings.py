@@ -22,7 +22,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = 'media/'
 
 #Redirect from after login
-LOGIN_REDIRECT_URL = 'main'
+LOGIN_REDIRECT_URL = 'home'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -49,7 +49,11 @@ INSTALLED_APPS = [
     'apps.index',
     'apps.analytics',
     'apps.upload',
-    'apps.login'
+    'apps.login',
+    'apps.signup',
+    
+    #Dummy app contains pages and templates that are used for testing purpose
+    'apps.dummy'
 ]
 
 MIDDLEWARE = [
