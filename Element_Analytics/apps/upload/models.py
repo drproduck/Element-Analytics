@@ -28,7 +28,9 @@ class Document(models.Model):
     def filename(self):
         return os.path.basename(self.document.name)
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    """Issue: foreign key cannot be NULL and since we're letting the user upload without signing in,
+    Django throws an database integrity error. We can fix this later."""
+    #user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.CharField(max_length=255, blank=True)
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
