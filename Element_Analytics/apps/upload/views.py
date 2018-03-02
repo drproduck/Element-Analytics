@@ -31,7 +31,7 @@ def model_form_upload(request):
         if form.is_valid():
             form.save()
             #return redirect('home')
-            return HttpResponseRedirect('/index')
+            return redirect('/index')
     else:
         form = DocumentForm()
     return render(request, 'upload/model_form_upload.html', {'form': form})

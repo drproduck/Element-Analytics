@@ -20,7 +20,8 @@ from django.views.generic.base import RedirectView
 
 from django.conf import settings
 from django.conf.urls.static import static
-from django.conf.urls import url
+
+import apps.dummy.views as test_view
 
 urlpatterns = [
     path('', RedirectView.as_view(url='index/')),
@@ -33,8 +34,14 @@ urlpatterns = [
 
     path('login/', include('apps.login.urls')),
 
-    path('analytics/', include('apps.analytics.urls'))
+    path('analytics/', include('apps.analytics.urls')),
 
+    path('signup/', include('apps.signup.urls')),
+
+
+    #Dummy pages for testing, can be removed later
+    path('test_login/', test_view.home , name='home'),
+    path('logout/', test_view.log_out, name='logout')
 ]
 
 if settings.DEBUG:
