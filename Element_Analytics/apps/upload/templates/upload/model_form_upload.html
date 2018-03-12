@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <!--link rel="shortcut icon" href="index/static/index/favicon.png"/-->
-  <title>File List</title>
+  <title>File Upload</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="//fonts.googleapis.com/css?family=Roboto:400,300,200,100&subset=latin,cyrillic" rel="stylesheet">
   <style>
@@ -178,7 +178,11 @@
   <!-- // [START section1]-->
   <div id="section1">
     <div class="container">
-
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+      </form>
     </div>
   </div>
   <!-- // [END section1] -->
@@ -186,9 +190,8 @@
   <!-- // [START section2] -->
   <div id="section2">
     <div class="container">
-      {% for file in files %}
-      {{ file|linebreaks }}
-      {% endfor %}
+      <p><a href="/analytics">Go to analytics</a></p>
+      <p><a href="/index">Return to home</a></p>
     </div>
   </div>
   <!-- // [END section2] -->
@@ -196,7 +199,7 @@
   <!-- // [START section3] -->
   <div id="section3">
     <div class="container">
-      <p><a href="/upload">Return to upload</a></p>
+      <p><a href="upload/filelist">View file list</a></p>
     </div>
   </div>
   <!-- // [END section3] -->

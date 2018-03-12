@@ -34,7 +34,7 @@ urlpatterns = [
 
     path('login/', include('apps.login.urls')),
 
-    path('analytics/', include('apps.analytics.urls')),
+    path('analytics/', include('apps.analytics.urls', namespace='analytics'), name='analytics'),
 
     path('signup/', include('apps.signup.urls')),
 

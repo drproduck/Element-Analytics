@@ -26,8 +26,8 @@ class UserForm(ModelForm):
 
 class Document(models.Model):
     def filename(self):
-        return os.path.basename(self.document.name)
-
+        # return os.path.basename(self.document.name)
+        return "hello"
     """Issue: foreign key cannot be NULL and since we're letting the user upload without signing in,
     Django throws an database integrity error. We can fix this later."""
     #user = models.ForeignKey(User, on_delete=models.CASCADE)
