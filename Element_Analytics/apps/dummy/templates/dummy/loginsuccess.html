@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <!--link rel="shortcut icon" href="index/static/index/favicon.png"/-->
-  <title>File Upload</title>
+  <title>Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="//fonts.googleapis.com/css?family=Roboto:400,300,200,100&subset=latin,cyrillic" rel="stylesheet">
   <style>
@@ -178,11 +178,8 @@
   <!-- // [START section1]-->
   <div id="section1">
     <div class="container">
-      <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Upload</button>
-      </form>
+      <h2>Login successful!</h2>
+      <h2>You are at the dashboard</h2>
     </div>
   </div>
   <!-- // [END section1] -->
@@ -190,8 +187,8 @@
   <!-- // [START section2] -->
   <div id="section2">
     <div class="container">
-      <p><a href="/analytics">Go to analytics</a></p>
-      <p><a href="/index">Return to home</a></p>
+    <p><a href="{% url 'main' %}">Return</a></p>
+    <p><a href="{% url 'logout' %}">Logout</a></p>
     </div>
   </div>
   <!-- // [END section2] -->
@@ -199,7 +196,7 @@
   <!-- // [START section3] -->
   <div id="section3">
     <div class="container">
-      <p><a href="./filelist">View file list</a></p>
+      <p>Warning: You can't access this page after you logout</p>
     </div>
   </div>
   <!-- // [END section3] -->

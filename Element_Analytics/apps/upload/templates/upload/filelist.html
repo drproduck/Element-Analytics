@@ -187,7 +187,7 @@
   <div id="section2">
     <div class="container">
       {% for file in files %}
-      {{ file|linebreaks }}
+      <a href="{% url 'analytics:file_home' file %}">{{ file }}</a>
       {% endfor %}
     </div>
   </div>

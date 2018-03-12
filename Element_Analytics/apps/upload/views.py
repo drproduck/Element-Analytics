@@ -4,6 +4,7 @@ from django.core.files.storage import FileSystemStorage
 
 from apps.upload.models import Document
 from apps.upload.forms import DocumentForm
+
 import os
 
 '''
@@ -31,7 +32,7 @@ def model_form_upload(request):
         if form.is_valid():
             form.save()
             #return redirect('home')
-            return redirect('/index')
+            return redirect('/upload')
     else:
         form = DocumentForm()
     return render(request, 'upload/model_form_upload.html', {'form': form})

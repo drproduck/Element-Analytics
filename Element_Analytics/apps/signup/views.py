@@ -3,6 +3,7 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
+import Element_Analytics.settings as settings
 
 def signup(request):
     if request.method == 'POST':
@@ -13,8 +14,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            import Element_Analytics.settings as settings
             return redirect(settings.LOGIN_REDIRECT_URL)
     else:
         form = UserCreationForm()
-        return render(request, 'signup/signup.html', {'form': form})
+    return render(request, 'signup/signup.html', {'form': form})
