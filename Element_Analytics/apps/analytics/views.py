@@ -13,6 +13,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from apps.upload.models import User
 import seaborn as sb
+import ray.dataframe as pdr
 
 # Create your views here.
 
