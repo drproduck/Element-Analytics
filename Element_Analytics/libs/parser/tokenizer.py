@@ -1,39 +1,38 @@
 import ply.lex as lex
+import re
 
-# List of token names.   This is always required
-tokens = (
-    'DATE',
-    'SV_NAME',
-    'TYPE',
-    'CALLER',
-    'MESSAGE'
-)
+class LogTokenizer(object):
+    # List of token names.   This is always required
+    tokens = (
+        'date',
+        'sv_name',
+        'type',
+        'metainfo',
+        'message'
+    )
 
-# Token regex
-t_DATE = r''
-t_SV_NAME = r''
-t_TYPE = r''
-t_CALLER = r''
-t_MESSAGE = r''
+    # Token regex
+    t_date = r"[A-Za-z]{3}\s[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]+"
+    t_sv_name = r"[a-z_]+\[[0-9]+\]"
+    t_type = r"INFO|DEBUG|WARNING|ERROR|EXCEPTION|CRITICAL"
 
+    def t_metainfo(self,t):
+        r"\s(?P<content>[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+)"
+        if t.value:
+            t.value = t.lexer.lexmatch.group('content')
+        return t
 
-def t_NUMBER(t):
-    return t
+    def t_message(self,t):
+        r"((\s(:|–|-\s-)\s)|(:\s\#))(?P<content>.+)"
+        if t.value:
+            t.value = t.lexer.lexmatch.group('content')
+        return t
 
+    def t_error(self,t):
+        #print("Illegal character '%s'" % t.value[0])
+        t.lexer.skip(1)
 
-def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
+    def build(self):
+        self.lexer = lex.lex(module=self)
+        return self.lexer
 
-
-
-t_ignore = ' \t'
-
-
-
-def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
-    t.lexer.skip(1)
-
-
-lexer = lex.lex()
