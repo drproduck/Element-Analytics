@@ -1,5 +1,5 @@
 import ply.lex as lex
-import re
+
 
 class LogTokenizer(object):
     # List of token names.   This is always required
