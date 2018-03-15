@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'apps.upload',
     'apps.login',
     'apps.signup',
+    'apps.userprof',
+    'apps.edit',
 
     #Dummy app contains pages and templates that are used for testing purpose
     'apps.dummy'
