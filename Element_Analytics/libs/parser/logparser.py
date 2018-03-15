@@ -5,14 +5,11 @@ a list of entries or a dataframe supported by Pandas library"""
 
 from libs.parser.tokenizer import LogTokenizer
 import os.path
+import libs.parser.logfields as field
 
-DATE = 'date'
-NAME = 'sv_name'
-TYPE = 'type'
-INFO = 'metainfo'
-MSSG = 'message'
 
 __tokenizer = LogTokenizer().build()
+
 
 def __validate_path(path_to_file):
     """check if path is valid"""
@@ -20,14 +17,15 @@ def __validate_path(path_to_file):
         print("File does not exist. Exit")
         exit()
 
+
 def __parse_line(line):
     """parse a single line of log"""
     tokens = {
-        DATE : None,
-        NAME : None,
-        TYPE : None,
-        INFO : None,
-        MSSG : None
+        field.DATE : None,
+        field.NAME : None,
+        field.TYPE : None,
+        field.INFO : None,
+        field.MSSG : None
     }
     __tokenizer.input(line)
     for tok in __tokenizer:
@@ -38,11 +36,11 @@ def __parse_line(line):
 def __append_item(log_dict, token_list):
     """helper: extract items into the dictionary"""
     try:
-        log_dict[DATE].append(token_list[DATE])
-        log_dict[NAME].append(token_list[NAME])
-        log_dict[TYPE].append(token_list[TYPE])
-        log_dict[INFO].append(token_list[INFO])
-        log_dict[MSSG].append(token_list[MSSG])
+        log_dict[field.DATE].append(token_list[field.DATE])
+        log_dict[field.NAME].append(token_list[field.NAME])
+        log_dict[field.TYPE].append(token_list[field.TYPE])
+        log_dict[field.INFO].append(token_list[field.INFO])
+        log_dict[field.MSSG].append(token_list[field.MSSG])
     except LookupError as e:
         print(e)
         exit()
@@ -53,11 +51,11 @@ def parse_dict_of_lists(path_to_file):
     list of dictionaries representation"""
     __validate_path(path_to_file)
     log_dict = {
-        DATE : [],
-        NAME : [],
-        TYPE : [],
-        INFO : [],
-        MSSG : []
+        field.DATE : [],
+        field.NAME : [],
+        field.TYPE : [],
+        field.INFO : [],
+        field.MSSG : []
     }
     try:
         with open(path_to_file, 'r') as f:

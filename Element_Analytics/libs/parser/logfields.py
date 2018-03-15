@@ -1,0 +1,5 @@
+DATE = 'date'
+NAME = 'sv_name'
+TYPE = 'type'
+INFO = 'metainfo'
+MSSG = 'message'

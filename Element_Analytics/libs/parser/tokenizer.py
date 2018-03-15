@@ -1,16 +1,19 @@
 import ply.lex as lex
+import libs.parser.logfields as field
+
 
 class LogTokenizer(object):
-    # List of token names.   This is always required
+    # List of token names.
     tokens = (
-        'date',
-        'sv_name',
-        'type',
-        'metainfo',
-        'message'
+        field.DATE,
+        field.NAME,
+        field.TYPE,
+        field.INFO,
+        field.MSSG
     )
 
-    # Token regex
+    # Token regex and functions
+    # IMPORTANT: never change the names of these functions
     t_date = r"[A-Za-z]{3}\s[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]+"
     t_sv_name = r"[a-z_]+\[[0-9]+\]"
     t_type = r"INFO|DEBUG|WARNING|ERROR|EXCEPTION|CRITICAL"
