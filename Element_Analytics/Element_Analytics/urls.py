@@ -38,6 +38,10 @@ urlpatterns = [
 
     path('signup/', include('apps.signup.urls')),
 
+    path('userprof/', include('apps.userprof.urls')),
+
+    path('edit/', include('apps.edit.urls')),
+
 
     #Dummy pages for testing, can be removed later
     path('test_login/', test_view.home , name='home'),
