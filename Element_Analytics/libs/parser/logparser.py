@@ -90,7 +90,8 @@ def parse_file_parallel(path_to_file):
     queue = mp.Queue()
     # Get number of physical CPU cores
     NUM_PROC = mp.cpu_count()
-
+    if NUM_PROC <= 2:
+        return parse_file(path_to_file)
     try:
         with open(path_to_file, 'r') as f:
             # Spawning processes based on number of CPUs

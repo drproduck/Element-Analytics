@@ -11,6 +11,7 @@ class TestPerformance(unittest.TestCase):
         elapsed_time = time.time() - start
         self.assertLess(elapsed_time, 60)
         print(len(res))
+        print(elapsed_time)
 
 
 if __name__ == "__main__":
