@@ -15,8 +15,8 @@ class LogTokenizer(object):
     # Token regex and functions
     # IMPORTANT: never change the names of these functions
     t_date = r"[A-Za-z]{3}\s[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]+"
-    t_sv_name = r"[a-z_]+\[[0-9]+\]"
-    t_type = r"INFO|DEBUG|WARNING|ERROR|EXCEPTION|CRITICAL"
+    t_sv_name = r"[A-Za-z_]+\[[0-9]+\]"
+    t_type = r"INFO|DEBUG|WARNING|WARN|ERROR|EXCEPTION|CRITICAL"
 
     def t_metainfo(self,t):
         r"\s(?P<content>[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+)"
@@ -25,7 +25,7 @@ class LogTokenizer(object):
         return t
 
     def t_message(self,t):
-        r"((\s(:|–|-\s-)\s)|(:\s\#))(?P<content>.+)"
+        r"((\s(:|–|-\s-|\*|-)\s)|(:\s[^\[0-9]))(?P<content>.+)"
         if t.value:
             t.value = t.lexer.lexmatch.group('content')
         return t
