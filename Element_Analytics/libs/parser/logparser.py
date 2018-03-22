@@ -7,7 +7,7 @@ from libs.parser.tokenizer import LogTokenizer
 import os.path
 import multiprocessing as mp
 import libs.parser.logfields as field
-
+import csv
 
 tokenizer = LogTokenizer().build()
 
@@ -15,12 +15,18 @@ tokenizer = LogTokenizer().build()
 def validate_path(path_to_file):
     """check if path is valid"""
     if not os.path.isfile(path_to_file):
-        print("File does not exist. Exit")
+        print("File does not exist: ", path_to_file)
+        exit()
+    if os.stat(path_to_file).st_size == 0:
+        print("File is empty: ", path_to_file)
         exit()
 
 
 def parse_line(line):
     """parse a single line of log"""
+    if not line:
+        print("error: can't parse empty string")
+        exit()
     tokens = {
         field.DATE : None,
         field.NAME : None,
@@ -106,3 +112,19 @@ def parse_file_parallel(path_to_file):
     join_processes(queue, processes, NUM_PROC)
 
     return entries._getvalue()
+
+
+def to_csv(entries, file_out):
+    """Convert logfile to CSV format that can
+    be stored on file system and manipulated
+    by pandas library"""
+
+    #entries = parse_file_parallel(file_in)
+    if entries:
+        with open(file_out, 'w') as f:
+            w = csv.DictWriter(f, entries[0].keys())
+            w.writeheader()
+            w.writerows(entries)
+    else:
+        print("error: no data was written")
+        exit()
