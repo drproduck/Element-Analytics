@@ -1,4 +1,14 @@
 import unittest
+# Some hack to add project directoy to PYTHONPATH
+from pathlib import Path
+import os
+import sys
+p = Path(os.getcwd()).parent.parent.parent
+while p.name != "Element_Analytics":
+    p = p.parent
+sys.path.append(str(p))
+####
+
 from libs.parser.tokenizer import LogTokenizer
 import Tests.unit_tests.parsers.golden as g
 import libs.parser.logfields as lf
