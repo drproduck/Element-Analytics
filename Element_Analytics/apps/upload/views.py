@@ -2,8 +2,7 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
-from apps.upload.models import Document
-from apps.upload.forms import DocumentForm
+from apps.upload.forms import LogFileForm
 
 import os
 
@@ -26,16 +25,18 @@ def simple_upload(request):
     return render(request, 'upload/simple_upload.html')
 '''
 
+
 def model_form_upload(request):
     if request.method == 'POST':
-        form = DocumentForm(request.POST, request.FILES)
+        form = LogFileForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            #return redirect('home')
+            # return redirect('home')
             return redirect('/upload')
     else:
-        form = DocumentForm()
+        form = LogFileForm()
     return render(request, 'upload/model_form_upload.html', {'form': form})
+
 
 def filelist(request):
     path = "media/documents"  # insert the path to your directory

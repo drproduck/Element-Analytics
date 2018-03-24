@@ -1,9 +1,13 @@
 from django import forms
+from django.contrib.auth.models import User
+from apps.upload.models import LogFile
 
-from apps.upload.models import Document
-
-
-class DocumentForm(forms.ModelForm):
+class UserForm(forms.ModelForm):
     class Meta:
-        model = Document
-        fields = ('document', 'file_name',)
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email']
+
+class LogFileForm(forms.ModelForm):
+    class Meta:
+        model = LogFile
+        fields = ('file', 'file_name',)
