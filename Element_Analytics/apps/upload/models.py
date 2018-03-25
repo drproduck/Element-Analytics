@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User as DefaultUser
+from django.contrib.auth.models import User
 
 from django.db import models
 import os
@@ -26,15 +26,15 @@ import os
 #         model = User
 #         fields = ['user_name', 'dob', 'email', ]
 
-class User(models.Model):
-    user = models.OneToOneField(DefaultUser, on_delete=models.CASCADE)
+# class User(models.Model):
+#     user = models.OneToOneField(DefaultUser, on_delete=models.CASCADE)
 
 
 from Element_Analytics.settings import MEDIA_URL
 
 
-def get_store_path(file_instance):
-    return 'document/' + file_instance.get_username + '/' + file_instance.get_filename
+def get_store_path(file_instance, filename):
+    return 'document/' + file_instance.user.username + '/' + file_instance.file_name
 
 
 class LogFile(models.Model):
@@ -42,11 +42,8 @@ class LogFile(models.Model):
     def get_username(self):
         return self.user.username
 
-    def get_filename(self):
-        return self.file_name
-
     def get_filepath(self):
-        return MEDIA_URL + self.get_username() + '/' + self.file_name
+        return MEDIA_URL + 'document/' + self.get_username() + '/' + self.file_name
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     file_name = models.CharField(max_length=255, blank=True)
