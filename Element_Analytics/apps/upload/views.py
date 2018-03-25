@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.decorators import  login_required
 
 from apps.upload.forms import LogFileForm
 
@@ -25,7 +26,7 @@ def simple_upload(request):
     return render(request, 'upload/simple_upload.html')
 '''
 
-
+@login_required
 def model_form_upload(request):
     if request.method == 'POST':
         form = LogFileForm(request.POST, request.FILES)

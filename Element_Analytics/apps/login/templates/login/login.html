@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <!--link rel="shortcut icon" href="index/static/index/favicon.png"/-->
+  <!--link rel="shortcut icon" hre="index/static/index/favicon.png"/-->
   <title>Log in</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="//fonts.googleapis.com/css?family=Roboto:400,300,200,100&subset=latin,cyrillic" rel="stylesheet">
@@ -192,7 +192,6 @@
       {% endif %}
       <form method="post">
         {% csrf_token %}
-        <input type="hidden" name="next" value="{{ next }}" />
         {% for field in form %}
         <p>
           {{ field.label_tag }}<br>
