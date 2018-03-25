@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html>
+{% extends "base.html" %}
+{% block section1 %}
+    <p>{{ title }}</p>
+{% endblock %}
+</html>
