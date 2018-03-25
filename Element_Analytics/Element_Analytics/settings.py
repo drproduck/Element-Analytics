@@ -24,7 +24,11 @@ MEDIA_URL = 'media/'
 #Redirect from after login
 LOGIN_REDIRECT_URL = 'dashboard:main'
 
-TEMPLATES = 'templates/'
+#Redirect if user not logged in
+LOGIN_URL = 'login:login'
+
+#template dir usable from any apps
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
@@ -73,8 +77,7 @@ ROOT_URLCONF = 'Element_Analytics.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': ['./templates',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
