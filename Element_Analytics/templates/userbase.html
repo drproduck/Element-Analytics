@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="shortcut icon" href="../static/index/favicon.png"/>
-    <title>Element Analytics</title>
+    {% block title %}{% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//fonts.googleapis.com/css?family=Roboto:400,300,200,100&subset=latin,cyrillic" rel="stylesheet">
     <!-- // [start style] -->
@@ -240,6 +240,8 @@
 
 <!-- // [START topnav] -->
 <div class="topnav" id="myTopnav">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/userprof">User profile</a>
     <a href="/upload">Upload log file</a>
     <a href="/analytics">Analytics</a>
     <a href="{% url "login:logout" %}">Log out</a>

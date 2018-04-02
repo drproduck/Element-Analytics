@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html>
 {% extends "userbase.html" %}
-{% block section1 %}
-<p>Hello there {{ user.username}}</p>
+
+{% block title %}
+<title>Dashboard</title>
 {% endblock %}
+
+{% block section1 %}
+<h1>Howdy, {{ user.username}}</h1>
+{% endblock %}
+
 </html>

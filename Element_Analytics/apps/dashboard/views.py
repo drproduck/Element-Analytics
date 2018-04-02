@@ -6,7 +6,7 @@ from  django.contrib.auth.decorators import login_required
 @login_required
 def main(request):
     if request.user.is_authenticated:
-        print("tHis one is still authenticated")
+        print("this one is still authenticated")
         print(request.user.username)
     user = request.user
     return render(request, template_name='dashboard/main.html', context={'user': user})

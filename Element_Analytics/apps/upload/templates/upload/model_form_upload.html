@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="en">
 {% extends "userbase.html" %}
+{% block title %}
+<title>Upload</title>
+{% endblock %}
   {% block section1 %}
     <div class="container">
       <form method="post" enctype="multipart/form-data" onsubmit="return check_size();">
@@ -33,4 +36,3 @@
       </div>
     {% endblock %}
 </html>
-
