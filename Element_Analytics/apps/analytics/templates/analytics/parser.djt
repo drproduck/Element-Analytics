@@ -1,8 +1,10 @@
 {% extends "userbase.djt" %}
 {% block section1 %}
-    <form action="{% url "analytics:parser" %}" method="post">
-        {% csrf_token %}
-        <h1>{{ logtomatform.as_ul }}</h1>
-        <input type="submit" value="Use parser"/>
-    </form>
+    <div class="select2-container">
+        <form action="{% url "analytics:parser" %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ logtomatform.as_p }}
+            <input type="submit" value="Use parser"/>
+        </form>
+    </div>
 {% endblock %}
