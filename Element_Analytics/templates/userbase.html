@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="../static/index/favicon.png"/>
+    {% block title %}{% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//fonts.googleapis.com/css?family=Roboto:400,300,200,100&subset=latin,cyrillic" rel="stylesheet">
+    <!-- // [start style] -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #headline {
+            padding: 0.8em;
+            color: white;
+            font-family: Material Icons;
+            background-color: #504F5B;
+            background-size: cover;
+        }
+
+        #headline h1 {
+            font-weight: 200;
+            font-size: 60px;
+            line-height: 1em;
+            margin-bottom: 0;
+        }
+
+        #headline h2 {
+            font-weight: 200;
+            font-size: 30px;
+            margin-top: 5px;
+        }
+
+        #headline #blurb {
+            font-weight: 300;
+            font-size: 18px;
+        }
+
+        #section1, #section2, #section3 {
+            box-sizing: border-box;
+            padding: 20px;
+        }
+
+        #section1 h2, #section2 h2, #section3 h2  {
+            margin-top: 0;
+            font-size: 24px
+        }
+
+        #section1 {
+            background-color: white;
+            font-family: Material Icons;
+            font-weight: 100;
+            font-size: 18px;
+            text-align: center;
+            margin: auto;
+        }
+
+        #section1 h2 {
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 0px;
+            margin-top: 20px;
+        }
+
+        #section1 h2 + p {
+        }
+
+        #section2 {
+            background-color: #e9e9e9;
+            font-family: Material Icons;
+            font-weight: 100;
+            font-size: 18px;
+            text-align: center;
+            margin: auto;
+        }
+
+        #section2 h2 {
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 0px;
+            margin-top: 20px;
+        }
+
+        #section2 h2 + p {
+            text-align: center;
+        }
+
+        #section3 {
+            background-color: #f5f5f5;
+            font-family: Material Icons;
+            font-weight: 100;
+            font-size: 18px;
+            text-align: center;
+            margin: auto;
+        }
+
+        #section3 h2 {
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 0px;
+            margin-top: 20px;
+        }
+
+        #section3 h2 + p {
+            text-align: center;
+        }
+
+        footer {
+            font-family: Material Icons;
+            font-weight: 300;
+            text-align: center;
+            background-color: #0055A2;
+            color: white;
+            padding-bottom: 20px;
+            padding-top: 20px;
+        }
+
+        @media screen and (min-width: 600px) {
+            #headline {
+                padding: 20px 5%;
+            }
+
+            .container {
+                margin: auto;
+                max-width: 800px;
+            }
+
+            #headline #blurb {
+                float: left;
+                font-weight: 200;
+                width: 50%;
+                font-size: 18px;
+                box-sizing: border-box;
+                padding-right: 10px;
+            }
+
+            #headline br {
+                clear: both;
+            }
+
+            #headline #register {
+                float:right;
+                padding: 20px;
+                width: 50%;
+                box-sizing: border-box;
+                font-weight: 300;
+            }
+
+            #section1 #section2, #section3 {
+                box-sizing: border-box;
+                padding: 10px 20% 80px 20%;
+            }
+
+            #section1 h2, #section2 h2, #section3 h2  {
+                margin-top: 0;
+                font-size: 60px
+            }
+
+            #section1 br {
+                clear: both;
+            }
+        }
+
+        /* Add a black background color to the top navigation */
+        .topnav {
+            background-color: #504F5B;
+            overflow: hidden;
+            display: -webkit-flex; /* Safari */
+            -webkit-justify-content: center; /* Safari 6.1+ */
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Style the links inside the navigation bar */
+        .topnav a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        /* Add an active class to highlight the current page */
+        .active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Hide the link that should open and close the topnav on small screens */
+        .topnav .icon {
+            display: none;
+        }
+
+        /* Add a dark background on topnav links on hover */
+        .topnav a:hover {
+            background-color: #E5A823;
+            color: white;
+        }
+
+        /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
+        @media screen and (max-width: 600px) {
+            .topnav a {display: none;}
+            .topnav a.icon {
+                float: right;
+                display: block;
+            }
+        }
+
+        /* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
+        @media screen and (max-width: 600px) {
+            .topnav.responsive {position: relative;}
+            .topnav.responsive a.icon {
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+            .topnav.responsive a {
+                float: none;
+                display: block;
+                text-align: left;
+            }
+            .topnav.responsive {float: none;}
+            .topnav.responsive {position: relative;}
+            .topnav.responsive {
+                display: block;
+                width: 100%;
+                text-align: left;
+            }
+        }
+
+    </style>
+    <!-- // [END style] -->
+</head>
+<body>
+
+<!-- // [START topnav] -->
+<div class="topnav" id="myTopnav">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/userprof">User profile</a>
+    <a href="/upload">Upload log file</a>
+    <a href="/analytics">Analytics</a>
+    <a href="{% url "login:logout" %}">Log out</a>
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
+</div>
+<!-- // [END topnav] -->
+
+<!-- // [START section1] -->
+<div id="section1">
+    {% block section1 %}{% endblock %}
+</div>
+<!-- // [END section1] -->
+
+<!-- // [START section2] -->
+<div id="section2">
+    {% block section2 %}{% endblock %}
+</div>
+<!-- // [END section2] -->
+
+<!-- // [START section3] -->
+<div id="section3">
+    {% block section3 %}{% endblock %}
+</div>
+<!-- // [END section3] -->
+
+<!-- // [START footer] -->
+<footer>
+    <div class="container">
+        <p>Terms of services | Privacy policy</p>
+        <p>Element Analytics © 2018</p>
+    </div>
+</footer>
+<!-- // [END footer] -->
+
+<script type="text/javascript">
+    function init() {
+        window.matchMedia("(max-width: 600px)").addListener(hitMQ);
+    }
+
+    function myFunction() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+            x.className += " responsive";
+        } else {
+            x.className = "topnav";
+        }
+    }
+
+    init();
+
+</script>
+</body>
+</html>

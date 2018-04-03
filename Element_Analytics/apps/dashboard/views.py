@@ -13,12 +13,12 @@ def main(request):
         #print(request.user.username)
     user = request.user
     username = user.username
-    path = MEDIA_URL+'/'+'document/'+username+'/'
-    # path = MEDIA_URL+'document/'
+    #path = MEDIA_URL+'document/'+username+'/'
+    path = MEDIA_URL+'document/'
     #print(path)
     if not os.path.exists(path):
         os.makedirs(path)
-    file_list = [f for f in os.listdir(path) if not f.endswith('_dir')]
+    file_list = [f for f in os.listdir(path)]
     #for f in file_list:
         #print(f)
-    return render(request, template_name='dashboard/main.djt', context={'user': user, 'file_list': file_list})
+    return render(request, template_name='dashboard/main.html', context={'user': user, 'file_list': file_list})

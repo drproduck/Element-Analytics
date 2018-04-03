@@ -10,9 +10,4 @@ class UserForm(forms.ModelForm):
 class LogFileForm(forms.ModelForm):
     class Meta:
         model = LogFile
-        fields = ["log_name", 'file']
-
-    def clean(self):
-        cleaned_data = super().clean()
-        #TODO: add method to check for name conflict
-
+        fields = ['file_name', 'file']

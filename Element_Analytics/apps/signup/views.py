@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 import Element_Analytics.settings as settings
 
+
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
