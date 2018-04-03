@@ -7,4 +7,5 @@ matplotlib==2.1.2
 ply==3.11
 ray==0.3.1
 seaborn==0.8.1
+mod-wsgi==4.6.3
 

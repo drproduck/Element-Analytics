@@ -1,20 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Profile</title>
-</head>
-    <body>
-    <h1>
-        Hello {{user}}!
-    </h1>
-    <p>
-        Username: {{ user }}<br />
-        Date Joined: {{ user.date_joined }}<br />
-        Last Modified: {{ user.last_modified}}<br />
-        Email: {{ user.email}}<br />
-        <a href="/edit">Edit User Information</a>
-    </p>
+<html>
+{% extends "userbase.html" %}
 
-    </body>
+{% block title %}
+<title>Profile</title>
+{% endblock %}
+
+{% block section1 %}
+<h1>Sup, {{user}}</h1>
+{% endblock %}
+
+{% block section2 %}
+<p>
+    Username: {{ user }}<br />
+    Date Joined: {{ user.date_joined }}<br />
+    Last Modified: {{ user.last_modified}}<br />
+    Email: {{ user.email}}<br />
+
+</p>
+{% endblock %}
+
+{% block section3 %}
+<a href="/edit">Edit User Information</a>
+{% endblock %}
+
 </html>

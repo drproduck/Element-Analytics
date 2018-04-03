@@ -1,22 +1,39 @@
 <!doctype html>
 <html lang="en">
 {% extends "userbase.html" %}
+{% block title %}
+<title>Upload</title>
+{% endblock %}
   {% block section1 %}
     <div class="container">
-      <form method="post" enctype="multipart/form-data">
+      <form method="post" enctype="multipart/form-data" onsubmit="return check_size();">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Upload</button>
       </form>
     </div>
+    <script type='text/javascript'>
+        function check_size() {
+            var input = document.getElementById("id_file");
+            var section = document.getElementById("section1");
+            var file = input.files[0];
+            if (file.size > 104857600) {
+                elm = document.createElement("p");
+                elm.innerHTML = "File too large. Must be less than 100MB";
+                section.appendChild(elm);
+                return false;
+            }
+            return true;
+        }
+    </script>
   {% endblock %}
 
    {% block section2 %}
-      <div class="container">
-        {% for file in file_list %}
+       <p>Your files are here:</p>
+       {% for file in file_list %}
+       {% if file != ".DS_Store" %}
         <p><a href="{% url 'analytics:file_home' file %}">{{ file }}</a></p>
-        {% endfor %}
-      </div>
+       {% endif %}
+       {% endfor %}
     {% endblock %}
-
 </html>
