@@ -16,10 +16,13 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 #Absolute filesystem path to the directory that will hold user-uploaded files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'asset')
+
+#Im tired of adding document to every fucking path
+DOCUMENT_ROOT = os.path.join(MEDIA_ROOT, 'document')
 
 #URL that handles the media served from MEDIA_ROOT, used for managing stored files
-MEDIA_URL = 'media/'
+MEDIA_URL = 'asset/'
 
 #Redirect from after login
 LOGIN_REDIRECT_URL = 'dashboard:main'
