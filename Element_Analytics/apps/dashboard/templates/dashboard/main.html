@@ -14,7 +14,8 @@
      <p>Your files are here:</p>
      {% for file in file_list %}
      {% if file != ".DS_Store" %}
-      <p><a href="{% url 'analytics:file_home' file %}">{{ file }}</a></p>
+       {# <p><a href="{% url 'analytics:file_home' file %}">{{ file }}</a></p> #}
+      <p><a href="/media/document/{{ file }}">{{ file }}</a></p>
      {% endif %}
      {% endfor %}
  {% endblock %}
