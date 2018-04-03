@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, reverse
 from Element_Analytics.settings import MEDIA_URL
 from django.views.generic import FormView
-from .forms import ParserRegexForm
+from .forms import ParserRegexForm, LogToMatForm, ParserNameForm
 from .models import Matrix
 from Element_Analytics.settings import DOCUMENT_ROOT
 from ..upload.models import LogFile
@@ -48,47 +48,65 @@ def parser_box(request):
             print('OK')
     else:
         parser_form = ParserRegexForm()
-        return render(dc)
+        return render()
 
-def parse_by_regex(str):
+def parse_by_regex(path, regex):
     ""
 
 def get_user_log_dir(user, log, mat_name):
     """root -> user dir -> log dir -> bunch of .csv and a single .raw"""
-    return os.path.join(DOCUMENT_ROOT, user, log, mat_name)
+    return os.path.join(DOCUMENT_ROOT, user, log+'_dir', mat_name+'.csv')
 
 def ParserFormView(request):
+
+    user = User.objects.get(pk=request.user.id)
     if request.method == 'POST':
-        if 'regexform' in request.POST:
-            log_name = request.POST['log_name']
-            regexform = ParserRegexForm(request.POST, prefix='regex')
-            if regexform.is_valid():
-                # parse the log by regex
-                processed = parse_by_regex(regexform.cleaned_data['regex'])
 
-                #prepare to create mat model
-                regex_history = regexform.cleaned_data['regex']
-                log = LogFile.objects.get(user=User.objects.get(pk=request.user.id), log_name=log_name)
-                mat_name = regexform.cleaned_data['mat_name']
-                path = get_user_log_dir(request.user, log_name)
-                mat = Matrix.objects.create(regex_history=regex_history, log=log, path=path)
+        # if 'logtomatform' in request.POST:
+        logtomatform = LogToMatForm(request.POST)
+        if logtomatform.is_valid():
+            log = logtomatform.cleaned_data['log']
+            mat_name = logtomatform.cleaned_data['mat_name']
+            save_path = get_user_log_dir(user.username, log.log_name, mat_name)
+            log_path = log.get_filepath()
 
-                # save mat file
-                parser.to_csv(processed, path, mat_name)
-                mat.save()
+            # if 'regexform' in request.POST:
+            #     regexform = ParserRegexForm(request.POST, prefix='regex')
+            #     if regexform.is_valid():
+            #         # parse the log by regex
+            #         regex_history = regexform.cleaned_data['regex']
+            #         processed = parse_by_regex(log_path, regex_history)
+            #
+            #         # save mat file
+            #         parser.to_csv(processed, path)
+            #         mat = Matrix(user, log, regex_history, path)
+            #         mat.save()
+            #
+            #         return redirect(mat)
 
-                # using mat.get_absolute_url method
-                return redirect(mat)
+            regex_history = logtomatform.cleaned_data['parser_name']
+            processed = parser.parse_file(log_path)
+
+            # save mat file
+            parser.to_csv(processed, save_path)
+            mat = Matrix(user=user, log=log, regex_history=regex_history, path=save_path, mat_name=mat_name)
+            mat.save()
+            print('Im here')
+            return redirect(mat)
 
     else:
-        regexform = ParserRegexForm()
-        regexform.fields['log_name'].queryset = LogFile.objects.filter(user=User.objects.get(pk=request.user.id))
+        logtomatform = LogToMatForm()
+        # regexform = ParserRegexForm()
+        # parserform = ParserNameForm()
+        logtomatform.fields['log'].queryset = LogFile.objects.filter(user=user)
         log_list = LogFile.objects.all()
-        return render(request, 'analytics/parser.djt', context={'regexform': regexform, 'log_list': log_list})
+        return render(request, 'analytics/parser.djt',
+                      context={'logtomatform': logtomatform,
+                             'log_list': log_list})
 
-def MainView(request):
+
+def MainView(request, log, mat):
     return HttpResponse("hello there")
-
 
 
 def file_home(request, file_name):

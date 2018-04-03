@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-{% extends "userbase.html" %}
+{% extends "userbase.djt" %}
 {% block section1 %}
 <p>Hello there</p>
 {% endblock %}

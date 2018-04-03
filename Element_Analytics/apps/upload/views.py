@@ -30,23 +30,27 @@ def simple_upload(request):
 
 @login_required
 def model_form_upload(request):
+    user = request.user
+    username = user.username
+    path = os.path.join(MEDIA_URL, 'document', username)
     if request.method == 'POST':
         form = LogFileForm(request.POST, request.FILES)
         if form.is_valid():
-            print(request.user.id)
+            # print(request.user.id)
             log = LogFile.objects.create(log_name=request.POST['log_name'],
                                    file=request.FILES['file'], user=User.objects.get(pk=request.user.id))
             log.save()
+            #  log dir is used for storing csv file associated with this log file
+            log_dir = os.path.join(path, log.log_name+'_dir')
+            if not os.path.exists(log_dir):
+                os.mkdir(log_dir)
             return redirect('/upload')
     else:
         form = LogFileForm()
-        user = request.user
-        username = user.username
-        path = MEDIA_URL+'document/'
         #print(path)
         if not os.path.exists(path):
             os.makedirs(path)
-        file_list = [f for f in os.listdir(path)]
+        file_list = [f for f in os.listdir(path) if not f.endswith('_dir')]
         #for f in file_list:
             #print(f)
-        return render(request, 'upload/model_form_upload.html', {'form': form, 'file_list': file_list})
+        return render(request, 'upload/model_form_upload.djt', {'form': form, 'file_list': file_list})

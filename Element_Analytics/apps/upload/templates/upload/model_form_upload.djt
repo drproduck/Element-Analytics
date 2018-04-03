@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-{% extends "userbase.html" %}
+{% extends "userbase.djt" %}
 {% block title %}
 <title>Upload</title>
 {% endblock %}
@@ -32,7 +32,7 @@
        <p>Your files are here:</p>
        {% for file in file_list %}
        {% if file != ".DS_Store" %}
-        <p><a href="{% url 'analytics:file_home' file %}">{{ file }}</a></p>
+        <p><a href="{% url "analytics:parser"%}">{{ file }}</a></p>
        {% endif %}
        {% endfor %}
     {% endblock %}

@@ -7,6 +7,6 @@ app_name = 'analytics'
 urlpatterns = [
     # path('<file_name>/', views.file_home, name='file_home'),
     path('<file_name>/variable_plot.png',views.variable_plot, name='variable_plot'),
-    path('parser/', views.ParserFormView, name='parser'),
-    path('<log_name>/<mat_name>', views.MainView, name='middleboss')
+    path('parser/', views.ParserFormView, name='parser' ),
+    path('<log>/<mat>', views.MainView, name='middleboss')
 ]

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http.response import HttpResponse
 from  django.contrib.auth.decorators import login_required
-from Element_Analytics.settings import MEDIA_URL, DOCUMENT_ROOT
+from Element_Analytics.settings import MEDIA_URL
 
 import os
 # Create your views here.
@@ -13,7 +13,7 @@ def main(request):
         #print(request.user.username)
     user = request.user
     username = user.username
-    path = DOCUMENT_ROOT+'/'+username+'/'
+    path = MEDIA_URL+'/'+username+'/'
     # path = MEDIA_URL+'document/'
     #print(path)
     if not os.path.exists(path):
