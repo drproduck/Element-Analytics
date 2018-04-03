@@ -1,10 +1,5 @@
-import datetime
-import random
-
 from django.http import HttpResponse
 from django.shortcuts import render
-from matplotlib.dates import DateFormatter
-
 from Element_Analytics.settings import MEDIA_URL
 import os
 import pandas as pd
@@ -14,9 +9,9 @@ from matplotlib.figure import Figure
 from apps.upload.models import User
 import seaborn as sb
 # import ray.dataframe as pdr
-
-# Create your views here.
-
+import libs.parser.logparser as parser
+import libs.parser.logfields as lf
+import itertools, functools
 current_file = None
 current_file_name = None
 current_frame = None
@@ -24,6 +19,29 @@ headers = None
 temp_dir = None
 path = None
 MAX_TEMP_FIG = 5
+
+def  file_parser(file_path):
+    parsed_file = parser.parse_file_parallel(file_path)
+    parser.to_csv(parsed_file)
+
+COMMON_ERROR_REGEX  = 'exception|warn|error|fail|unauthorized|timeout|refused|NoSuchPageException|[^0-9]404[^0-9]|[^0-9]401[^0-9]|[^0-9]505[^0-9]'
+
+def make_error_regex(list, append_common=True):
+    agg_terms = functools.reduce(lambda x,y: x+'|'+y, list)
+    return agg_terms if not append_common else COMMON_ERROR_REGEX+'|'+agg_terms
+
+def build_file_list(user_log_dir):
+    """return a list of tuples each containing the file name and its path"""
+    return [(f, os.path.join(user_log_dir, f)) for f in os.listdir(user_log_dir) if not f.endswith('.raw')
+            or f.endswith('.csv')]
+
+def parser_box(request):
+    if request.method == 'POST':
+        
+
+def summary_page(user_log_dir):
+
+
 
 def file_home(request, file_name):
     global current_file, current_frame, current_file_name, headers, temp_dir, path
@@ -38,7 +56,7 @@ def file_home(request, file_name):
     current_frame = pd.read_csv(path)
     headers = list(current_frame)
 
-    return render(request, 'analytics/file_home.html', {'name':file_name, 'frame':current_frame,
+    return render(request, 'analytics/file_home.djt', {'name':file_name, 'frame':current_frame,
                                                         'headers':headers})
 
 def variable_plot(request, file_name):
