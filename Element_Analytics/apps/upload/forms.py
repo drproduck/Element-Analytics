@@ -10,4 +10,4 @@ class UserForm(forms.ModelForm):
 class LogFileForm(forms.ModelForm):
     class Meta:
         model = LogFile
-        fields = ['file_name', 'file']
+        fields = ["log_name", 'file']

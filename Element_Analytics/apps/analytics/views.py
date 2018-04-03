@@ -1,6 +1,12 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from Element_Analytics.settings import MEDIA_URL
+from django.views.generic import FormView
+from .forms import ParserRegexForm
+from .models import Matrix
+from Element_Analytics.settings import DOCUMENT_ROOT
+from ..upload.models import LogFile
+
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -35,19 +41,53 @@ def build_file_list(user_log_dir):
     return [(f, os.path.join(user_log_dir, f)) for f in os.listdir(user_log_dir) if not f.endswith('.raw')
             or f.endswith('.csv')]
 
-from apps.analytics.forms import ParserForm
 def parser_box(request):
     if request.method == 'POST':
-        parser_form = ParserForm(request.POST['parser_command'])
+        parser_form = ParserRegexForm(request.POST['parser_command'])
         if parser_form.is_valid():
             print('OK')
     else:
-        parser_form = ParserForm()
-        return render()
+        parser_form = ParserRegexForm()
+        return render(dc)
 
+def parse_by_regex(str):
+    ""
 
+def get_user_log_dir(user, log, mat_name):
+    """root -> user dir -> log dir -> bunch of .csv and a single .raw"""
+    return os.path.join(DOCUMENT_ROOT, user, log, mat_name)
 
-def summary_page(user_log_dir):
+def ParserFormView(request):
+    if request.method == 'POST':
+        if 'regexform' in request.POST:
+            log_name = request.POST['log_name']
+            regexform = ParserRegexForm(request.POST, prefix='regex')
+            if regexform.is_valid():
+                # parse the log by regex
+                processed = parse_by_regex(regexform.cleaned_data['regex'])
+
+                #prepare to create mat model
+                regex_history = regexform.cleaned_data['regex']
+                log = LogFile.objects.get(user=User.objects.get(pk=request.user.id), file_name=log_name)
+                mat_name = regexform.cleaned_data['mat_name']
+                path = get_user_log_dir(request.user, log_name)
+                mat = Matrix.objects.create(regex_history=regex_history, log=log, path=path)
+
+                # save mat file
+                parser.to_csv(processed, path, mat_name)
+                mat.save()
+
+                # using mat.get_absolute_url method
+                return redirect(mat)
+
+    else:
+        regexform = ParserRegexForm()
+        regexform.fields['log_name'].queryset = LogFile.objects.get(user=User.objects.get(request.user.id))
+        log_list = LogFile.objects.all()
+        return render(request, 'analytics/parser.djt', context={'regexform': regexform, 'log_list': log_list})
+
+def MainView(request):
+    return HttpResponse("hello there")
 
 
 
