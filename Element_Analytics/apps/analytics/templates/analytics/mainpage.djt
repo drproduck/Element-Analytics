@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "userbase.html" %}
+{% block section1 %}
+<p>Hello there</p>
+{% endblock %}
+</html>

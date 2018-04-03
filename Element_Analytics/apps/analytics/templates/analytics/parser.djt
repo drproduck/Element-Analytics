@@ -1,0 +1,8 @@
+{% extends "userbase.html" %}
+{% block section1 %}
+    <form method="post">
+    {%  csrf_token %}
+    {{ regexform }}
+    <input type="submit" value="Submit" />
+    </form>
+{% endblock %}
