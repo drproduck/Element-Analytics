@@ -34,7 +34,7 @@ def model_form_upload(request):
         form = LogFileForm(request.POST, request.FILES)
         if form.is_valid():
             print(request.user.id)
-            log = LogFile.objects.create(file_name=request.POST['file_name'],
+            log = LogFile.objects.create(log_name=request.POST['log_name'],
                                    file=request.FILES['file'], user=User.objects.get(pk=request.user.id))
             log.save()
             return redirect('/upload')

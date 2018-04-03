@@ -34,7 +34,7 @@ from Element_Analytics.settings import MEDIA_URL
 
 
 def get_store_path(file_instance, filename):
-    return 'document/' + file_instance.user.username + '/' + file_instance.file_name
+    return 'document/' + file_instance.user.username + '/' + file_instance.log_name
 
 
 class LogFile(models.Model):
@@ -48,5 +48,5 @@ class LogFile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     log_name = models.CharField(max_length=255, blank=True)
     file = models.FileField(upload_to=get_store_path)
-    path = models.CharField()
+    path = models.CharField(max_length=1000)
     uploaded_at = models.DateTimeField(auto_now_add=True)

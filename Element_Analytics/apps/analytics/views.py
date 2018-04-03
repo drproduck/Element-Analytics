@@ -68,7 +68,7 @@ def ParserFormView(request):
 
                 #prepare to create mat model
                 regex_history = regexform.cleaned_data['regex']
-                log = LogFile.objects.get(user=User.objects.get(pk=request.user.id), file_name=log_name)
+                log = LogFile.objects.get(user=User.objects.get(pk=request.user.id), log_name=log_name)
                 mat_name = regexform.cleaned_data['mat_name']
                 path = get_user_log_dir(request.user, log_name)
                 mat = Matrix.objects.create(regex_history=regex_history, log=log, path=path)
@@ -82,7 +82,7 @@ def ParserFormView(request):
 
     else:
         regexform = ParserRegexForm()
-        regexform.fields['log_name'].queryset = LogFile.objects.get(user=User.objects.get(request.user.id))
+        regexform.fields['log_name'].queryset = LogFile.objects.filter(user=User.objects.get(pk=request.user.id))
         log_list = LogFile.objects.all()
         return render(request, 'analytics/parser.djt', context={'regexform': regexform, 'log_list': log_list})
 
@@ -92,6 +92,7 @@ def MainView(request):
 
 
 def file_home(request, file_name):
+    print("Why am I here?")
     global current_file, current_frame, current_file_name, headers, temp_dir, path
     current_file_name = file_name
     path = os.path.join(MEDIA_URL, 'documents/'+file_name)

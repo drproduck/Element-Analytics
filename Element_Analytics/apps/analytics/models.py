@@ -8,7 +8,7 @@ from django.urls import reverse
 class Matrix(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     log = models.ForeignKey(LogFile, on_delete=models.CASCADE)
-    regex_history = models.CharField()
+    regex_history = models.CharField(max_length=1000)
     path = models.FilePathField()
 
     def get_absolute_url(self):
