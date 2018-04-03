@@ -19,12 +19,9 @@ import seaborn as sb
 import libs.parser.logparser as parser
 import libs.parser.logfields as lf
 import itertools, functools
-current_file = None
-current_file_name = None
-current_frame = None
-headers = None
-temp_dir = None
-path = None
+
+frame = None
+frame_path = None
 MAX_TEMP_FIG = 5
 
 def  file_parser(file_path):
@@ -79,8 +76,8 @@ def ParserFormView(request):
                     processed = parse_by_regex(log_path, regex_history)
 
                     # save mat file
-                    parser.to_csv(processed, path)
-                    mat = Matrix(user, log, regex_history, path)
+                    parser.to_csv(processed, save_path)
+                    mat = Matrix(user, log, regex_history, save_path)
                     mat.save()
 
                     return redirect(mat)
@@ -117,6 +114,7 @@ def MainView(request, log, mat):
 
     return render(request, 'analytics/file_home.djt', {'name':mat, 'frame':frame,
                                                         'headers':headers})
+
 
 def variable_plot(request, file_name):
     header = headers[1]
