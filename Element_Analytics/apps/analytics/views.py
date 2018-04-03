@@ -10,6 +10,7 @@ from ..upload.models import LogFile
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
+import libs.parser.logfields as fields
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from apps.upload.models import User
@@ -70,22 +71,22 @@ def ParserFormView(request):
             save_path = get_user_log_dir(user.username, log.log_name, mat_name)
             log_path = log.get_filepath()
 
-            # if 'regexform' in request.POST:
-            #     regexform = ParserRegexForm(request.POST, prefix='regex')
-            #     if regexform.is_valid():
-            #         # parse the log by regex
-            #         regex_history = regexform.cleaned_data['regex']
-            #         processed = parse_by_regex(log_path, regex_history)
-            #
-            #         # save mat file
-            #         parser.to_csv(processed, path)
-            #         mat = Matrix(user, log, regex_history, path)
-            #         mat.save()
-            #
-            #         return redirect(mat)
+            if 'regexform' in request.POST:
+                regexform = ParserRegexForm(request.POST, prefix='regex')
+                if regexform.is_valid():
+                    # parse the log by regex
+                    regex_history = regexform.cleaned_data['regex']
+                    processed = parse_by_regex(log_path, regex_history)
+
+                    # save mat file
+                    parser.to_csv(processed, path)
+                    mat = Matrix(user, log, regex_history, path)
+                    mat.save()
+
+                    return redirect(mat)
 
             regex_history = logtomatform.cleaned_data['parser_name']
-            processed = parser.parse_file(log_path)
+            processed = parser.parse_file_parallel(log_path)
 
             # save mat file
             parser.to_csv(processed, save_path)
@@ -96,35 +97,25 @@ def ParserFormView(request):
 
     else:
         logtomatform = LogToMatForm()
-        # regexform = ParserRegexForm()
+        regexform = ParserRegexForm()
         # parserform = ParserNameForm()
         logtomatform.fields['log'].queryset = LogFile.objects.filter(user=user)
         log_list = LogFile.objects.filter(user=user)
         mat_list = Matrix.objects.filter(user=user)
         return render(request, 'analytics/parser.djt',
-                      context={'logtomatform': logtomatform,
+                      context={'logtomatform': logtomatform, 'regexform': regexform,
                              'log_list': log_list, 'mat_list': mat_list})
 
 
 def MainView(request, log, mat):
-    return HttpResponse("hello there")
-
-
-def file_home(request, file_name):
     print("Why am I here?")
-    global current_file, current_frame, current_file_name, headers, temp_dir, path
-    current_file_name = file_name
-    path = os.path.join(MEDIA_URL, 'documents/'+file_name)
-    temp_dir = os.path.join(MEDIA_URL, 'temp/'+file_name+'/')
-    if not os.path.exists(temp_dir):
-        os.makedirs(temp_dir)
-    if not path.endswith(('.csv', '.log')):
-        return HttpResponse("incorrect format")
-    current_file = path
-    current_frame = pd.read_csv(path)
-    headers = list(current_frame)
+    global frame, frame_path
+    frame_path = Matrix.objects.get(username=request.user.username, log_name=log, mat_name=mat).path
+    headers = [fields.DATE, fields.NAME, fields.TYPE, fields.INFO, fields.MSSG]
+    frame = pd.read_csv(frame_path, header=headers)
 
-    return render(request, 'analytics/file_home.djt', {'name':file_name, 'frame':current_frame,
+
+    return render(request, 'analytics/file_home.djt', {'name':mat, 'frame':frame,
                                                         'headers':headers})
 
 def variable_plot(request, file_name):

@@ -4,6 +4,8 @@
         <form action="{% url "analytics:parser" %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ logtomatform.as_p }}
+            <p>Or write your own regex :</p>
+            {{ regexform.as_p }}
             <input type="submit" value="Use parser"/>
         </form>
     </div>
@@ -14,14 +16,14 @@
         <p>Or continue from created file:</p>
         <l>
             {% for log in log_list %}
-                <p>{{ log.log_name }}</p>
-
+                <li>{{ log.log_name }}</li>
+                <l>
                 {% for mat in mat_list %}
                     {% if mat.log_id == log.id %}
                         <li>{{ mat.mat_name }}</li>
                     {% endif %}
                 {% endfor %}
-
+                <l>
             {% endfor %}
         </l>
     </div>
