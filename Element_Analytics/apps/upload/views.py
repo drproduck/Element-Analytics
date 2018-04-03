@@ -42,13 +42,11 @@ def model_form_upload(request):
         form = LogFileForm()
         user = request.user
         username = user.username
-        path = MEDIA_URL+'document/'+username+'/'
-        print(path)
+        path = MEDIA_URL+'document/'
+        #print(path)
         if not os.path.exists(path):
             os.makedirs(path)
         file_list = [f for f in os.listdir(path)]
-        for f in file_list:
-            print(f)
+        #for f in file_list:
+            #print(f)
         return render(request, 'upload/model_form_upload.html', {'form': form, 'file_list': file_list})
-
-

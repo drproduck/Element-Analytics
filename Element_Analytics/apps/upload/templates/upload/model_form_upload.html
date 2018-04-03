@@ -29,10 +29,11 @@
   {% endblock %}
 
    {% block section2 %}
-      <div class="container">
-        {% for file in file_list %}
+       <p>Your files are here:</p>
+       {% for file in file_list %}
+       {% if file != ".DS_Store" %}
         <p><a href="{% url 'analytics:file_home' file %}">{{ file }}</a></p>
-        {% endfor %}
-      </div>
+       {% endif %}
+       {% endfor %}
     {% endblock %}
 </html>

@@ -10,4 +10,13 @@
 <h1>Howdy, {{ user.username}}</h1>
 {% endblock %}
 
+{% block section2 %}
+     <p>Your files are here:</p>
+     {% for file in file_list %}
+     {% if file != ".DS_Store" %}
+      <p><a href="{% url 'analytics:file_home' file %}">{{ file }}</a></p>
+     {% endif %}
+     {% endfor %}
+ {% endblock %}
+
 </html>
