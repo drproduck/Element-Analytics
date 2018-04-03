@@ -35,9 +35,17 @@ def build_file_list(user_log_dir):
     return [(f, os.path.join(user_log_dir, f)) for f in os.listdir(user_log_dir) if not f.endswith('.raw')
             or f.endswith('.csv')]
 
+from apps.analytics.forms import ParserForm
 def parser_box(request):
     if request.method == 'POST':
-        
+        parser_form = ParserForm(request.POST['parser_command'])
+        if parser_form.is_valid():
+            print('OK')
+    else:
+        parser_form = ParserForm()
+        return render()
+
+
 
 def summary_page(user_log_dir):
 
