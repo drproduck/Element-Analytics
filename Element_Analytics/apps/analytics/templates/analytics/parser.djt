@@ -8,3 +8,21 @@
         </form>
     </div>
 {% endblock %}
+
+{% block section2 %}
+    <div class="container">
+        <p>Or continue from created file:</p>
+        <l>
+            {% for log in log_list %}
+                <p>{{ log.log_name }}</p>
+
+                {% for mat in mat_list %}
+                    {% if mat.log_id == log.id %}
+                        <li>{{ mat.mat_name }}</li>
+                    {% endif %}
+                {% endfor %}
+
+            {% endfor %}
+        </l>
+    </div>
+{% endblock %}

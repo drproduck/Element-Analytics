@@ -99,10 +99,11 @@ def ParserFormView(request):
         # regexform = ParserRegexForm()
         # parserform = ParserNameForm()
         logtomatform.fields['log'].queryset = LogFile.objects.filter(user=user)
-        log_list = LogFile.objects.all()
+        log_list = LogFile.objects.filter(user=user)
+        mat_list = Matrix.objects.filter(user=user)
         return render(request, 'analytics/parser.djt',
                       context={'logtomatform': logtomatform,
-                             'log_list': log_list})
+                             'log_list': log_list, 'mat_list': mat_list})
 
 
 def MainView(request, log, mat):
