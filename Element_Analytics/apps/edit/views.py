@@ -12,4 +12,4 @@ def edit_profile(request):
     else:
         form = UserChangeForm(instance=request.user)
     args = {'form': form}
-    return render(request,'edit/edit.html', args)
+    return render(request,'edit/edit.djt', args)

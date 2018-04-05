@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-{% extends "userbase.html" %}
+{% extends "userbase.djt" %}
 
 {% block title %}
 <title>Edit</title>
