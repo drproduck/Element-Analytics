@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'apps.userprof',
     'apps.edit',
     'apps.dashboard',
+    'apps.password',
 
 ]
 
