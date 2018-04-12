@@ -22,6 +22,7 @@
 {% endblock %}
 
 {% block section3 %}
+<p><a href="/edit/password">Change Password</a></p>
 <a href="/edit">Edit User Information</a>
 {% endblock %}
 
