@@ -40,6 +40,8 @@ urlpatterns = [
 
     path('edit/', include('apps.edit.urls')),
 
+    path('password/', include('apps.password.urls')),
+
     path('dashboard/', include('apps.dashboard.urls')),
 
 ]
