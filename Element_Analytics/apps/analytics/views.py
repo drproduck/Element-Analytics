@@ -28,7 +28,7 @@ def  file_parser(file_path):
     parsed_file = parser.parse_file_parallel(file_path)
     parser.to_csv(parsed_file)
 
-COMMON_ERROR_REGEX  = 'exception|warn|error|fail|unauthorized|timeout|refused|NoSuchPageException|[^0-9]404[^0-9]|[^0-9]401[^0-9]|[^0-9]505[^0-9]'
+COMMON_ERROR_REGEX  = '(exception|warn|error|fail|unauthorized|timeout|refused|NoSuchPageException|[^0-9]404[^0-9]|[^0-9]401[^0-9]|[^0-9]505[^0-9])'
 
 def make_error_regex(list, append_common=True):
     agg_terms = functools.reduce(lambda x,y: x+'|'+y, list)
@@ -89,7 +89,6 @@ def ParserFormView(request):
             parser.to_csv(processed, save_path)
             mat = Matrix(user=user, log=log, regex_history=regex_history, path=save_path, mat_name=mat_name)
             mat.save()
-            print('Im here')
             return redirect(mat)
 
     else:
@@ -112,8 +111,23 @@ def MainView(request, log, mat):
     frame = pd.read_csv(frame_path, header=headers)
 
 
+
     return render(request, 'analytics/file_home.djt', {'name':mat, 'frame':frame,
                                                         'headers':headers})
+
+def make_error_col():
+    if frame is None: raise Exception('Not good')
+    err_col = frame[fields.MSSG].str.extract(COMMON_ERROR_REGEX)
+    has_regex = not pd.isna()
+    return err_col, has_regex
+
+def make_hist_plot(col):
+    assert type(col) is pd.Series
+    return render ()
+
+def make_frame(matrix_dir):
+
+    f = pd.read_csv(matrix_dir)
 
 
 def variable_plot(request, file_name):
