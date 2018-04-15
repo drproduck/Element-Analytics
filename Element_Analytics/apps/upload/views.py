@@ -53,7 +53,4 @@ def model_form_upload(request):
         if not os.path.exists(user_dir):
             raise Http404('Path does not exist. Has the admin migrated new changes to database?')
 
-        file_list = [f for f in os.listdir(user_dir) if not f.endswith('_dir')]
-        #for f in file_list:
-            #print(f)
-        return render(request, 'upload/model_form_upload.djt', {'form': form, 'file_list': file_list})
+        return render(request, 'upload/model_form_upload.djt', {'form': form, 'user': current_user})

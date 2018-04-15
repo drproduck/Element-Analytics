@@ -3,6 +3,13 @@
     <div class="select2-container">
         <form action="{% url "analytics:parser" %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
+            {% if logtomatform.errors %}
+                {% for error in logtomatform.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
             {{ logtomatform.as_p }}
             <p>Or write your own regex :</p>
             {{ regexform.as_p }}
@@ -10,20 +17,26 @@
         </form>
     </div>
 {% endblock %}
-
+<head>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
 {% block section2 %}
     <div class="container">
         <p>Or continue from created file:</p>
         <l>
             {% for log in log_list %}
                 <li>{{ log.log_name }}</li>
-                <l>
-                {% for mat in mat_list %}
-                    {% if mat.log_id == log.id %}
-                        <li>{{ mat.mat_name }}</li>
-                    {% endif %}
-                {% endfor %}
-                <l>
+                <table style="width: 100%;">
+                    {% for mat in log.matrix_set.all %}
+                        <tr>
+                        <td>{{ mat.mat_name }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
             {% endfor %}
         </l>
     </div>

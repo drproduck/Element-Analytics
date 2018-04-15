@@ -19,4 +19,4 @@ def main(request):
     file_list = [f for f in os.listdir(path) if not f.endswith('_dir')]
     #for f in file_list:
         #print(f)
-    return render(request, template_name='dashboard/main.djt', context={'user': user, 'file_list': file_list})
+    return render(request, template_name='dashboard/main.djt', context={'user': user})

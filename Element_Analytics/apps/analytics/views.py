@@ -58,6 +58,15 @@ def get_user_log_dir(user, log, mat_name):
 
 def ParserFormView(request):
 
+    def get_context():
+        logtomatform = LogToMatForm()
+        regexform = ParserRegexForm()
+        # parserform = ParserNameForm()
+        logtomatform.fields['log'].queryset = LogFile.objects.filter(user=user)
+        log_list = LogFile.objects.filter(user=user)
+        mat_list = Matrix.objects.filter(user=user)
+        return {'logtomatform': logtomatform, 'regexform': regexform,
+                               'log_list': log_list, 'mat_list': mat_list}
     user = User.objects.get(pk=request.user.id)
     if request.method == 'POST':
 
@@ -91,23 +100,25 @@ def ParserFormView(request):
             mat = Matrix(user=user, log=log, regex_history=regex_history, path=save_path, mat_name=mat_name)
             mat.save()
             return redirect(mat)
+        else:
+            print('Im here')
+
+            context = get_context()
+
+        return render(request, 'analytics/parser.djt',
+                      context=context)
 
     else:
-        logtomatform = LogToMatForm()
-        regexform = ParserRegexForm()
-        # parserform = ParserNameForm()
-        logtomatform.fields['log'].queryset = LogFile.objects.filter(user=user)
-        log_list = LogFile.objects.filter(user=user)
-        mat_list = Matrix.objects.filter(user=user)
+        context = get_context()
         return render(request, 'analytics/parser.djt',
-                      context={'logtomatform': logtomatform, 'regexform': regexform,
-                             'log_list': log_list, 'mat_list': mat_list})
+                      context=context)
 
 
 def MainView(request, log, mat):
     print("Why am I here?")
     global frame, frame_path
-    frame_path = Matrix.objects.get(username=request.user, log_name=log, mat_name=mat).path
+    matrix = Matrix.objects.get(user=request.user, mat_name=mat)
+    frame_path = matrix.path
     headers = [fields.DATE, fields.NAME, fields.TYPE, fields.INFO, fields.MSSG]
     frame = pd.read_csv(frame_path, header=headers)
     error_col = make_error_col()

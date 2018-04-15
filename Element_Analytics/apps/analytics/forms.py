@@ -1,5 +1,6 @@
 from django import forms
 from ..upload.models import LogFile
+from .models import Matrix
 
 class SubModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, logfile):
@@ -11,6 +12,13 @@ class LogToMatForm(forms.Form):
     mat_name = forms.CharField(max_length=500, label='Name of resulting csv file')
     PARSER_CHOICES = (('5felds', 'DATE NAME TYPE INFO MSSG'),)
     parser_name = forms.ChoiceField(choices=PARSER_CHOICES)
+
+    def clean_mat_name(self):
+        mat_name = self.cleaned_data['mat_name']
+        some_mat = Matrix.objects.filter(mat_name=mat_name)
+        if len(some_mat) > 0:
+            raise forms.ValidationError("A matrix with this name already exists")
+        return mat_name
 
 class ParserRegexForm(forms.Form):
 

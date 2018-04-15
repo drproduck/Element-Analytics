@@ -3,21 +3,22 @@
 {% extends "userbase.djt" %}
 
 {% block title %}
-<title>Dashboard</title>
+    <title>Dashboard</title>
 {% endblock %}
 
 {% block section1 %}
-<h1>Howdy, {{ user.username}}</h1>
+    <h1>Howdy, {{ user.username }}</h1>
 {% endblock %}
 
 {% block section2 %}
-     <p>Your files are here:</p>
-     {% for log in user.logfile_set.all %}
-     {% if log != ".DS_Store" %}
-       {# <p><a href="{% url 'analytics:file_home' file %}">{{ file }}</a></p> #}
-      <p><a href="{{ log.file }}">{{ log.log_name }}</a></p>
-     {% endif %}
-     {% endfor %}
- {% endblock %}
+    {% if user.logfile_set.all %}
+        <p>Your files are here:</p>
+        {% for log in user.logfile_set.all %}
+            <p><a href="{{ log.file }}">{{ log.log_name }}</a></p>
+        {% endfor %}
+    {% else %}
+        <p>You currently have no uploaded files</p>
+    {% endif %}
+{% endblock %}
 
 </html>

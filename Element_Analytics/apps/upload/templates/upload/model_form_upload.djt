@@ -27,13 +27,15 @@
         }
     </script>
   {% endblock %}
+{% block section2 %}
+    {% if user.logfile_set.all %}
+        <p>Your files are here:</p>
+        {% for log in user.logfile_set.all %}
+            <p><a href="{% url "analytics:parser" %}">{{ log.log_name }}</a></p>
+        {% endfor %}
+    {% else %}
+        <p>You currently have no uploaded files</p>
+    {% endif %}
+{% endblock %}
 
-   {% block section2 %}
-       <p>Your files are here:</p>
-       {% for file in file_list %}
-       {% if file != ".DS_Store" %}
-        <p><a href="{% url "analytics:parser"%}">{{ file }}</a></p>
-       {% endif %}
-       {% endfor %}
-    {% endblock %}
 </html>
