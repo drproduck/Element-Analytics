@@ -27,7 +27,9 @@ def model_form_upload(request):
             alias = pt.filename_no_ext(request.FILES['file'].name)
 
         # Ignore if log name is duplicate in either database or file system. Need frontend handling!
-        duplicate_log_db = LogFile.objects.filter(log_name=alias)
+        # this is wrong. It considers all logs regardless of current user, we only want all logs belong to this user
+        # duplicate_log_db = LogFile.objects.filter(log_name=alias)
+        duplicate_log_db = current_user.logfile_set.filter(log_name=alias)
         duplicate_log_fs = os.path.exists(pt.get_log_dir_abs(current_user.username, alias))
         if duplicate_log_db or duplicate_log_fs:
             print("This log name already exists")
