@@ -30,3 +30,4 @@ class LogFile(models.Model):
     log_name = models.CharField(max_length=255, blank=True)
     file = models.FileField(upload_to=get_store_path)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+

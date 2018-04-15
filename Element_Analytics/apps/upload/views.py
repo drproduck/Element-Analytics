@@ -7,6 +7,7 @@ from django.http import Http404
 import os
 
 import libs.utilities.pathtools as pt
+import libs.utilities.dbutils as du
 
 
 @login_required
@@ -15,7 +16,19 @@ def model_form_upload(request):
 
     current_user = User.objects.get(pk=request.user.id)
 
-    # Do this if the file is uploaded
+    # upload file
+    _upload_file(request, current_user)
+
+    # Sync log database with file system
+    du.sync_logdb(current_user)
+
+    # Response
+    form = LogFileForm()
+    return render(request, 'upload/model_form_upload.djt', {'form': form, 'user': current_user})
+
+
+def _upload_file(request, current_user):
+    """Do this if the file is uploaded"""
     while request.method == 'POST':
         form = LogFileForm(request.POST, request.FILES)
         if not form.is_valid():
@@ -27,20 +40,12 @@ def model_form_upload(request):
             alias = pt.filename_no_ext(request.FILES['file'].name)
 
         # Ignore if log name is duplicate in either database or file system. Need frontend handling!
-        # this is wrong. It considers all logs regardless of current user, we only want all logs belong to this user
-        # duplicate_log_db = LogFile.objects.filter(log_name=alias)
-        duplicate_log_db = current_user.logfile_set.filter(log_name=alias)
-        duplicate_log_fs = os.path.exists(pt.get_log_dir_abs(current_user.username, alias))
-        if duplicate_log_db or duplicate_log_fs:
-            print("This log name already exists")
+        if du.check_duplicate(current_user, alias):
+            print("Invalid name. A log file with that name is existing in the file system")
             break
 
         # Create new log object in the database
         log = LogFile.objects.create(log_name=alias, file=request.FILES['file'], user=current_user)
         log.save()
         break
-
-    # Do this if the page is initially loaded
-    form = LogFileForm()
-    return render(request, 'upload/model_form_upload.djt', {'form': form, 'user': current_user})
 
