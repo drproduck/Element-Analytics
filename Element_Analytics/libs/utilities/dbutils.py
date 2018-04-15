@@ -48,8 +48,10 @@ def delete_user(name):
 
 def delete_log(username, logname):
     """Delete a log of a particular user in the database"""
+    # Delete log in the database
     LogFile.objects.filter(log_name=logname).delete()
 
+    # Delete log in file system
     log_dir = pt.get_log_dir_abs(username, logname)
     if not log_dir:
         return

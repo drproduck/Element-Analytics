@@ -16,11 +16,11 @@ def model_form_upload(request):
 
     current_user = User.objects.get(pk=request.user.id)
 
-    # upload file
-    _upload_file(request, current_user)
-
     # Sync log database with file system
     du.sync_logdb(current_user)
+
+    # upload file
+    _upload_file(request, current_user)
 
     # Response
     form = LogFileForm()
