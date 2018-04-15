@@ -30,8 +30,6 @@ LOGIN_REDIRECT_URL = 'dashboard:main'
 #Redirect if user not logged in
 LOGIN_URL = 'login:login'
 
-#template dir usable from any apps
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 

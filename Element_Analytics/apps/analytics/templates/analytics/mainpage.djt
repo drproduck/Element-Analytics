@@ -4,4 +4,8 @@
 {% block section1 %}
 <p>Hello there</p>
 {% endblock %}
+{% block section2 %}
+    {% load static %}
+    <img src="{% static "{{ plot_name }}" %}" alt="My image"/>
+{% endblock %}
 </html>

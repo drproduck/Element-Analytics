@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import  login_required
-from Element_Analytics.settings import MEDIA_URL
+from Element_Analytics.settings import DOCUMENT_ROOT
 from apps.upload.forms import LogFileForm
 from apps.upload.models import LogFile
-from django.contrib.auth.models import User
+from .models import User
+from django.http import Http404
 
 import os
 
@@ -30,27 +31,29 @@ def simple_upload(request):
 
 @login_required
 def model_form_upload(request):
-    user = request.user
-    username = user.username
-    path = os.path.join(MEDIA_URL, 'document', username)
+    """Let user upload file through form"""
+    current_user = User.objects.get(pk=request.user.id)
+    user_name = current_user.username
+    user_dir = os.path.join(DOCUMENT_ROOT, user_name)
     if request.method == 'POST':
         form = LogFileForm(request.POST, request.FILES)
         if form.is_valid():
             # print(request.user.id)
-            log = LogFile.objects.create(log_name=request.POST['log_name'],
-                                   file=request.FILES['file'], user=User.objects.get(pk=request.user.id))
-            log.save()
             #  log dir is used for storing csv file associated with this log file
-            log_dir = os.path.join(path, log.log_name+'_dir')
+            log_dir = os.path.join(user_dir, form.cleaned_data['log_name']+'_dir')
+            log = LogFile.objects.create(log_name=form.cleaned_data['log_name'],
+                                   file=request.FILES['file'], user=current_user,
+                                         log_dir=log_dir)
+            log.save()
             if not os.path.exists(log_dir):
                 os.mkdir(log_dir)
             return redirect('/upload')
     else:
         form = LogFileForm()
-        #print(path)
-        if not os.path.exists(path):
-            os.makedirs(path)
-        file_list = [f for f in os.listdir(path) if not f.endswith('_dir')]
+        if not os.path.exists(user_dir):
+            raise Http404('Path does not exist. Has the admin migrated new changes to database?')
+
+        file_list = [f for f in os.listdir(user_dir) if not f.endswith('_dir')]
         #for f in file_list:
             #print(f)
         return render(request, 'upload/model_form_upload.djt', {'form': form, 'file_list': file_list})

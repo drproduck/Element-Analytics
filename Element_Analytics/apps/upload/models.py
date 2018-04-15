@@ -27,7 +27,10 @@ import os
 #         fields = ['user_name', 'dob', 'email', ]
 
 # class User(models.Model):
+#     """extension of auth.user that includes user directory """
 #     user = models.OneToOneField(DefaultUser, on_delete=models.CASCADE)
+#     # user_dir follows the pattern: asset/document/user_name/
+#     user_dir = models.CharField(max_length=200)
 
 
 from Element_Analytics.settings import MEDIA_URL
@@ -49,3 +52,5 @@ class LogFile(models.Model):
     log_name = models.CharField(max_length=255, blank=True)
     file = models.FileField(upload_to=get_store_path)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    log_dir = models.CharField(max_length=200)

@@ -4,15 +4,13 @@ from Element_Analytics.settings import MEDIA_URL
 from django.views.generic import FormView
 from .forms import ParserRegexForm, LogToMatForm, ParserNameForm
 from .models import Matrix
-from Element_Analytics.settings import DOCUMENT_ROOT
+from Element_Analytics.settings import DOCUMENT_ROOT, BASE_DIR
 from ..upload.models import LogFile
 
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import libs.parser.logfields as fields
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
 from apps.upload.models import User
 import seaborn as sb
 # import ray.dataframe as pdr
@@ -20,6 +18,9 @@ import libs.parser.logparser as parser
 import libs.parser.logfields as lf
 import itertools, functools
 
+import datetime
+
+STATIC_DIR = os.path.join(BASE_DIR, 'apps/analytics/static/analytics/')
 frame = None
 frame_path = None
 MAX_TEMP_FIG = 5
@@ -106,14 +107,14 @@ def ParserFormView(request):
 def MainView(request, log, mat):
     print("Why am I here?")
     global frame, frame_path
-    frame_path = Matrix.objects.get(username=request.user.username, log_name=log, mat_name=mat).path
+    frame_path = Matrix.objects.get(username=request.user, log_name=log, mat_name=mat).path
     headers = [fields.DATE, fields.NAME, fields.TYPE, fields.INFO, fields.MSSG]
     frame = pd.read_csv(frame_path, header=headers)
+    error_col = make_error_col()
+    plot_name = make_error_plot(error_col)
 
-
-
-    return render(request, 'analytics/file_home.djt', {'name':mat, 'frame':frame,
-                                                        'headers':headers})
+    return render(request, 'analytics/file_home.djt', {'name':mat, 'frame':frame, 'headers':headers,
+                                                       'plot_name': plot_name})
 
 def make_error_col():
     if frame is None: raise Exception('Not good')
@@ -121,13 +122,18 @@ def make_error_col():
     has_regex = not pd.isna()
     return err_col, has_regex
 
-def make_hist_plot(col):
+def make_error_plot(col, kind='bar'):
+    # date = date_string = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M");
+    plot_name = col.name+'_'+kind+'.png'
+    if os.path.exists(os.path.join(STATIC_DIR, plot_name)):
+        return
     assert type(col) is pd.Series
-    return render ()
+    plot = col.value_counts.plot(kind=kind)
+    fig = plot.get_figure()
+    plt.savefig(plot_name, transparent=True, bbox_inches='tight')
+    plt.close(fig)
+    return plot_name
 
-def make_frame(matrix_dir):
-
-    f = pd.read_csv(matrix_dir)
 
 
 def variable_plot(request, file_name):
