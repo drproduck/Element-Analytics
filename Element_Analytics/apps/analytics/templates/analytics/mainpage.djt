@@ -6,6 +6,7 @@
 {% endblock %}
 {% block section2 %}
     {% load static %}
-    <img src="{% static "{{ plot_name }}" %}" alt="My image"/>
+    <img src="{% static "analytics/"|add:plot_name %}" alt="My image"/>
+    <p>{{ plot_name }}</p>
 {% endblock %}
 </html>

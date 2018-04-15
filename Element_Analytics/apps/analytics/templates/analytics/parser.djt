@@ -33,7 +33,7 @@
                 <table style="width: 100%;">
                     {% for mat in log.matrix_set.all %}
                         <tr>
-                        <td>{{ mat.mat_name }}</td>
+                        <td><a href="{{ mat.get_absolute_url }}">{{ mat.mat_name }}</a></td>
                         </tr>
                     {% endfor %}
                 </table>
