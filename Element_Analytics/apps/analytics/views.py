@@ -6,6 +6,7 @@ from .forms import ParserRegexForm, LogToMatForm, ParserNameForm
 from .models import Matrix
 from Element_Analytics.settings import DOCUMENT_ROOT, BASE_DIR
 from ..upload.models import LogFile
+from django import forms
 
 import os
 import numpy as np
@@ -114,9 +115,9 @@ def ParserFormView(request):
         return render(request, 'analytics/parser.djt',
                       context=context)
 
-
 def MainView(request, log, mat):
-    print("Why am I here?")
+    if request.POST:
+        chosen_column = request.POST['header choice']
     global frame, frame_path
     matrix = Matrix.objects.get(user=request.user, mat_name=mat)
     frame_path = matrix.path
