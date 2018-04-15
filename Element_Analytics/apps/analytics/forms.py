@@ -10,7 +10,7 @@ class LogToMatForm(forms.Form):
 
     log = SubModelChoiceField(queryset=LogFile.objects.all(), label='Name of log file')
     mat_name = forms.CharField(max_length=500, label='Name of resulting csv file')
-    PARSER_CHOICES = (('5felds', 'DATE NAME TYPE INFO MSSG'),)
+    PARSER_CHOICES = (('5fields', 'DATE NAME TYPE INFO MSSG'), ('asis', 'original file is csv parsable'))
     parser_name = forms.ChoiceField(choices=PARSER_CHOICES)
 
     def clean_mat_name(self):

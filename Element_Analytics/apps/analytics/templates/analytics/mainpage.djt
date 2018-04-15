@@ -5,7 +5,16 @@
 <p>Hello there</p>
 {% endblock %}
 {% block section2 %}
+    <form method="post" name="header choice" action="mainpage.djt">
+            <select>
+                {% for choice in headers %}
+                <option value="{{ choice }}">{{ choice }}</option>
+                {% endfor %}
+            </select>
+    <input type="submit" alt="plot">
+    </form>
     {% load static %}
-    <img src="{% static "{{ plot_name }}" %}" alt="My image"/>
+    <img src="{% static "analytics/"|add:plot_name %}" alt="My image"/>
+    <p>{{ plot_name }}</p>
 {% endblock %}
 </html>

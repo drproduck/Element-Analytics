@@ -6,8 +6,10 @@ from .forms import ParserRegexForm, LogToMatForm, ParserNameForm
 from .models import Matrix
 from Element_Analytics.settings import DOCUMENT_ROOT, BASE_DIR
 from ..upload.models import LogFile
+from django import forms
 
 import os
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import libs.parser.logfields as fields
@@ -123,37 +125,40 @@ def ParserFormView(request):
 
 
 def MainView(request, log, mat):
-    print("Why am I here?")
+    if request.POST:
+        chosen_column = request.POST['header choice']
     global frame, frame_path
     matrix = Matrix.objects.get(user=request.user, mat_name=mat)
     frame_path = matrix.path
     headers = [fields.DATE, fields.NAME, fields.TYPE, fields.INFO, fields.MSSG]
-    frame = pd.read_csv(frame_path, header=headers)
-    error_col = make_error_col()
-    plot_name = make_error_plot(error_col)
+    frame = pd.read_csv(frame_path, names=headers)
+    error_col = make_error_col(frame[fields.MSSG])
+    img_path, plot_name = make_plot(error_col)
+    print(img_path)
 
-    return render(request, 'analytics/file_home.djt', {'name':mat, 'frame':frame, 'headers':headers,
+    return render(request, 'analytics/mainpage.djt', {'name':mat, 'frame':frame, 'headers':headers,
                                                        'plot_name': plot_name})
 
 
-def make_error_col():
+def make_error_col(df):
     if frame is None: raise Exception('Not good')
-    err_col = frame[fields.MSSG].str.extract(COMMON_ERROR_REGEX)
-    has_regex = not pd.isna()
-    return err_col, has_regex
+    err_col = df.str.extract(COMMON_ERROR_REGEX, expand=False)
+    err_col = err_col.replace(np.nan, 'no error')
+    return err_col
 
 
-def make_error_plot(col, kind='bar'):
+def make_plot(col, kind='bar'):
     # date = date_string = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M");
     plot_name = col.name+'_'+kind+'.png'
-    if os.path.exists(os.path.join(STATIC_DIR, plot_name)):
-        return
+    img_path = os.path.join(STATIC_DIR, plot_name)
+    if os.path.exists(img_path):
+        return img_path, plot_name
     assert type(col) is pd.Series
-    plot = col.value_counts.plot(kind=kind)
+    plot = col.value_counts(dropna=False).plot(kind=kind)
     fig = plot.get_figure()
-    plt.savefig(plot_name, transparent=True, bbox_inches='tight')
+    plt.savefig(img_path, transparent=True, bbox_inches='tight')
     plt.close(fig)
-    return plot_name
+    return img_path, plot_name
 
 
 def variable_plot(request, file_name):
