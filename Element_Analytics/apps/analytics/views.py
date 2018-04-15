@@ -25,20 +25,25 @@ frame = None
 frame_path = None
 MAX_TEMP_FIG = 5
 
-def  file_parser(file_path):
+
+def file_parser(file_path):
     parsed_file = parser.parse_file_parallel(file_path)
     parser.to_csv(parsed_file)
 
+
 COMMON_ERROR_REGEX  = '(exception|warn|error|fail|unauthorized|timeout|refused|NoSuchPageException|[^0-9]404[^0-9]|[^0-9]401[^0-9]|[^0-9]505[^0-9])'
+
 
 def make_error_regex(list, append_common=True):
     agg_terms = functools.reduce(lambda x,y: x+'|'+y, list)
     return agg_terms if not append_common else COMMON_ERROR_REGEX+'|'+agg_terms
 
+
 def build_file_list(user_log_dir):
     """return a list of tuples each containing the file name and its path"""
     return [(f, os.path.join(user_log_dir, f)) for f in os.listdir(user_log_dir) if not f.endswith('.raw')
             or f.endswith('.csv')]
+
 
 def parser_box(request):
     if request.method == 'POST':
@@ -49,12 +54,15 @@ def parser_box(request):
         parser_form = ParserRegexForm()
         return render()
 
+
 def parse_by_regex(path, regex):
     ""
+
 
 def get_user_log_dir(user, log, mat_name):
     """root -> user dir -> log dir -> bunch of .csv and a single .raw"""
     return os.path.join(DOCUMENT_ROOT, user, log+'_dir', mat_name+'.csv')
+
 
 def ParserFormView(request):
 
@@ -127,11 +135,13 @@ def MainView(request, log, mat):
     return render(request, 'analytics/file_home.djt', {'name':mat, 'frame':frame, 'headers':headers,
                                                        'plot_name': plot_name})
 
+
 def make_error_col():
     if frame is None: raise Exception('Not good')
     err_col = frame[fields.MSSG].str.extract(COMMON_ERROR_REGEX)
     has_regex = not pd.isna()
     return err_col, has_regex
+
 
 def make_error_plot(col, kind='bar'):
     # date = date_string = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M");
@@ -144,7 +154,6 @@ def make_error_plot(col, kind='bar'):
     plt.savefig(plot_name, transparent=True, bbox_inches='tight')
     plt.close(fig)
     return plot_name
-
 
 
 def variable_plot(request, file_name):

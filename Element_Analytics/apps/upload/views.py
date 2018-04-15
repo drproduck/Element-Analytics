@@ -1,56 +1,44 @@
 from django.shortcuts import render, redirect
-from django.conf import settings
-from django.core.files.storage import FileSystemStorage
-from django.contrib.auth.decorators import  login_required
-from Element_Analytics.settings import DOCUMENT_ROOT
+from django.contrib.auth.decorators import login_required
 from apps.upload.forms import LogFileForm
 from apps.upload.models import LogFile
 from .models import User
 from django.http import Http404
-
 import os
 
-'''
-def home(request):
-    documents = Document.objects.all()
-    return render(request, 'index/index.html', { 'documents': documents })
-'''
+import libs.utilities.pathtools as pt
 
-'''
-def simple_upload(request):
-    if request.method == 'POST' and request.FILES['myfile']:
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)
-        return render(request, 'upload/simple_upload.html', {
-            'uploaded_file_url': uploaded_file_url
-        })
-    return render(request, 'upload/simple_upload.html')
-'''
 
 @login_required
 def model_form_upload(request):
     """Let user upload file through form"""
-    current_user = User.objects.get(pk=request.user.id)
-    user_name = current_user.username
-    user_dir = os.path.join(DOCUMENT_ROOT, user_name)
-    if request.method == 'POST':
-        form = LogFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            # print(request.user.id)
-            #  log dir is used for storing csv file associated with this log file
-            log_dir = os.path.join(user_dir, form.cleaned_data['log_name']+'_dir')
-            log = LogFile.objects.create(log_name=form.cleaned_data['log_name'],
-                                   file=request.FILES['file'], user=current_user,
-                                         log_dir=log_dir)
-            log.save()
-            if not os.path.exists(log_dir):
-                os.mkdir(log_dir)
-            return redirect('/upload')
-    else:
-        form = LogFileForm()
-        if not os.path.exists(user_dir):
-            raise Http404('Path does not exist. Has the admin migrated new changes to database?')
 
-        return render(request, 'upload/model_form_upload.djt', {'form': form, 'user': current_user})
+    current_user = User.objects.get(pk=request.user.id)
+
+    # Do this if the file is uploaded
+    while request.method == 'POST':
+        form = LogFileForm(request.POST, request.FILES)
+        if not form.is_valid():
+            break
+
+        # If log name is not specified replace with the name of file
+        alias = form.cleaned_data['log_name']
+        if not alias:
+            alias = pt.filename_no_ext(request.FILES['file'].name)
+
+        # Ignore if log name is duplicate in either database or file system. Need frontend handling!
+        duplicate_log_db = LogFile.objects.filter(log_name=alias)
+        duplicate_log_fs = os.path.exists(pt.get_log_dir_abs(current_user.username, alias))
+        if duplicate_log_db or duplicate_log_fs:
+            print("This log name already exists")
+            break
+
+        # Create new log object in the database
+        log = LogFile.objects.create(log_name=alias, file=request.FILES['file'], user=current_user)
+        log.save()
+        break
+
+    # Do this if the page is initially loaded
+    form = LogFileForm()
+    return render(request, 'upload/model_form_upload.djt', {'form': form, 'user': current_user})
+

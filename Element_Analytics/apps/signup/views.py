@@ -8,6 +8,8 @@ from Element_Analytics.settings import DOCUMENT_ROOT
 from ..upload.models import User
 
 import os
+
+
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
