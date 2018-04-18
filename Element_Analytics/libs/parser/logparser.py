@@ -3,13 +3,13 @@ and return a condensed version of the logs with nonessential
 information removed. The return data structures can be either
 a list of entries or a dataframe supported by Pandas library"""
 
-from libs.parser.tokenizer import LogTokenizer
+from libs.parser.tokenizer import DefaultTokenizer
 import os.path
 import multiprocessing as mp
-import libs.parser.logfields as field
 import csv
 
-tokenizer = LogTokenizer().build()
+
+_tkn = DefaultTokenizer()
 
 
 def validate_path(path_to_file):
@@ -22,32 +22,15 @@ def validate_path(path_to_file):
         exit()
 
 
-def parse_line(line):
-    """parse a single line of log"""
-    if not line:
-        print("error: can't parse empty string")
-        exit()
-    tokens = {
-        field.DATE : None,
-        field.NAME : None,
-        field.TYPE : None,
-        field.INFO : None,
-        field.MSSG : None
-    }
-    tokenizer.input(line)
-    for tok in tokenizer:
-        tokens[tok.type] = tok.value
-    return tokens
-
-
 def parse_file(path_to_file):
+
     """parse a log file into a list of log entries in dictionaries"""
     validate_path(path_to_file)
     entries = []
     try:
         with open(path_to_file, 'r') as f:
             for l in f:
-                entries.append(parse_line(l))
+                entries.append(_tkn.parse_line(l))
     except IOError as e:
         print("Couldn't read file. Error: ", e)
         exit()
@@ -60,7 +43,7 @@ def worker_process(queue, l):
         item = queue.get()
         if item is None:
             break
-        l.append(parse_line(item))
+        l.append(_tkn.parse_line(item))
 
 
 def spawning_processes(q, l, n):
@@ -110,7 +93,6 @@ def parse_file_parallel(path_to_file):
 
     # Joining procs
     join_processes(queue, processes, NUM_PROC)
-
     return entries._getvalue()
 
 
