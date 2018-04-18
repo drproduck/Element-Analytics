@@ -44,19 +44,9 @@ class DefaultTokenizer:
         t_date = r"[A-Za-z]{3}\s[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]+"
         t_sv_name = r"[A-Za-z_]+\[[0-9]+\]"
         t_type = r"INFO|DEBUG|WARN|ERROR"
-
-        def t_metainfo(self,t):
-            r"\s+(\.)?(?P<content>[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+)"
-            if t.value:
-                t.value = t.lexer.lexmatch.group('content')
-            return t
-
-        def t_message(self,t):
-            r"((\s(:|–|-\s-|\*|-)\s)|(:\s[^\[0-9]))(?P<content>.+)"
-            if t.value:
-                t.value = t.lexer.lexmatch.group('content')
-            return t
-
+        t_metainfo = r"\s+(\.)?[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+"
+        t_message = r"((\s(:|–|-\s-|\*|-)\s)|(:\s[^\[0-9])).+"
+        
         def t_error(self,t):
             # print("Illegal character '%s'" % t.value[0])
             t.lexer.skip(1)

@@ -101,7 +101,6 @@ def to_csv(entries, file_out):
     be stored on file system and manipulated
     by pandas library"""
 
-    #entries = parse_file_parallel(file_in)
     if entries:
         with open(file_out, 'w') as f:
             w = csv.DictWriter(f, entries[0].keys())
