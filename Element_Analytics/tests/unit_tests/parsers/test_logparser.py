@@ -9,7 +9,7 @@ sys.path.append(str(p))
 ####
 
 import unittest
-from libs.parser.tokenizer import DefaultTokenizer
+from libs.parser.tokenizer import GenericTokenizer
 import libs.parser.logparser as parser
 import tests.unit_tests.parsers.golden as g
 
@@ -21,17 +21,12 @@ with open("./testlog", 'r') as f:
 class TestParser(unittest.TestCase):
 
     def test_parseline(self):
-        lexer = DefaultTokenizer()
+        lexer = GenericTokenizer()
         for i in range(0,len(g.golden) - 1):
             self.assertEqual(g.golden[i], lexer.parse_line(input[i]))
 
     def test_parsefile(self):
         self.assertEqual(g.golden, parser.parse_file("./testlog"))
-
-    def test_parsefile_threading(self):
-        res = parser.parse_file_parallel("./testlog")
-        for item in res:
-            self.assertIn(item, g.golden)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-import ply.lex as lex
+import re
 
 _DATE = 'date'
 _NAME = 'sv_name'
@@ -6,52 +6,27 @@ _TYPE = 'type'
 _INFO = 'metainfo'
 _MSSG = 'message'
 
+default_regex = {
+    _DATE : "[A-Za-z]{3}\s[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]+",
+    _NAME : "[A-Za-z_]+\[[0-9]+\]",
+    _TYPE : "INFO|DEBUG|WARN|ERROR",
+    _INFO : "\s+(\.)?[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+",
+    _MSSG : "((\s(:|–|-\s-|\*|-)\s)|(:\s[^\[0-9])).+"
+}
 
-class DefaultTokenizer:
 
-    def __init__(self):
-        self.tokenizer = self.__Lexer().build()
+class GenericTokenizer(object):
 
-    def parse_line(self,line):
-        """parse a single line of log"""
-        if not line:
-            print("error: can't parse empty string")
-            exit()
-        tokens = {
-            _DATE : None,
-            _NAME : None,
-            _TYPE : None,
-            _INFO : None,
-            _MSSG : None
-        }
-        self.tokenizer.input(line)
-        for tok in self.tokenizer:
-            tokens[tok.type] = tok.value
+    def __init__(self, regex_dict = default_regex):
+        self.field = regex_dict
+        for key in self.field:
+            self.field[key] = re.compile(self.field[key])
+
+    def parse_line(self, line):
+        """Tokenize a string"""
+        tokens = {}
+        for k in self.field:
+            regex = self.field[k]
+            match = regex.search(line)
+            tokens[k] = match.group(0) if match else ""
         return tokens
-
-    class __Lexer(object):
-        # List of token names.
-        tokens = (
-            _DATE,
-            _NAME,
-            _TYPE,
-            _INFO,
-            _MSSG
-        )
-
-        # Token regex and functions
-        # IMPORTANT: never change the names of these functions
-        t_date = r"[A-Za-z]{3}\s[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]+"
-        t_sv_name = r"[A-Za-z_]+\[[0-9]+\]"
-        t_type = r"INFO|DEBUG|WARN|ERROR"
-        t_metainfo = r"\s+(\.)?[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+"
-        t_message = r"((\s(:|–|-\s-|\*|-)\s)|(:\s[^\[0-9])).+"
-        
-        def t_error(self,t):
-            # print("Illegal character '%s'" % t.value[0])
-            t.lexer.skip(1)
-
-        def build(self):
-            self.lexer = lex.lex(module=self)
-            return self.lexer
-
