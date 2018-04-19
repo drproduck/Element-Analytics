@@ -1,5 +1,3 @@
-import unittest
-
 # Some hack to add project directoy to PYTHONPATH
 from pathlib import Path
 import os
@@ -10,8 +8,10 @@ while p.name != "Element_Analytics":
 sys.path.append(str(p))
 ####
 
+import unittest
+from libs.parser.tokenizer import GenericTokenizer
 import libs.parser.logparser as parser
-import Tests.unit_tests.parsers.golden as g
+import tests.unit_tests.parsers.golden as g
 
 
 with open("./testlog", 'r') as f:
@@ -21,16 +21,13 @@ with open("./testlog", 'r') as f:
 class TestParser(unittest.TestCase):
 
     def test_parseline(self):
+        lexer = GenericTokenizer()
         for i in range(0,len(g.golden) - 1):
-            self.assertEqual(g.golden[i], parser.parse_line(input[i]))
+            self.assertEqual(g.golden[i], lexer.parse_line(input[i]))
 
     def test_parsefile(self):
         self.assertEqual(g.golden, parser.parse_file("./testlog"))
 
-    def test_parsefile_threading(self):
-        res = parser.parse_file_parallel("./testlog")
-        for item in res:
-            self.assertIn(item, g.golden)
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,4 +1,3 @@
-import unittest
 # Some hack to add project directoy to PYTHONPATH
 from pathlib import Path
 import os
@@ -9,18 +8,22 @@ while p.name != "Element_Analytics":
 sys.path.append(str(p))
 ####
 
+import unittest
+import cProfile
 import time
 import libs.parser.logparser as parser
 
 
 class TestPerformance(unittest.TestCase):
+
+    # @unittest.skip
     def test_parser(self):
         filename = input("Filename: ")
         outfile = input("Output file: ")
 
         print("Processing...\n")
         start = time.time()
-        res = parser.parse_file_parallel(filename)
+        res = parser.parse_file(filename)
         elapsed_time = time.time() - start
         print("Process time: ", elapsed_time, "\n")
         self.assertLess(elapsed_time, 60)
@@ -33,6 +36,17 @@ class TestPerformance(unittest.TestCase):
         self.assertLess(elapsed_time, 30)
 
         print("# of log entries processed: ", len(res))
+
+    @unittest.skip
+    def test_parser_profiling(self):
+        filename = input("Filename: ")
+        outfile = input("Output file: ")
+        pr = cProfile.Profile()
+        pr.enable()
+        res = parser.parse_file(filename)
+        parser.to_csv(res, outfile)
+        pr.disable()
+        pr.print_stats(sort="calls")
 
 
 if __name__ == "__main__":

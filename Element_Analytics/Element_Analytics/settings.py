@@ -12,14 +12,23 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 
+
+def mkpath(path):
+    """Make path non-recursively"""
+    if not os.path.exists(path):
+        os.mkdir(path)
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Absolute filesystem path to the directory that will hold user-uploaded files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'asset')
+mkpath(MEDIA_ROOT)
 
 # Im tired of adding document to every fucking path
 DOCUMENT_ROOT = os.path.join(MEDIA_ROOT, 'document')
+mkpath(DOCUMENT_ROOT)
 
 # URL that handles the media served from MEDIA_ROOT, used for managing stored files
 MEDIA_URL = 'asset/'
@@ -146,3 +155,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+mkpath(STATIC_ROOT)
