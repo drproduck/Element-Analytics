@@ -13,7 +13,7 @@ golden = [
         lf._NAME : "dchq_solr[38866]",
         lf._TYPE : "INFO",
         lf._INFO : "  org.apache.solr.update.processor.LogUpdateProcessor",
-        lf._MSSG : " – [collection1] webapp=/solr path=/update params={waitSearcher=true&commit=" +
+        lf._MSSG : " - [collection1] webapp=/solr path=/update params={waitSearcher=true&commit=" +
                   "true&softCommit=false&wt=javabin&version=2} {commit=} 0 81"
     },
     {
