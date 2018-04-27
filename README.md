@@ -2,7 +2,7 @@
 about to blow up in the IPO
 
 Error analytics data object (JSON) can be access through this url:
-/analytics/<username>/<logfile>
+/analytics/\<username\>/\<logfile\>
   
 Error analytics:
 ```
