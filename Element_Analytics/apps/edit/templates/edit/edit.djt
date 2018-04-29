@@ -9,7 +9,14 @@
 {% block section2 %}
 <form method="post">
      {% csrf_token %}
-    {{form.as_p}}
+    <table align="center">
+    <style>
+    	th { vertical-align: top; text-align: right; padding: 10px}
+    	td { text-align: left; padding: 10px;}
+    	span { font-size: small }
+    </style>
+    {{form.as_table}}
+    </table>
     <button type="submit">Submit</button>
 </form>
 {% endblock %}

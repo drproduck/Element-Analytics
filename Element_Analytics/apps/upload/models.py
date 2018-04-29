@@ -6,8 +6,8 @@ import os.path
 import libs.utilities.pathtools as pt
 
 
-# Return the path of a newly uploaded log file
 def get_store_path(file_instance, filename):
+    """Return the path of a newly uploaded log file"""
     un = file_instance.get_username()
     ln = file_instance.log_name
     log_dir = pt.get_log_dir_rel(un, ln)  # Get relative path
@@ -17,9 +17,8 @@ def get_store_path(file_instance, filename):
     return os.path.join(log_dir, ln)
 
 
-# Log file model
 class LogFile(models.Model):
-
+    """Log file model"""
     def get_username(self):
         return self.user.username
 
@@ -31,4 +30,3 @@ class LogFile(models.Model):
     file = models.FileField(upload_to=get_store_path)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     regex = models.TextField(null=True, blank=True)
-

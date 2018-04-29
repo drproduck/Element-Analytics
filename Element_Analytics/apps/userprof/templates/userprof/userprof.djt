@@ -11,14 +11,29 @@
 {% endblock %}
 
 {% block section2 %}
-<p>
-     Username: {{ user }}<br />
-    Date Joined: {{ user.date_joined }}<br />
-    First Name: {{ user.first_name}}<br />
-    Last Name: {{ user.last_name}}<br />
-    Email: {{ user.email}}<br />
-
-</p>
+ <table align="center">
+ <style>th, td { padding: 5px;} </style>
+  <tr>
+    <th align="right">Username:</th>
+    <td align="left">{{ user }}</td>
+  </tr>
+  <tr>
+    <th align="right">Date Joined:</th>
+    <td align="left">{{ user.date_joined }}</td>
+  </tr>
+  <tr>
+    <th align="right">First Name:</th>
+    <td align="left">{{ user.first_name }}</td>
+  </tr>
+  <tr>
+    <th align="right">Last Name:</th>
+    <td align="left">{{ user.last_name }}</td>
+  </tr>
+  <tr>
+    <th align="right">Email:</th>
+    <td align="left">{{ user.email }}</td>
+  </tr>
+</table> 
 {% endblock %}
 
 {% block section3 %}

@@ -7,6 +7,7 @@ import os
 import libs.utilities.pathtools as pt
 import libs.utilities.dbutils as du
 import libs.parser.logparser as parser
+from django.utils.html import strip_tags
 
 @login_required
 def model_form_upload(request):

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.shortcuts import HttpResponse
 from django.shortcuts import loader
 from django.views import View
@@ -7,6 +7,8 @@ from django.views import View
 
 class MainView(View):
     def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("/dashboard")
         page = loader.get_template('index/index.html')
         return HttpResponse(page.render())
 
