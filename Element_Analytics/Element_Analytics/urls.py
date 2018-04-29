@@ -44,6 +44,8 @@ urlpatterns = [
 
     path('dashboard/', include('apps.dashboard.urls')),
 
+    path('chart/', include('apps.chart.urls'))
+
 ]
 
 if settings.DEBUG:

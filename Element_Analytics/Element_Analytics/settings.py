@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'apps.edit',
     'apps.dashboard',
     'apps.password',
+    'apps.chart'
 
 ]
 
