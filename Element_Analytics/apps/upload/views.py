@@ -3,12 +3,10 @@ from django.contrib.auth.decorators import login_required
 from apps.upload.forms import LogFileForm
 from apps.upload.models import LogFile
 from .models import User
-from django.http import Http404
 import os
-
 import libs.utilities.pathtools as pt
 import libs.utilities.dbutils as du
-
+import libs.parser.logparser as parser
 
 @login_required
 def model_form_upload(request):
@@ -20,7 +18,8 @@ def model_form_upload(request):
     du.sync_logdb(current_user)
 
     # upload file
-    _upload_file(request, current_user)
+    if request.method == 'POST':
+        _upload_file(request, current_user)
 
     # Response
     form = LogFileForm()
@@ -34,18 +33,41 @@ def _upload_file(request, current_user):
         if not form.is_valid():
             break
 
-        # If log name is not specified replace with the name of file
+        uploaded_file = request.FILES['file']
+        if not uploaded_file:
+            break
+
+        # If log name is not specified replace with the name of uploaded_file
         alias = form.cleaned_data['log_name']
         if not alias:
-            alias = pt.filename_no_ext(request.FILES['file'].name)
+            alias = uploaded_file.name
 
-        # Ignore if log name is duplicate in either database or file system. Need frontend handling!
+        # If regex is not specified replace it with empty string
+        regex = form.cleaned_data['regex']
+
+        # Ignore if log name is duplicate in either database or uploaded_file system. Need frontend handling!
         if du.check_duplicate(current_user, alias):
-            print("Invalid name. A log file with that name is existing in the file system")
+            print("Invalid name. A log uploaded_file with that name is existing in the uploaded_file system")
             break
 
         # Create new log object in the database
-        log = LogFile.objects.create(log_name=alias, file=request.FILES['file'], user=current_user)
+        log = LogFile.objects.create(log_name=alias, file=uploaded_file, user=current_user, regex=regex)
         log.save()
+
+        # Parse the uploaded log file
+        _parse_file(current_user, uploaded_file, alias, regex)
         break
 
+
+def _parse_file(current_user, log_file, alias, regex):
+    """Parse log file"""
+    print("Parsing file..")
+    with log_file.open("r") as file:
+        data = parser.parse_file(file, regex)
+    print("Writing file...")
+    if not data:
+        print("File is empty")
+        return;
+    log_dir = pt.get_log_dir_abs(current_user.username, alias)
+    out_path = os.path.join(log_dir, alias + ".csv")
+    parser.to_csv(data, out_path)

@@ -18,12 +18,13 @@ class TestPerformance(unittest.TestCase):
 
     # @unittest.skip
     def test_parser(self):
-        filename = input("Filename: ")
-        outfile = input("Output file: ")
+        filename = "/home/lynux/workspace/Element-Analytics/logs/og/syslogClassShare.5"
+        outfile = "./out.csv"
 
         print("Processing...\n")
         start = time.time()
-        res = parser.parse_file(filename)
+        with open(filename, "rb") as file:
+            res = parser.parse_file(file)
         elapsed_time = time.time() - start
         print("Process time: ", elapsed_time, "\n")
         self.assertLess(elapsed_time, 60)

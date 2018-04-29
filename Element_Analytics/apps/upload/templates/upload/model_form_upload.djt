@@ -6,23 +6,37 @@
 {% endblock %}
   {% block section1 %}
     <div class="container">
-      <form method="post" enctype="multipart/form-data" onsubmit="return check_size();">
+      <form method="post" enctype="multipart/form-data" onsubmit="return validate_submission();">
         {% csrf_token %}
-        {{ form.as_p }}
+        <table align="center" style="text-align: left">
+        <style>
+        	th, td { padding: 10px; vertical-align: top; }
+        </style>
+       	{{ form.as_table }}    	
+        </table>
         <button type="submit">Upload</button>
       </form>
     </div>
     <script type='text/javascript'>
-        function check_size() {
+    	var instruction = "Syntax:\nfield1 -> regular_expression1\nfield2 -> regular_expression2\n.etc";
+    	id_regex.value = instruction;
+    	id_regex.onfocus = function() { if (id_regex.value == instruction) id_regex.value = ""; }
+		id_regex.addEventListener("focusout", function() { if(id_regex.value == "") id_regex.value = instruction;})
+        function validate_submission() {
             var input = document.getElementById("id_file");
             var section = document.getElementById("section1");
             var file = input.files[0];
+            var fa = document.getElementById("filesize_alert");
             if (file.size > 104857600) {
-                elm = document.createElement("p");
-                elm.innerHTML = "File too large. Must be less than 100MB";
-                section.appendChild(elm);
+                if (!fa) {
+                	elm = document.createElement("p");
+                	elm.id = "filesize_alert";
+                	elm.innerHTML = "File too large. Must be less than 100MB";
+                	section.appendChild(elm);
+                }
                 return false;
             }
+            if (fa) fa.innerHTML = "";
             return true;
         }
     </script>
