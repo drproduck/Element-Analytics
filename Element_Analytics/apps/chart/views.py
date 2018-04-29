@@ -19,24 +19,7 @@ def chart(request):
 
     column2d_date = FusionCharts("column2d", "ex2" , "750", "350", "chart-2", "json",
         # The data is passed as a string in the `dataSource` as parameter.
-    """{
-        "chart": {
-            "caption": "Date analytics",
-            "subCaption": "",
-            "xAxisName": "date",
-            "yAxisName": "count",
-            "numberPrefix": "",
-            "theme": "fint",
-            "exportEnabled": "1",
-            "exportTargetWindow": "_self",
-            "exportFileName": "date_analytics"
-        },
-        "data": [
-            {"label": "4/29/2018", "value": "42"},
-            {"label": "4/30/2018", "value": "81"},
-            {"label": "5/1/2018", "value": "72"},
-        ]
-    }""")
+    str_date)
 
     # returning complete JavaScript and HTML code, which is used to generate chart in the browsers.
     return render(request, 'chart/index.html', {'output_keyword' : column2d_keyword.render(), 'output_date' : column2d_date.render()})
