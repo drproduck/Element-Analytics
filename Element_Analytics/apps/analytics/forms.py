@@ -22,7 +22,7 @@ class LogToMatForm(forms.Form):
 
 class ParserRegexForm(forms.Form):
 
-    regex = forms.CharField(max_length=1000, initial='Enter your regular expression here', widget=forms.Textarea)
+    regex = forms.CharField(max_length=1000, widget=forms.Textarea(attrs={'placeholder': 'Enter your regular expression here'}))
 
 class ParserNameForm(forms.Form):
     PARSER_CHOICES = (('5felds', 'DATE NAME TYPE INFO MSSG'),)
