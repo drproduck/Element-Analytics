@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from django.conf.global_settings import SESSION_COOKIE_AGE
 
 
 def mkpath(path):
@@ -157,3 +158,10 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 mkpath(STATIC_ROOT)
+
+# Session configuration
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_COOKIE_HTTPONLY = True # Only modify cookie through HTTP
+SESSION_COOKIE_AGE = 600 # Logout after 10 minutes of inactivity
+SESSION_SAVE_EVERY_REQUEST = True # Save cookies every request create a sliding session
+

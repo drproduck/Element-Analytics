@@ -11,7 +11,6 @@ import libs.parser.logparser as parser
 @login_required
 def model_form_upload(request):
     """Let user upload file through form"""
-
     current_user = User.objects.get(pk=request.user.id)
 
     # Sync log database with file system
