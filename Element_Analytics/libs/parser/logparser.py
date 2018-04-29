@@ -8,17 +8,7 @@ import csv
 from libs.parser.tokenizer import GenericTokenizer
 
 
-def validate_path(path_to_file):
-    """check if path is valid"""
-    if not os.path.isfile(path_to_file):
-        print("File does not exist: ", path_to_file)
-        exit()
-    if os.stat(path_to_file).st_size == 0:
-        print("File is empty: ", path_to_file)
-        exit()
-
-
-def parse_file(path_to_file, user_regex = None):
+def parse_file(file, user_regex = None):
     """Parse a log file to list of dictionaries"""
 
     # Set user regex or use default regex
@@ -27,15 +17,14 @@ def parse_file(path_to_file, user_regex = None):
     else:
         _tkn = GenericTokenizer()
 
-    validate_path(path_to_file)
     entries = []
     try:
-        with open(path_to_file, 'r') as f:
-            for l in f:
-                # _tkn.parse_line(l)
-                entries.append(_tkn.parse_line(l))
+        for l in file:
+            line = l.decode("utf-8")
+            entries.append(_tkn.parse_line(line))
     except IOError as e:
         print("Couldn't read file. Error: ", e)
+        file.close()
         exit()
     return entries
 
@@ -44,6 +33,10 @@ def to_csv(entries, file_out):
     """Convert logfile to CSV format that can
     be stored on file system and manipulated
     by pandas library"""
+
+    if not  entries:
+        print("Error: Data object is empty")
+        return
 
     if entries:
         with open(file_out, 'w') as f:

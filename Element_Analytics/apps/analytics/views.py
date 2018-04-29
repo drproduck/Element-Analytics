@@ -12,12 +12,10 @@ import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import libs.parser.logfields as fields
 from apps.upload.models import User
 import seaborn as sb
 # import ray.dataframe as pdr
 import libs.parser.logparser as parser
-import libs.parser.logfields as lf
 import itertools, functools
 
 import datetime

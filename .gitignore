@@ -5,3 +5,5 @@
 **/logs/*
 **/.pytest_cache/*
 **/asset/*
+.project
+.pydevproject
