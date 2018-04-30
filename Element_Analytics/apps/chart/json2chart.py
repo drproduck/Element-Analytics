@@ -17,7 +17,7 @@ def json2chart():
 
     str_keyword = """ {
         "chart": {
-            "caption": "Keyword analytics",
+            "caption": "Keyword Column",
             "subCaption": "",
             "xAxisName": "keyword",
             "yAxisName": "count",
@@ -31,7 +31,7 @@ def json2chart():
     """
     str_date = """ {
         "chart": {
-            "caption": "Date analytics",
+            "caption": "Date Column",
             "subCaption": "",
             "xAxisName": "date",
             "yAxisName": "count",
@@ -44,14 +44,57 @@ def json2chart():
         "data": [
     """
 
+    str_keyword_pie = """ {
+        "chart": {
+            "caption": "Keyword Pie",
+            "subCaption": "",
+            "startingangle": "120",
+            "showlabels": "0",
+            "showlegend": "1",
+            "enablemultislicing": "0",
+            "slicingdistance": "15",
+            "showpercentvalues": "1",
+            "showpercentintooltip": "0",
+            "plottooltext": "Keyword : $label Count : $datavalue",
+            "theme": "fint",
+            "exportEnabled": "1",
+            "exportTargetWindow": "_self",
+            "exportFileName": "keyword_analytics"
+        },
+        "data": [
+    """
+    str_date_pie = """ {
+        "chart": {
+            "caption": "Date Pie",
+            "subCaption": "",
+            "startingangle": "120",
+            "showlabels": "0",
+            "showlegend": "1",
+            "enablemultislicing": "0",
+            "slicingdistance": "15",
+            "showpercentvalues": "1",
+            "showpercentintooltip": "0",
+            "plottooltext": "Date : $label Count : $datavalue",
+            "theme": "fint",
+            "exportEnabled": "1",
+            "exportTargetWindow": "_self",
+            "exportFileName": "date_analytics"
+        },
+        "data": [
+    """
+
     for x in range(len(list_keyword)):
         str_keyword += str(list_keyword[x]) + ",\n"
+        str_keyword_pie += str(list_keyword[x]) + ",\n"
 
     str_keyword = str_keyword.strip()[:-1] + "]\n}"
+    str_keyword_pie = str_keyword_pie.strip()[:-1] + "]\n}"
 
     for x in range(len(list_date)):
         str_date += str(list_date[x]) + ",\n"
+        str_date_pie += str(list_date[x]) + ",\n"
 
     str_date = str_date.strip()[:-1] + "]\n}"
+    str_date_pie = str_date_pie.strip()[:-1] + "]\n}"
 
-    return str_keyword, str_date
+    return str_keyword, str_date, str_keyword_pie, str_date_pie
