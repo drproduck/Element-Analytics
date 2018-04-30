@@ -5,14 +5,14 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 import Element_Analytics.settings as settings
 from Element_Analytics.settings import DOCUMENT_ROOT
-from ..upload.models import User
+from apps.signup.forms import UserCreateForm
 
 import os
 
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserCreateForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -24,5 +24,5 @@ def signup(request):
             login(request, user)
             return redirect(settings.LOGIN_REDIRECT_URL)
     else:
-        form = UserCreationForm()
-    return render(request, 'signup/signup.html', {'form': form})
+        form = UserCreateForm()
+    return render(request, 'signup/signup.djt', {'form': form})

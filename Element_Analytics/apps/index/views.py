@@ -9,6 +9,6 @@ class MainView(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect("/dashboard")
-        page = loader.get_template('index/index.html')
+        page = loader.get_template('index/index.djt')
         return HttpResponse(page.render())
 

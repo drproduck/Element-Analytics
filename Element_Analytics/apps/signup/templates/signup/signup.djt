@@ -1,0 +1,54 @@
+{% extends "base.djt" %}
+{% block title %}
+<title>Sign up</title>
+{% endblock %}
+
+{% block section1 %}
+  <!-- // [START section1]-->
+  <div id="section1">
+    <div class="container">
+      <h2>Sign up at Element Analytics</h2>
+    </div>
+  </div>
+  <!-- // [END section1] -->
+{% endblock %}
+
+{% block section2 %}
+  <!-- // [START section2] -->
+  <div id="section2">
+    <div class="container">
+      <form method="post" style="white-space: nowrap; text-overflow: ellipsis;">
+        {% csrf_token %}
+        <table align="center">
+        {% for field in form %}        
+        <tr>
+          <th style="padding: 10px; vertical-align: top; text-align: right"> {{ field.label_tag }} </th>
+          <td style="padding: 10px; text-align: left"> {{ field }}
+          {% if field.help_text %}
+          <small style="color: grey; font-size: small">{% autoescape off %}{{ field.help_text }}{% endautoescape %}</small>
+          {% endif %}
+          </td>
+          {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+          {% endfor %}
+        </tr>       
+        {% endfor %}
+        </table>
+        <button type="submit">Sign up</button>
+      </form>
+    </div>
+  </div>
+  <!-- // [END section2] -->
+{% endblock %}
+
+{% block section3 %}
+  <!-- // [START section3] -->
+  <div id="section3">
+    <div class="container">
+      <p>Already have an account?</p>
+      <p><a href="/login">Log in</a></p>
+      <p><a href="/index">Return to home</a></p>
+    </div>
+  </div>
+  <!-- // [END section3] -->
+{% endblock %}
