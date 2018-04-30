@@ -77,8 +77,8 @@ INSTALLED_APPS = [
     'apps.edit',
     'apps.dashboard',
     'apps.password',
-    'apps.chart'
-
+    'apps.chart',
+    'apps.api'
 ]
 
 MIDDLEWARE = [

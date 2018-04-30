@@ -1,5 +1,4 @@
 """Element_Analytics URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.0/topics/http/urls/
 Examples:
@@ -44,7 +43,9 @@ urlpatterns = [
 
     path('dashboard/', include('apps.dashboard.urls')),
 
-    path('chart/', include('apps.chart.urls'))
+    path('chart/', include('apps.chart.urls')),
+    
+    path('api/', include('apps.api.urls'))
 
 ]
 
