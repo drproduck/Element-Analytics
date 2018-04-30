@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-from django.conf.global_settings import SESSION_COOKIE_AGE
+from django.conf.global_settings import SESSION_COOKIE_AGE, SECURE_SSL_REDIRECT,\
+    SESSION_COOKIE_SECURE, CSRF_COOKIE_SECURE
+from _socket import gethostbyname
 
 
 def mkpath(path):
@@ -45,12 +47,15 @@ LOGIN_URL = 'login:login'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'm**ps0=!eqvbnop5d=%!mo(l(^fox1$^_h3q_^u!3gihuy0@ea'
+# SECURE_SSL_REDIRECT = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+# Allow hosts from local area network to test our app
+from socket import gethostname
+# ALLOWED_HOSTS = [gethostname(), gethostbyname(gethostname()), ]
+ALLOWED_HOSTS = [ '*' ]
 
 # Application definition
 
@@ -164,4 +169,6 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 SESSION_COOKIE_HTTPONLY = True # Only modify cookie through HTTP
 SESSION_COOKIE_AGE = 600 # Logout after 10 minutes of inactivity
 SESSION_SAVE_EVERY_REQUEST = True # Save cookies every request create a sliding session
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 

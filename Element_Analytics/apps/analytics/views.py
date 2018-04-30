@@ -2,7 +2,6 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, reverse
 from Element_Analytics.settings import MEDIA_URL
 from django.views.generic import FormView
-from .forms import ParserRegexForm, LogToMatForm, ParserNameForm
 from .models import Matrix
 from Element_Analytics.settings import DOCUMENT_ROOT, BASE_DIR
 from ..upload.models import LogFile
@@ -14,11 +13,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from apps.upload.models import User
 import seaborn as sb
-# import ray.dataframe as pdr
 import libs.parser.logparser as parser
 import itertools, functools
 
 import datetime
+from django.contrib.auth.decorators import login_required
 
 STATIC_DIR = os.path.join(BASE_DIR, 'apps/analytics/static/analytics/')
 frame = None
@@ -31,7 +30,17 @@ def file_parser(file_path):
     parser.to_csv(parsed_file)
 
 
-COMMON_ERROR_REGEX  = '(exception|warn|error|fail|unauthorized|timeout|refused|NoSuchPageException|[^0-9]404[^0-9]|[^0-9]401[^0-9]|[^0-9]505[^0-9])'
+COMMON_ERROR_REGEX  = [ 'exception', 
+                       'warn', 
+                       'error',
+                       'fail',
+                       'unauthorized',
+                       'timeout',
+                       'refused',
+                       'NoSuchPageException',
+                       '404', 
+                       '401', 
+                       '505']
 
 
 def make_error_regex(list, append_common=True):
@@ -63,65 +72,7 @@ def get_user_log_dir(user, log, mat_name):
     """root -> user dir -> log dir -> bunch of .csv and a single .raw"""
     return os.path.join(DOCUMENT_ROOT, user, log+'_dir', mat_name+'.csv')
 
-
-def ParserFormView(request):
-
-    def get_context():
-        logtomatform = LogToMatForm()
-        regexform = ParserRegexForm()
-        # parserform = ParserNameForm()
-        logtomatform.fields['log'].queryset = LogFile.objects.filter(user=user)
-        log_list = LogFile.objects.filter(user=user)
-        mat_list = Matrix.objects.filter(user=user)
-        return {'logtomatform': logtomatform, 'regexform': regexform,
-                               'log_list': log_list, 'mat_list': mat_list}
-    user = User.objects.get(pk=request.user.id)
-    if request.method == 'POST':
-
-        # if 'logtomatform' in request.POST:
-        logtomatform = LogToMatForm(request.POST)
-        if logtomatform.is_valid():
-            log = logtomatform.cleaned_data['log']
-            mat_name = logtomatform.cleaned_data['mat_name']
-            save_path = get_user_log_dir(user.username, log.log_name, mat_name)
-            log_path = log.get_filepath()
-
-            if 'regexform' in request.POST:
-                regexform = ParserRegexForm(request.POST, prefix='regex')
-                if regexform.is_valid():
-                    # parse the log by regex
-                    regex_history = regexform.cleaned_data['regex']
-                    processed = parse_by_regex(log_path, regex_history)
-
-                    # save mat file
-                    parser.to_csv(processed, save_path)
-                    mat = Matrix(user, log, regex_history, save_path)
-                    mat.save()
-
-                    return redirect(mat)
-
-            regex_history = logtomatform.cleaned_data['parser_name']
-            processed = parser.parse_file_parallel(log_path)
-
-            # save mat file
-            parser.to_csv(processed, save_path)
-            mat = Matrix(user=user, log=log, regex_history=regex_history, path=save_path, mat_name=mat_name)
-            mat.save()
-            return redirect(mat)
-        else:
-            print('Im here')
-
-            context = get_context()
-
-        return render(request, 'analytics/parser.djt',
-                      context=context)
-
-    else:
-        context = get_context()
-        return render(request, 'analytics/parser.djt',
-                      context=context)
-
-
+@login_required
 def MainView(request, log, mat):
     if request.POST:
         chosen_column = request.POST['header choice']
