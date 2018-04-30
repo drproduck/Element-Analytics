@@ -23,6 +23,7 @@
     	id_regex.onfocus = function() { id_regex.style.color = "Black"; if (id_regex.value == instruction) id_regex.value = ""; }
 		id_regex.addEventListener("focusout", function() { if(id_regex.value == "") { id_regex.style.color = "Gray"; id_regex.value = instruction; }})
         function validate_submission() {
+            if (id_regex.value == instruction) id_regex.value = "";
             var input = document.getElementById("id_file");
             var section = document.getElementById("section1");
             var file = input.files[0];
@@ -45,7 +46,7 @@
     {% if user.logfile_set.all %}
         <p>Your files are here:</p>
         {% for log in user.logfile_set.all %}
-            <p><a href="{% url "analytics:parser" %}">{{ log.log_name }}</a></p>
+            <p><a href= "{% url "analytics:parser" %}">{{ log.log_name }}</a></p>
         {% endfor %}
     {% else %}
         <p>You currently have no uploaded files</p>
