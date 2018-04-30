@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<style>
+	.container{
+		display: flex;
+	}
+	.chart-1{
+		width: 300px;
+	}
+	.chart-2{
+		flex-grow: 1;
+	}
+	.container2{
+		display: flex;
+	}
+	.chart-3{
+		width: 300px;
+	}
+	.chart-4{
+		flex-grow: 1;
+	}
+	</style>
+
 	<title>Chart</title>
 	{% load static %}
-   <script type="text/javascript" src="{% static "fusioncharts/fusioncharts.js" %}"></script>
-   <script type="text/javascript" src="{% static "fusioncharts/themes/fusioncharts.theme.fint.js" %}"></script>
+	<script type="text/javascript" src="{% static "fusioncharts/fusioncharts.js" %}"></script>
+	<script type="text/javascript" src="{% static "fusioncharts/themes/fusioncharts.theme.fint.js" %}"></script>
 </head>
 <body>
+	<div class="container">
 	<div id="chart-1">{{ output_keyword|safe }}</div>
-	<hr>
 	<div id="chart-2">{{ output_date|safe }}</div>
+	</div>
+	<hr>
+	<div class="container2">
+	<div id="chart-3">{{ output_keyword_pie|safe }}</div>
+	<div id="chart-4">{{ output_date_pie|safe }}</div>
+	</div>
 </body>
 </html>
