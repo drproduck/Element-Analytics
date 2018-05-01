@@ -58,6 +58,10 @@ def _upload_file(request, current_user):
         _parse_file(current_user, uploaded_file, alias, regex)
         break
 
+def delete_file(request, current_user):
+    du.delete_user(current_user)
+    return render (request)
+
 
 def _parse_file(current_user, log_file, alias, regex):
     """Parse log file"""

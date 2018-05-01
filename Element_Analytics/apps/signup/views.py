@@ -26,3 +26,4 @@ def signup(request):
     else:
         form = UserCreateForm()
     return render(request, 'signup/signup.djt', {'form': form})
+
