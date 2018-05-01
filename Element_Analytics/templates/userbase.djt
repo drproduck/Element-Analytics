@@ -243,7 +243,6 @@
     <a href="/dashboard">Dashboard</a>
     <a href="/userprof">User profile</a>
     <a href="/upload">Upload log file</a>
-    <a href= "{% url "analytics:parser" %}">Analytics</a>
     <a href="{% url "login:logout" %}">Log out</a>
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
 </div>
