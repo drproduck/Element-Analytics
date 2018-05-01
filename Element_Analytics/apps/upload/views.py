@@ -8,6 +8,11 @@ import libs.utilities.pathtools as pt
 import libs.utilities.dbutils as du
 import libs.parser.logparser as parser
 from django.utils.html import strip_tags
+import Element_Analytics.settings as settings
+#from apps.upload.models import File
+from django.views.generic.edit import DeleteView
+from django.urls import reverse_lazy
+
 
 @login_required
 def model_form_upload(request):
@@ -21,9 +26,25 @@ def model_form_upload(request):
     if request.method == 'POST':
         _upload_file(request, current_user)
 
+#    if request.method == 'POST':
+ #       delete_file(request, current_user)
+
     # Response
     form = LogFileForm()
     return render(request, 'upload/model_form_upload.djt', {'form': form, 'user': current_user})
+
+def delete_file(request, current_user):
+    if request.method == 'POST':
+        du.delete_log(current_user, request)
+        return redirect('/delete.html')
+
+
+#class FileDelete(DeleteView):
+#    model = File
+#    success_url = reverse_lazy('')
+
+
+
 
 
 def _upload_file(request, current_user):
@@ -58,9 +79,6 @@ def _upload_file(request, current_user):
         _parse_file(current_user, uploaded_file, alias, regex)
         break
 
-def delete_file(request, current_user):
-    du.delete_user(current_user)
-    return render (request)
 
 
 def _parse_file(current_user, log_file, alias, regex):
