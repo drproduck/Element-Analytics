@@ -11,15 +11,14 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-from django.conf.global_settings import SESSION_COOKIE_AGE, SECURE_SSL_REDIRECT,\
-    SESSION_COOKIE_SECURE, CSRF_COOKIE_SECURE
+from django.conf.global_settings import SESSION_COOKIE_AGE, SECURE_SSL_REDIRECT, SESSION_COOKIE_SECURE, CSRF_COOKIE_SECURE
 from _socket import gethostbyname
 
 
 def mkpath(path):
-    """Make path non-recursively"""
-    if not os.path.exists(path):
-        os.mkdir(path)
+     """Make path non-recursively"""
+     if not os.path.exists(path):
+          os.mkdir(path)
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -171,4 +170,8 @@ SESSION_COOKIE_AGE = 600 # Logout after 10 minutes of inactivity
 SESSION_SAVE_EVERY_REQUEST = True # Save cookies every request create a sliding session
 # SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SECURE = True
+
+# Storage limit
+STORAGE_LIMIT = 2048
+NUM_LOG_LIMIT = 20
 
