@@ -14,7 +14,7 @@
     {% if user.logfile_set.all %}
         <p>Your files are here:</p>
         {% for log in user.logfile_set.all %}
-            <p><a href="{{ log.file }}">{{ log.log_name }}</a></p>
+            <p><a href="/analytics/{{ log.log_name }}">{{ log.log_name }}</a></p>
         {% endfor %}
     {% else %}
         <p>You currently have no uploaded files</p>

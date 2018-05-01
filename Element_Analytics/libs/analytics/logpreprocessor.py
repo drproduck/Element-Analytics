@@ -19,7 +19,7 @@ def lookup_date(s):
      """
      In a large log file dates are mostly repeated so we store them in a look up table to improve performance
      """
-     dates = { date : pd.to_datetime(DATE_TABLE[date[:6]] + date[6:], format="%m-%d %H:%M:%S") for date in s.unique() }
+     dates = { date : DATE_TABLE[date[:6]] + date[6:] for date in s.unique() }
      return s.map(dates)
 
 

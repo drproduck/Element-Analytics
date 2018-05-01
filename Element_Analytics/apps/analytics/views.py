@@ -19,7 +19,15 @@ def get_user_log_dir(user,  log):
 
 
 @login_required
-def MainView(request):
-     if request.POST:
-          return render()
+def MainView(request, log_name):
+     user = request.user
+     file_path = os.path.join(pt.get_log_dir_abs(user.username, log_name), log_name + ".csv")
+     logfile = user.logfile_set.get(log_name=log_name)
+     if not logfile.regex:
+          return render(request, "analytics/mainpage.djt", {"log_name" : log_name})
+     with open(file_path, 'r') as fp:
+          response = HttpResponse(fp.read(), content_type='text/csv')
+          response['Content-Disposition'] = 'attachment; filename=' + log_name + ".csv"
+          return response
+     
 

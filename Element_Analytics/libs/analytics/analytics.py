@@ -1,6 +1,6 @@
 import pandas as pd
-# import libs.analytics.logpreprocessor as lp
-# import time
+import libs.analytics.logpreprocessor as lp
+import time
 import numpy as numpy
 import json
 import Element_Analytics.settings as settings
@@ -31,9 +31,9 @@ def error_analytics(dataframe):
      for k in COMMON_ERROR_KEYS:
           frames.append(dataframe[dataframe.message.str.contains(pat=k, case=False) == True])     
      result = pd.concat(frames)
-     res_dict['total_entries'] = dataframe.size
-     res_dict['num_error'] = result.size
-     res_dict['error_rate'] = result.size / dataframe.size
+     res_dict['total_entries'] = len(dataframe.index)
+     res_dict['num_error'] = len(result.index)
+     res_dict['error_rate'] = res_dict['num_error'] / res_dict['total_entries']
      res_dict['error_by_keywords'] = count_error_occurences(result)
      res_dict['error_by_dates'] = result.groupby('date').date.size().to_dict()
      return json.dumps(res_dict, cls=encoder, indent=4, sort_keys=True)
@@ -44,7 +44,7 @@ def user_analytics(user):
      res_dict = {}
      res_dict['username'] = user.username
      res_dict['num_log_limit'] = settings.NUM_LOG_LIMIT
-     res_dict['num_log'] = user.logfile_set.count
+     res_dict['num_log'] = user.logfile_set.count()
      res_dict['storage_limit'] = settings.STORAGE_LIMIT
      res_dict['storage_used'] = pt.get_user_dir_size(user.username)
      return json.dumps(res_dict, indent=4, sort_keys=True)

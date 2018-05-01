@@ -6,5 +6,5 @@ from apps.analytics import views
 app_name = 'analytics'
 
 urlpatterns = [
-     path('', views.MainView)
+     path('<log_name>/', views.MainView)
 ]
