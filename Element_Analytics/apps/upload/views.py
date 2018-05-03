@@ -35,6 +35,7 @@ def model_form_upload(request):
 
 def delete_file(request, current_user):
     if request.method == 'POST':
+        """Delete a log of a particular user in the database"""
         du.delete_log(current_user, request)
         return redirect('/delete.html')
 
