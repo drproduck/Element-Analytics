@@ -13,6 +13,7 @@
 {% block section2 %}
     {% if user.logfile_set.all %}
         <p>Your files are here:</p>
+        <p><b>Click on the file to view the analytics!</b></p>
         {% for log in user.logfile_set.all %}
             <p><a href="/analytics/{{ log.log_name }}">{{ log.log_name }}</a></p>
         {% endfor %}
