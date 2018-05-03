@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html>
 {% extends "userbase.djt" %}
 
 {% block title %}
@@ -33,12 +31,10 @@
     <th align="right">Email:</th>
     <td align="left">{{ user.email }}</td>
   </tr>
-</table> 
+</table>
 {% endblock %}
 
 {% block section3 %}
-<p><a href="/password">Change Password</a></p>
-<a href="/edit">Edit User Information</a>
+<button class="btn" type="button" onclick="location.href='/password'"><span>Change Password</span></button>
+<button class="btn" type="button" onclick="location.href='/edit'"><span>Edit User Information</span></button>
 {% endblock %}
-
-</html>

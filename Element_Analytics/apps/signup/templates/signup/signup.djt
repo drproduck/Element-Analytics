@@ -20,7 +20,7 @@
       <form method="post" style="white-space: nowrap; text-overflow: ellipsis;">
         {% csrf_token %}
         <table align="center">
-        {% for field in form %}        
+        {% for field in form %}
         <tr>
           <th style="padding: 10px; vertical-align: top; text-align: right"> {{ field.label_tag }} </th>
           <td style="padding: 10px; text-align: left"> {{ field }}
@@ -31,10 +31,10 @@
           {% for error in field.errors %}
           <p style="color: red">{{ error }}</p>
           {% endfor %}
-        </tr>       
+        </tr>
         {% endfor %}
         </table>
-        <button type="submit">Sign up</button>
+        <button class="btn blue" type="submit"><span>Sign up</span></button>
       </form>
     </div>
   </div>
@@ -46,8 +46,8 @@
   <div id="section3">
     <div class="container">
       <p>Already have an account?</p>
-      <p><a href="/login">Log in</a></p>
-      <p><a href="/index">Return to home</a></p>
+      <button class="btn" type="button" onclick="location.href='/login'"><span>Log in</span></button>
+      <button class="btn" type="button" onclick="location.href='/index'"><span>Return to Home</span></button>
     </div>
   </div>
   <!-- // [END section3] -->

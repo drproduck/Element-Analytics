@@ -32,7 +32,7 @@
                 </tr>
             {% endfor %}
             </table>
-            <button type="submit">Log in</button>
+            <button class="btn blue" type="submit"><span>Log in</span></button>
         </form>
     </div>
 </div>
@@ -44,8 +44,8 @@
 <div id="section3">
     <div class="container">
         <p>New to Element Analytics?</p>
-        <p><a href="/signup">Sign up</a></p>
-        <p><a href="/index">Return to home</a></p>
+        <button class="btn" type="button" onclick="location.href='/signup'"><span>Sign up</span></button>
+        <button class="btn" type="button" onclick="location.href='/index'"><span>Return to Home</span></button>
     </div>
 </div>
 <!-- // [END section3] -->

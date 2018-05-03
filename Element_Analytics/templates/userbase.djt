@@ -315,6 +315,14 @@
     background-color: #c0392b;
   }
 
+  .btn.blue {
+    background-color: #0055A2;
+  }
+
+  .btn.blue:hover, .btn.blue:focus {
+    background-color: #0055A2;
+  }
+
   #myBtn {
       display: none; /* Hidden by default */
       position: fixed; /* Fixed/sticky position */

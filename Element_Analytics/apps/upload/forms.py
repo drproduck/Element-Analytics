@@ -10,6 +10,8 @@ from apps.upload.models import LogFile
 
 
 class LogFileForm(forms.ModelForm):
+    log_name = forms.CharField(max_length=50, required=False, help_text='Optional')
+
     class Meta:
         model = LogFile
         fields = ["log_name", "file", "regex"]

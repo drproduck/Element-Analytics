@@ -2,7 +2,7 @@
 {% block title %}
 <title>Upload</title>
 {% endblock %}
-  {% block section1 %}
+  {% block section2 %}
     <div class="container">
       <form method="post" enctype="multipart/form-data" onsubmit="return validate_submission();">
         {% csrf_token %}
@@ -13,7 +13,7 @@
         </style>
        	{{ form.as_table }}
         </table>
-        <button type="submit">Upload</button>
+        <button class="btn blue" type="submit"><span>Upload</span></button>
       </form>
     </div>
     <script type='text/javascript'>
@@ -42,7 +42,7 @@
         }
     </script>
   {% endblock %}
-{% block section2 %}
+{% block section3 %}
     {% if user.logfile_set.all %}
         <p>Your files are here:</p>
         <p><b>Click on the file to view the analytics!</b></p>
