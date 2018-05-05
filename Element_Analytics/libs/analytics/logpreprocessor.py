@@ -20,7 +20,7 @@ class LogNotFoundException(Exception):
 def lookup_date(s):
     """ In a large log file dates are mostly repeated so
     we store them in a look up table to improve performance"""
-    dates = { date : DATE_TABLE[date[:6]] + date[6:] for date in s.unique() }
+    dates = { date : pd.to_datetime(DATE_TABLE[date[:6]] + date[6:], format="%m-%d %H:%M:%S") for date in s.unique() }
     return s.map(dates)
 
 
@@ -39,9 +39,10 @@ def read_log(username, log_file):
     # If this log is already pre-processed, just return it
     if os.path.isfile(processed_log):
         return pd.read_csv(processed_log,
-                           parse_dates=False,
+                           parse_dates=[1],
                            encoding='utf-8',
-                           error_bad_lines=False)
+                           error_bad_lines=False,
+                           index_col=0)
     elif os.path.isfile(log):
         frame = pd.read_csv(log, parse_dates=False, encoding='utf-8', error_bad_lines=False)
         preprocess(frame, log_dir, log_file)

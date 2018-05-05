@@ -29,3 +29,9 @@ def user_analytics(request):
 @login_required
 def regex_search(request, regex):
     pass
+
+def delete(request, log_file):
+    pass
+
+def download(request, log_file):
+    pass

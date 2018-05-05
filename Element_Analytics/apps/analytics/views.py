@@ -5,8 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 import libs.utilities.pathtools  as pt
-from Element_Analytics.settings import MEDIA_URL
-from Element_Analytics.settings import DOCUMENT_ROOT, BASE_DIR
+from Element_Analytics.settings import BASE_DIR
 
 
 STATIC_DIR = os.path.join(BASE_DIR, 'apps/analytics/static/analytics/')

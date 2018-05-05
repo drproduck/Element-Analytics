@@ -8,7 +8,7 @@ import libs.utilities.pathtools as pt
 
 def get_store_path(file_instance, file_name):
     """Return the path of a newly uploaded log file"""
-    un = file_instance.get_username()
+    un = file_instance.user.username
     ln = file_instance.log_name
     log_dir = pt.get_log_dir_rel(un, ln)  # Get relative path
     abs_path = pt.get_log_dir_abs(un, ln)  # Get absolute path

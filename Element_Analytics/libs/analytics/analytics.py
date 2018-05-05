@@ -4,8 +4,9 @@ import time
 import numpy as numpy
 import json
 import Element_Analytics.settings as settings
-import os
 import libs.utilities.pathtools as pt
+import pprint
+import re
 # Create your views here.
 
 COMMON_ERROR_KEYS = [
@@ -23,19 +24,26 @@ COMMON_ERROR_KEYS = [
 ]
 
 
+def build_regex(key_list):
+    res = "|".join(key_list)
+    return re.compile(res)
+
+    
 def error_analytics(dataframe):
     """ Return a JSON object contains insight
     about the errors of this log file"""
-    frames = []
     res_dict = {}
-    for k in COMMON_ERROR_KEYS:
-        frames.append(dataframe[dataframe.message.str.contains(pat=k, case=False) == True])     
-    result = pd.concat(frames)
+    regex = build_regex(COMMON_ERROR_KEYS)
+    result = dataframe[dataframe.message.str.contains(pat=regex) == True]
     res_dict['total_entries'] = len(dataframe.index)
     res_dict['num_error'] = len(result.index)
     res_dict['error_rate'] = res_dict['num_error'] / res_dict['total_entries']
     res_dict['error_by_keywords'] = count_error_occurences(result)
-    res_dict['error_by_dates'] = result.groupby('date').date.size().to_dict()
+    err_dates = result.groupby(pd.Grouper(key='date', freq='H')).size()
+    err_dict = {}
+    for name in err_dates.index:
+        err_dict[name.ctime()] = err_dates.loc[name]
+    res_dict['error_by_dates'] = err_dict
     return json.dumps(res_dict, cls=encoder, indent=4, sort_keys=True)
 
 
@@ -48,7 +56,7 @@ def user_analytics(user):
     res_dict['storage_limit'] = settings.STORAGE_LIMIT
     res_dict['storage_used'] = pt.get_user_dir_size(user.username)
     return json.dumps(res_dict, indent=4, sort_keys=True)
-     
+
 
 def count_error_occurences(dataframe):
     error_dict = {}
@@ -63,15 +71,14 @@ class encoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, numpy.integer):
             return int(obj)
-        elif isinstance(obj, numpy.floating):
+        if isinstance(obj, numpy.float):
             return float(obj)
-        elif isinstance(obj, numpy.ndarray):
+        if isinstance(obj, numpy.ndarray):
             return obj.tolist()
-        else:
-            return super(encoder, self).default(obj)
+        return super(encoder, self).default(obj)
 
 # start_time = time.process_time()
-# log = lp.read_log("ly-admin", "syslogClassShare.5")
+# log = lp.read_log("lynguyen", "syslogClassShare.5")
 # elapsed_time = time.process_time() - start_time
 # error_analytics(log)
 # elapsed_time1 = time.process_time() - elapsed_time

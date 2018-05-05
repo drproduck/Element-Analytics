@@ -20,9 +20,6 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <div id="chartContainer0"></div>
 <div id="chartContainer1"></div>
-<div id="chartContainer2"></div>
-<div id="chartContainer3"></div>
-<div id="chartContainer4"></div>
 <script type="text/javascript">
 var entries = [];
 var keys = [];
@@ -38,8 +35,7 @@ $.ajax({
     for (var key in obj) {
       if (obj.hasOwnProperty(key)) {
         var val = obj[key];
-        entries.push({ "label" : key, "value" : val, "color": "008ee4", "stepSkipped": false, "appliedSmartLabel": true });
-        entries2.push({ "label" : key, "value" : val});
+        entries.push({ "label" : key, "value" : val, "color": "008ee4", "stepSkipped": true, "appliedSmartLabel": true });
       }
     }
     for (var key in key_errors) {
@@ -100,92 +96,11 @@ FusionCharts.ready(function() {
         "canvasborderalpha": "0",
         "showborder": "0",
         "theme": "fint",
-        "exportEnabled": "1",
-        "exportTargetWindow": "_self",
-        "exportFileName": "keyword_analytics"
       },
       "data" : entries
     }
   });
   chart1.render();
-})
-FusionCharts.ready(function() {
-  var chart2 = new FusionCharts({
-    "type": "pie3d",
-    "renderAt": "chartContainer2",
-    "width": "100%",
-    "height": "45%",
-    "dataFormat": "json",
-    "dataSource": {
-      "chart": {
-        "caption": "Error by keywords - Pie",
-        "startingangle": "120",
-        "showlabels": "0",
-        "showlegend": "1",
-        "enablemultislicing": "0",
-        "slicingdistance": "15",
-        "showpercentvalues": "1",
-        "showpercentintooltip": "0",
-        "plottooltext": "Keywords : $label # of Errors : $datavalue",
-        "theme": "fint",
-        "exportEnabled": "1",
-        "exportTargetWindow": "_self",
-        "exportFileName": "keyword_analytics"
-      },
-      "data": keys
-    }
-  });
-  chart2.render();
-})
-FusionCharts.ready(function() {
-  var chart3 = new FusionCharts({
-    "type": "pie3d",
-    "renderAt": "chartContainer3",
-    "width": "100%",
-    "height": "30%",
-    "dataFormat": "json",
-    "dataSource": {
-      "chart": {
-        "caption": "Error by dates - Pie",
-        "startingangle": "120",
-        "showlabels": "0",
-        "showlegend": "1",
-        "enablemultislicing": "0",
-        "slicingdistance": "15",
-        "showpercentvalues": "1",
-        "showpercentintooltip": "0",
-        "plottooltext": "Dates : $label # of Errors : $datavalue",
-        "theme": "fint",
-        "exportEnabled": "1",
-        "exportTargetWindow": "_self",
-        "exportFileName": "keyword_analytics"
-      },
-      "data": entries2
-    }
-  });
-  chart3.render();
-})
-FusionCharts.ready(function() {
-  var chart4 = new FusionCharts({
-    "type": "column2d",
-    "renderAt": "chartContainer4",
-    "width": "100%",
-    "height": "24%",
-    "dataFormat": "json",
-    "dataSource": {
-      "chart": {
-        "caption": "Error by dates - Column",
-        "xAxisName": "Dates",
-        "yAxisName": "# of Errors",
-        "theme": "fint",
-        "exportEnabled": "1",
-        "exportTargetWindow": "_self",
-        "exportFileName": "keyword_analytics"
-      },
-      "data": entries2
-    }
-  });
-  chart4.render();
 })
 
 window.onscroll = function() {scrollFunction()};
