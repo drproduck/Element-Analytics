@@ -398,6 +398,16 @@
       x.className = "topnav";
     }
   }
+  
+	function delete_file(log_name) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "{% url 'api:delete' %}?file=" + log_name, true);
+		xhttp.send()
+		elem = document.getElementById(log_name);
+		if (!elem)
+			return;
+		elem.innerHTML = "";
+	}
 
   init();
 

@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.http.response import JsonResponse, HttpResponse, HttpResponseForbidden
-
+from django.http.response import JsonResponse, HttpResponseForbidden,\
+    HttpResponse
+from django.shortcuts import redirect
 import libs.analytics.analytics as anal
 import libs.analytics.logpreprocessor as lp
-
+import libs.utilities.dbutils as du
 
 
 @login_required
@@ -30,8 +31,18 @@ def user_analytics(request):
 def regex_search(request, regex):
     pass
 
-def delete(request, log_file):
-    pass
 
-def download(request, log_file):
+@login_required
+def delete(request):
+    if request.user.is_authenticated:
+        file_name = request.GET.get('file', ' ')
+        if not file_name:
+            return HttpResponse(1)
+        du.delete_log(request.user, file_name)
+        return HttpResponse(0)
+    return HttpResponseForbidden()
+
+
+@login_required
+def download(request, file_name):
     pass

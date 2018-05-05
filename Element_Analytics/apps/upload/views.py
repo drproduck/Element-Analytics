@@ -16,7 +16,7 @@ def model_form_upload(request):
     current_user = User.objects.get(pk=request.user.id)
 
     # Sync log database with file system
-    du.sync_logdb(current_user)
+    # du.sync_logdb(current_user)
 
     # upload file
     if request.method == 'POST':
@@ -51,10 +51,11 @@ def _request_is_valid(request, current_user):
     if not alias:
         alias = uploaded_file.name
     logs = [log.log_name for log in current_user.logfile_set.all()]
-    count = 1
-    while (alias + "_" + str(count)) in logs:
-        count += 1
-    alias += "_" + str(count)
+    if alias in logs:
+        count = 0
+        while alias + "_" + str(count) in logs:
+            count += 1
+        alias += "_" + str(count)
  
     # Ignore if log name is duplicate in either database or uploaded_file system. Need frontend handling!
     # if du.check_duplicate(current_user, alias):
