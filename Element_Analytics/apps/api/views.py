@@ -5,7 +5,9 @@ from django.shortcuts import redirect
 import libs.analytics.analytics as anal
 import libs.analytics.logpreprocessor as lp
 import libs.utilities.dbutils as du
-
+import libs.utilities.pathtools as pt
+import os
+import html.parser as htmlparser
 
 @login_required
 def error_analytics(request, file_name):
@@ -45,4 +47,12 @@ def delete(request):
 
 @login_required
 def download(request, file_name):
-    pass
+    user = request.user
+    file_path = os.path.join(pt.get_log_dir_abs(user.username, file_name), file_name + ".csv")
+    if not os.path.isfile(file_path):
+        return HttpResponseForbidden("File doesn't exist")
+    with open(file_path, 'r') as fp:
+        response = HttpResponse(fp.read(), content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=' + file_name + ".csv"
+        return response
+

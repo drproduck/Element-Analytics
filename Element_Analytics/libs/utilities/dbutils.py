@@ -4,6 +4,7 @@ import os
 import shutil
 from django.contrib.auth.models import User
 from apps.upload.models import LogFile
+from libs.utilities.pathtools import get_log_dir_abs
 
 
 def check_duplicate(current_user, alias):
@@ -43,9 +44,14 @@ def sync_logdb(user):
 
 def delete_user(name):
     """Programmatically delete a user and their data in the database"""
-    User.objects.filter(username=name).delete();
+    User.objects.filter(username=name).delete()
 
 
 def delete_log(user, logname):
     """Delete a log of a particular user in the database"""
     user.logfile_set.filter(log_name=logname).delete()
+    
+    log_path = get_log_dir_abs(user.username, logname)
+    if os.path.exists(log_path):
+        shutil.rmtree(log_path)
+    

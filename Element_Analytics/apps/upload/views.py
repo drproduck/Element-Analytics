@@ -47,9 +47,9 @@ def _request_is_valid(request, current_user):
         return False 
  
     # If log name is not specified replace with the name of uploaded_file
-    alias = form.cleaned_data['log_name']
+    alias = pt.get_valid_filename(form.cleaned_data['log_name'])
     if not alias:
-        alias = uploaded_file.name
+        alias = pt.get_valid_filename(uploaded_file.name)
     logs = [log.log_name for log in current_user.logfile_set.all()]
     if alias in logs:
         count = 0
@@ -57,10 +57,6 @@ def _request_is_valid(request, current_user):
             count += 1
         alias += "_" + str(count)
  
-    # Ignore if log name is duplicate in either database or uploaded_file system. Need frontend handling!
-    # if du.check_duplicate(current_user, alias):
-        # print("Invalid name. A log uploaded_file with that name is existing in the uploaded_file system")
-        # return False
 
     regex = form.cleaned_data['regex']
      

@@ -37,7 +37,7 @@ def error_analytics(dataframe):
     result = dataframe[dataframe.message.str.contains(pat=regex) == True]
     res_dict['total_entries'] = len(dataframe.index)
     res_dict['num_error'] = len(result.index)
-    res_dict['error_rate'] = res_dict['num_error'] / res_dict['total_entries']
+    res_dict['error_rate'] = (res_dict['num_error'] / res_dict['total_entries']) * 100
     res_dict['error_by_keywords'] = count_error_occurences(result)
     err_dates = result.groupby(pd.Grouper(key='date', freq='H')).size()
     err_dict = {}
