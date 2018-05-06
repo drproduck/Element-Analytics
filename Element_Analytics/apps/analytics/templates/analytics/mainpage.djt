@@ -5,203 +5,85 @@
 {% block section1 %}
 <h1>Analytics - {{ log_name }}</h1>
 <h3>
-  <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
-  <button class="btn orange" type="button" onclick="location.href='#chartContainer0'"><span>Error by keywords - Column</span></button>
-  <button class="btn" type="button" onclick="location.href='#chartContainer1'"><span>Error by dates - Line</span></button>
-  <button class="btn red" type="button" onclick="location.href='#chartContainer2'"><span>Error by keywords - Pie</span></button>
-  <button class="btn" type="button" onclick="location.href='#chartContainer3'"><span>Error by dates - Pie</span></button>
-  <button class="btn orange" type="button" onclick="location.href='#chartContainer4'"><span>Error by dates - Column</span></button>
+	<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
 </h3>
 {% endblock %}
 {% block section2 %}
-{% load static %}
-<script type="text/javascript" src="{% static "fusioncharts/fusioncharts.js" %}"></script>
-<script type="text/javascript" src="{% static "fusioncharts/themes/fusioncharts.theme.fint.js" %}"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<div id="chartContainer0"></div>
-<div id="chartContainer1"></div>
-<div id="chartContainer2"></div>
-<div id="chartContainer3"></div>
-<div id="chartContainer4"></div>
-<script type="text/javascript">
-var entries = [];
-var keys = [];
-var entries2 = [];
-$.ajax({
-  async: false,
-  type: 'GET',
-  url: "/api/error_analytics/{{ log_name }}",
-  success: function(data) {
-    var parsed = JSON.parse(data);
-    var obj = parsed.error_by_dates;
-    var key_errors = parsed.error_by_keywords;
-    for (var key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        var val = obj[key];
-        entries.push({ "label" : key, "value" : val, "color": "008ee4", "stepSkipped": false, "appliedSmartLabel": true });
-        entries2.push({ "label" : key, "value" : val});
-      }
-    }
-    for (var key in key_errors) {
-      var val = key_errors[key];
-      keys.push({ "label" : key, "value" : val });
-    }
-  }
-});
-FusionCharts.ready(function() {
-  var chart0 = new FusionCharts({
-    "type": "column2d",
-    "renderAt": "chartContainer0",
-    "width": "100%",
-    "height": "100%",
-    "dataFormat": "json",
-    "dataSource": {
-      "chart": {
-        "caption": "Error by keywords - Column",
-        "xAxisName": "Keywords",
-        "yAxisName": "# of Errors",
-        "theme": "fint",
-        "exportEnabled": "1",
-        "exportTargetWindow": "_self",
-        "exportFileName": "keyword_analytics"
-      },
-      "data": keys
-    }
-  });
-  chart0.render();
-})
-FusionCharts.ready(function() {
-  var chart1 = new FusionCharts({
-    "type": "line",
-    "renderAt": "chartContainer1",
-    "width": "100%",
-    "height": "75%",
-    "dataFormat": "json",
-    "dataSource": {
-      "chart": {
-        "caption": "Error by dates - Line",
-        "yAxisName": "# of Errors",
-        "showalternatehgridcolor": "0",
-        "plotbordercolor": "008ee4",
-        "plotborderthickness": "3",
-        "showvalues": "0",
-        "divlinecolor": "CCCCCC",
-        "showcanvasborder": "0",
-        "tooltipbgcolor": "00396d",
-        "tooltipcolor": "FFFFFF",
-        "tooltipbordercolor": "00396d",
-        "numdivlines": "2",
-        "yaxisvaluespadding": "20",
-        "anchorbgcolor": "008ee4",
-        "anchorborderthickness": "0",
-        "showshadow": "1",
-        "anchorradius": "4",
-        "chartrightmargin": "25",
-        "canvasborderalpha": "0",
-        "showborder": "0",
-        "theme": "fint",
-        "exportEnabled": "1",
-        "exportTargetWindow": "_self",
-        "exportFileName": "keyword_analytics"
-      },
-      "data" : entries
-    }
-  });
-  chart1.render();
-})
-FusionCharts.ready(function() {
-  var chart2 = new FusionCharts({
-    "type": "pie3d",
-    "renderAt": "chartContainer2",
-    "width": "100%",
-    "height": "45%",
-    "dataFormat": "json",
-    "dataSource": {
-      "chart": {
-        "caption": "Error by keywords - Pie",
-        "startingangle": "120",
-        "showlabels": "0",
-        "showlegend": "1",
-        "enablemultislicing": "0",
-        "slicingdistance": "15",
-        "showpercentvalues": "1",
-        "showpercentintooltip": "0",
-        "plottooltext": "Keywords : $label # of Errors : $datavalue",
-        "theme": "fint",
-        "exportEnabled": "1",
-        "exportTargetWindow": "_self",
-        "exportFileName": "keyword_analytics"
-      },
-      "data": keys
-    }
-  });
-  chart2.render();
-})
-FusionCharts.ready(function() {
-  var chart3 = new FusionCharts({
-    "type": "pie3d",
-    "renderAt": "chartContainer3",
-    "width": "100%",
-    "height": "30%",
-    "dataFormat": "json",
-    "dataSource": {
-      "chart": {
-        "caption": "Error by dates - Pie",
-        "startingangle": "120",
-        "showlabels": "0",
-        "showlegend": "1",
-        "enablemultislicing": "0",
-        "slicingdistance": "15",
-        "showpercentvalues": "1",
-        "showpercentintooltip": "0",
-        "plottooltext": "Dates : $label # of Errors : $datavalue",
-        "theme": "fint",
-        "exportEnabled": "1",
-        "exportTargetWindow": "_self",
-        "exportFileName": "keyword_analytics"
-      },
-      "data": entries2
-    }
-  });
-  chart3.render();
-})
-FusionCharts.ready(function() {
-  var chart4 = new FusionCharts({
-    "type": "column2d",
-    "renderAt": "chartContainer4",
-    "width": "100%",
-    "height": "24%",
-    "dataFormat": "json",
-    "dataSource": {
-      "chart": {
-        "caption": "Error by dates - Column",
-        "xAxisName": "Dates",
-        "yAxisName": "# of Errors",
-        "theme": "fint",
-        "exportEnabled": "1",
-        "exportTargetWindow": "_self",
-        "exportFileName": "keyword_analytics"
-      },
-      "data": entries2
-    }
-  });
-  chart4.render();
-})
-
-window.onscroll = function() {scrollFunction()};
-
-function scrollFunction() {
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        document.getElementById("myBtn").style.display = "block";
-    } else {
-        document.getElementById("myBtn").style.display = "none";
-    }
-}
-
-// When the user clicks on the button, scroll to the top of the document
-function topFunction() {
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-}
-</script>
+	<table align="center" width="80%" height="100%">
+		<tr> 
+			<th align="left">
+				<div id="userInfo">
+					<table>
+						<style> 
+							th { text-align: left;}
+							td { text-align: left; padding-left: 10px} 
+						</style>
+						<tr>
+							<th><h4>Number of events: </h4></th>
+							<td><h4 style="font-weight: normal" id="num_events"></h3></td>
+						</tr>
+						<tr>
+							<th><h4>Events contain keywords: </h4></th>
+							<td><h4 style="font-weight: normal" id="occurences"></h3></td> 
+						</tr>
+						<tr>
+							<th><h4>Keywords occurence rate: <h4></th>
+							<td><h4 style="font-weight: normal" id="rate"></h4></td>
+						</tr>
+					</table>
+				</div>  
+			</th>
+			<td style="text-align: right" > 
+				<div id="chartContainer0"></div>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				<div id="userInput" width="800px" height="600px">
+				</div>
+			</th>
+			<td style="text-align: right">
+				<div id="chartContainer1"></div>
+			</td>
+		</tr>
+	</table>
+	{% load static %}
+	<script type="text/javascript" src="{% static "fusioncharts/fusioncharts.js" %}"></script>
+	<script type="text/javascript" src="{% static "fusioncharts/themes/fusioncharts.theme.fint.js" %}"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript">
+		var entries = [];
+		var keys = [];
+		var entries2 = [];
+		$.ajax({
+			  async: true,
+			  type: 'GET',
+			  url: "/api/error_analytics/{{ log_name }}",
+			  success: function(data) {
+			    var parsed = JSON.parse(data);
+			    var obj = parsed.error_by_dates;
+			    var key_errors = parsed.error_by_keywords;
+			    for (var key in obj) {
+			      if (obj.hasOwnProperty(key)) {
+			        var val = obj[key];
+			        entries.push({ "label" : key, "value" : val, "color": "008ee4", "appliedSmartLabel": true });
+			      }
+			    }
+			    count = 0;
+			    for (var key in key_errors) {
+			      var val = key_errors[key];
+			      if (val == 0) count++;
+			      keys.push({ "label" : key, "value" : val });
+			   	}
+			   	if (count == keys.length)
+			   		keys = null;
+			    graph_line_chart(entries);
+			    graph_bar_chart(keys);
+			    num_events.innerHTML = parsed.total_entries;
+			    occurences.innerHTML = parsed.num_error;
+			    rate.innerHTML = parsed.error_rate + "%";
+			}
+		});
+		window.onscroll = function() {scrollFunction()};
+	</script>
 {% endblock %}

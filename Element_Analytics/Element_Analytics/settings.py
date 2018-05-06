@@ -16,9 +16,9 @@ from _socket import gethostbyname
 
 
 def mkpath(path):
-     """Make path non-recursively"""
-     if not os.path.exists(path):
-          os.mkdir(path)
+    """Make path non-recursively"""
+    if not os.path.exists(path):
+        os.mkdir(path)
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -52,7 +52,7 @@ SECRET_KEY = 'm**ps0=!eqvbnop5d=%!mo(l(^fox1$^_h3q_^u!3gihuy0@ea'
 DEBUG = True
 
 # Allow hosts from local area network to test our app
-from socket import gethostname
+# from socket import gethostname
 # ALLOWED_HOSTS = [gethostname(), gethostbyname(gethostname()), ]
 ALLOWED_HOSTS = [ '*' ]
 

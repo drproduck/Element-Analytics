@@ -10,6 +10,7 @@
         <style>
         	th { padding: 10px; vertical-align: top; text-align: right;}
         	td { padding: 10px; text-align: left; }
+        	span { font-size: small; }
         </style>
        	{{ form.as_table }}
         </table>
@@ -46,9 +47,20 @@
     {% if user.logfile_set.all %}
         <p>Your files are here:</p>
         <p><b>Click on the file to view the analytics!</b></p>
+        <table align="center">
         {% for log in user.logfile_set.all %}
-            <p><a href= "/analytics/{{log.log_name}}">{{ log.log_name }}</a></p>
+        	<tr id="{{ log.log_name }}">
+        		<th style="text-align: left; padding: 10px">
+            		<label>{{ log.log_name }}</label>
+            	</th>
+            	<td style="text-align: right; padding: 10px">
+            		<button onclick="window.location.href='/analytics/{{ log.log_name }}'">Analyze</button>
+            		<button onclick="window.location.href='/api/download/{{ log.log_name }}'">Download CSV</button>
+            		<button onclick="delete_file('{{ log.log_name }}')">Delete</button>	
+            	</td>
+            </tr>
         {% endfor %}
+        </table>
     {% else %}
         <p>You currently have no uploaded files</p>
     {% endif %}
