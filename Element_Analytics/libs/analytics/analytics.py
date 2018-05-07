@@ -58,7 +58,7 @@ def error_analytics(dataframe):
     res_dict['error_by_keywords'] = count_error_occurences(result)
     res_dict['use_rate'] = (res_dict['num_use'] / res_dict['total_entries']) * 100
     res_dict['use_cases'] = count_use_cases(result_use)
-    err_dates = result.groupby(pd.TimeGrouper(key='date', freq='H')).size()
+    err_dates = result.groupby(pd.Grouper(key='date', freq='H')).size()
     err_dict = {}
     for name in err_dates.index:
         err_dict[name.ctime()] = err_dates.loc[name]
