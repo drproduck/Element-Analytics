@@ -354,7 +354,7 @@
 	  	function init() {
 	    	window.matchMedia("(max-width: 600px)").addListener(hitMQ);
 	 	}
-	
+
 		function myFunction() {
 			var x = document.getElementById("myTopnav");
 			if (x.className === "topnav") {
@@ -363,7 +363,7 @@
 		      	x.className = "topnav";
 		    }
 		}
-	  
+
 		function delete_file(log_name) {
 			var xhttp = new XMLHttpRequest();
 			xhttp.open("GET", "{% url 'api:delete' %}?file=" + log_name, true);
@@ -373,17 +373,19 @@
 				return;
 			elem.innerHTML = "";
 		}
-		
+
 		function show_analytics(data) {
 			var parsed = JSON.parse(data);
 				var obj = parsed.error_by_dates;
 				var key_errors = parsed.error_by_keywords;
+        var use_cases = parsed.use_cases;
 				for (var key in obj) {
 					if (obj.hasOwnProperty(key)) {
 						var val = obj[key];
 						entries.push({ "label" : key, "value" : val, "color": "008ee4", "appliedSmartLabel": true });
 					}
 				}
+
 				count = 0;
 				for (var key in key_errors) {
 					var val = key_errors[key];
@@ -392,13 +394,27 @@
 				}
 				if (count == keys.length)
 					keys = null;
+
+        count_use = 0;
+  				for (var key in use_cases) {
+  					var val = use_cases[key];
+  					if (val == 0) count_use++;
+  						keys_use.push({ "label" : key, "value" : val });
+  				}
+  				if (count_use == keys_use.length)
+  					keys_use = null;
+
 				graph_line_chart(entries);
 				graph_bar_chart(keys);
+        graph_bar_chart_use(keys_use);
+
 				num_events.innerHTML = parsed.total_entries;
 				occurences.innerHTML = parsed.num_error;
 				rate.innerHTML = parsed.error_rate + "%";
+        occurences_use.innerHTML = parsed.num_use;
+				rate_use.innerHTML = parsed.use_rate + "%";
 		}
-		
+
 		function graph_line_chart(entries) {
 			FusionCharts.ready(function() {
 	  		var chart1 = new FusionCharts({
@@ -438,7 +454,7 @@
 	  		chart1.render();
 		})
 		}
-		
+
 		function graph_bar_chart(data) {
 			FusionCharts.ready(function() {
 		  		var chart0 = new FusionCharts({
@@ -464,7 +480,33 @@
 	  			chart0.render();
 			})
 		}
-		
+
+    function graph_bar_chart_use(data) {
+			FusionCharts.ready(function() {
+		  		var chart2 = new FusionCharts({
+			    	"type": "column2d",
+			    	"renderAt": "chartContainer2",
+			    	"width": "800px",
+			    	"height": "400px",
+			    	"dataFormat": "json",
+			    	"dataSource": {
+				      	"chart": {
+				      		"bgAlpha": "10",
+				        	"caption": "Use Cases Occurence",
+				        	"xAxisName": "Usage",
+				        	"yAxisName": "Appearance",
+				        	"theme": "fint",
+				        	"exportEnabled": "1",
+				        	"exportTargetWindow": "_self",
+				        	"exportFileName": "usage_analytics"
+				      	},
+				      	"data": keys_use
+			    	}
+		  		});
+	  			chart2.render();
+			})
+		}
+
 		function graph_doghnut_chart(data, chartLabel, destination, radius) {
 			FusionCharts.ready(function() {
 				var chart = new FusionCharts({
@@ -491,7 +533,7 @@
 	  			chart.render();
 			})
 		}
-		
+
 		function scrollFunction() {
 		    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
 		        document.getElementById("myBtn").style.display = "block";
@@ -499,13 +541,13 @@
 		        document.getElementById("myBtn").style.display = "none";
 		    }
 		}
-		
+
 		// When the user clicks on the button, scroll to the top of the document
 		function topFunction() {
 		    document.body.scrollTop = 0; // For Safari
 		    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 		}
-		
+
 	  	init();
 
 	</script>

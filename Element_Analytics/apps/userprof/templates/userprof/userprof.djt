@@ -36,5 +36,5 @@
 
 {% block section3 %}
 <button class="btn" type="button" onclick="location.href='/password'"><span>Change Password</span></button>
-<button class="btn" type="button" onclick="location.href='/edit'"><span>Edit User Information</span></button>
+<button class="btn orange" type="button" onclick="location.href='/edit'"><span>Edit User Information</span></button>
 {% endblock %}

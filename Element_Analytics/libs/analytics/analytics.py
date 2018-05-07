@@ -23,22 +23,41 @@ COMMON_ERROR_KEYS = [
      '505 '
 ]
 
+COMMON_USE_CASES = [
+     'DockerServerController',
+     'DockerVolumeController',
+     'ProvisionController',
+     'BlueprintController',
+     'ProcessorImpl',
+     'MessageHandler',
+     'CollectorService',
+     'UpdateHandler',
+     'SolrCore',
+     'LogUpdateProcessor',
+     'SolrIndexSearcher'
+]
+
 
 def build_regex(key_list):
     res = "|".join(key_list)
     return re.compile(res)
 
-    
+
 def error_analytics(dataframe):
     """ Return a JSON object contains insight
     about the errors of this log file"""
     res_dict = {}
     regex = build_regex(COMMON_ERROR_KEYS)
+    regex_use = build_regex(COMMON_USE_CASES)
     result = dataframe[dataframe['message'].str.contains(pat=regex) == True]
+    result_use = dataframe[dataframe['metainfo'].str.contains(pat=regex_use) == True]
     res_dict['total_entries'] = len(dataframe.index)
     res_dict['num_error'] = len(result.index)
+    res_dict['num_use'] = len(result_use.index)
     res_dict['error_rate'] = (res_dict['num_error'] / res_dict['total_entries']) * 100
     res_dict['error_by_keywords'] = count_error_occurences(result)
+    res_dict['use_rate'] = (res_dict['num_use'] / res_dict['total_entries']) * 100
+    res_dict['use_cases'] = count_use_cases(result_use)
     err_dates = result.groupby(pd.Grouper(key='date', freq='H')).size()
     err_dict = {}
     for name in err_dates.index:
@@ -65,6 +84,12 @@ def count_error_occurences(dataframe):
             error_dict[key] = row
     return error_dict
 
+def count_use_cases(dataframe):
+    use_dict = {}
+    for key in COMMON_USE_CASES:
+        for row in dataframe[(dataframe.metainfo.str.contains(key))].count():
+            use_dict[key] = row
+    return use_dict
 
 class encoder(json.JSONEncoder):
     """ Customized encoder to encode numpy types"""
@@ -84,4 +109,3 @@ class encoder(json.JSONEncoder):
 # elapsed_time1 = time.process_time() - elapsed_time
 # print("read speed: " + str(elapsed_time))
 # print("processing speed: " + str(elapsed_time1))
-

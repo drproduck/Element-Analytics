@@ -10,13 +10,13 @@
 {% endblock %}
 {% block section2 %}
 	<table align="center" width="80%" height="100%">
-		<tr> 
+		<tr>
 			<th align="left">
 				<div id="userInfo">
 					<table>
-						<style> 
+						<style>
 							th { text-align: left;}
-							td { text-align: left; padding-left: 10px} 
+							td { text-align: left; padding-left: 10px}
 						</style>
 						<tr>
 							<th><h4>Number of events: </h4></th>
@@ -24,16 +24,24 @@
 						</tr>
 						<tr>
 							<th><h4>Events contain keywords: </h4></th>
-							<td><h4 style="font-weight: normal" id="occurences"></h3></td> 
+							<td><h4 style="font-weight: normal" id="occurences"></h3></td>
 						</tr>
 						<tr>
 							<th><h4>Keywords occurence rate: <h4></th>
 							<td><h4 style="font-weight: normal" id="rate"></h4></td>
 						</tr>
+						<tr>
+							<th><h4>Events contain use cases: <h4></th>
+							<td><h4 style="font-weight: normal" id="occurences_use"></h4></td>
+						</tr>
+						<tr>
+							<th><h4>Usage occurence rate: <h4></th>
+							<td><h4 style="font-weight: normal" id="rate_use"></h4></td>
+						</tr>
 					</table>
-				</div>  
+				</div>
 			</th>
-			<td style="text-align: right" > 
+			<td style="text-align: right" >
 				<div id="chartContainer0"></div>
 			</td>
 		</tr>
@@ -46,12 +54,21 @@
 				<div id="chartContainer1"></div>
 			</td>
 		</tr>
+		<tr>
+			<th>
+				<div id="userInput" width="800px" height="600px">
+				</div>
+			</th>
+			<td style="text-align: right">
+				<div id="chartContainer2"></div>
+			</td>
+		</tr>
 	</table>
-	
+
 	<script type="text/javascript">
 		var entries = [];
 		var keys = [];
-		var entries2 = [];
+		var keys_use = [];
 		$.ajax({
 			  async: true,
 			  type: 'GET',
@@ -62,4 +79,8 @@
 		});
 		window.onscroll = function() {scrollFunction()};
 	</script>
+{% endblock %}
+
+{% block section3 %}
+<button class="btn orange" type="button" onclick="location.href='/upload'"><span>Return to Upload</span></button>
 {% endblock %}
