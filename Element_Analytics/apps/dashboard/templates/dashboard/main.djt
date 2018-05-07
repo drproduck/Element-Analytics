@@ -11,6 +11,39 @@
 {% endblock %}
 
 {% block section2 %}
+	<table align="center">
+		<tr style="text-align: center">
+			<th>
+				<div id="storage_chart_container"></div>
+			</th>
+			<td>
+				<div id="file_count_chart_container"></div>
+			</td>
+		</tr>
+	</table>
+	<script type="text/javascript">
+		$.ajax({
+			  async: true,
+			  type: 'GET',
+			  url: "/api/user_analytics",
+			  success: function(data) {
+			  	data = JSON.parse(data);
+			  	numLog = [
+			  				{"label" : "Used", "value" : data.num_log}, 
+			  				{"label" : "Remained", "value" : data.num_log_limit - data.num_log }
+			  			];
+			  	storage = [
+			  				{"label" : "Used", "value" : data.storage_used }, 
+			  				{"label" : "Free", "value" : data.storage_limit - data.storage_used}
+			  			];
+			  	graph_doghnut_chart(numLog, "Log Limit", "storage_chart_container" , "100");
+			  	graph_doghnut_chart(storage, "Storage Limit (MB)", "file_count_chart_container", "100");
+			}
+		});
+	</script>
+{% endblock %}
+
+{% block section3 %}
     {% if user.logfile_set.all %}
         <p>Your files are here:</p>
         <table align="center">

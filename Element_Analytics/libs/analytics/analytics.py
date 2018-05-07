@@ -34,7 +34,7 @@ def error_analytics(dataframe):
     about the errors of this log file"""
     res_dict = {}
     regex = build_regex(COMMON_ERROR_KEYS)
-    result = dataframe[dataframe.message.str.contains(pat=regex) == True]
+    result = dataframe[dataframe['message'].str.contains(pat=regex) == True]
     res_dict['total_entries'] = len(dataframe.index)
     res_dict['num_error'] = len(result.index)
     res_dict['error_rate'] = (res_dict['num_error'] / res_dict['total_entries']) * 100
