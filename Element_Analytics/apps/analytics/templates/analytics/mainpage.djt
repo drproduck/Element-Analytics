@@ -47,10 +47,7 @@
 			</td>
 		</tr>
 	</table>
-	{% load static %}
-	<script type="text/javascript" src="{% static "fusioncharts/fusioncharts.js" %}"></script>
-	<script type="text/javascript" src="{% static "fusioncharts/themes/fusioncharts.theme.fint.js" %}"></script>
-	<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	
 	<script type="text/javascript">
 		var entries = [];
 		var keys = [];
@@ -60,28 +57,7 @@
 			  type: 'GET',
 			  url: "/api/error_analytics/{{ log_name }}",
 			  success: function(data) {
-			    var parsed = JSON.parse(data);
-			    var obj = parsed.error_by_dates;
-			    var key_errors = parsed.error_by_keywords;
-			    for (var key in obj) {
-			      if (obj.hasOwnProperty(key)) {
-			        var val = obj[key];
-			        entries.push({ "label" : key, "value" : val, "color": "008ee4", "appliedSmartLabel": true });
-			      }
-			    }
-			    count = 0;
-			    for (var key in key_errors) {
-			      var val = key_errors[key];
-			      if (val == 0) count++;
-			      keys.push({ "label" : key, "value" : val });
-			   	}
-			   	if (count == keys.length)
-			   		keys = null;
-			    graph_line_chart(entries);
-			    graph_bar_chart(keys);
-			    num_events.innerHTML = parsed.total_entries;
-			    occurences.innerHTML = parsed.num_error;
-			    rate.innerHTML = parsed.error_rate + "%";
+			  	show_analytics(data);
 			}
 		});
 		window.onscroll = function() {scrollFunction()};

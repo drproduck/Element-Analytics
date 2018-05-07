@@ -345,6 +345,170 @@
 
   </style>
   <!-- // [END style] -->
+  <!-- Script -->
+  	{% load static %}
+	<script type="text/javascript" src="{% static "fusioncharts/fusioncharts.js" %}"></script>
+	<script type="text/javascript" src="{% static "fusioncharts/themes/fusioncharts.theme.fint.js" %}"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript">
+	  	function init() {
+	    	window.matchMedia("(max-width: 600px)").addListener(hitMQ);
+	 	}
+	
+		function myFunction() {
+			var x = document.getElementById("myTopnav");
+			if (x.className === "topnav") {
+				x.className += " responsive";
+			} else {
+		      	x.className = "topnav";
+		    }
+		}
+	  
+		function delete_file(log_name) {
+			var xhttp = new XMLHttpRequest();
+			xhttp.open("GET", "{% url 'api:delete' %}?file=" + log_name, true);
+			xhttp.send()
+			elem = document.getElementById(log_name);
+			if (!elem)
+				return;
+			elem.innerHTML = "";
+		}
+		
+		function show_analytics(data) {
+			var parsed = JSON.parse(data);
+				var obj = parsed.error_by_dates;
+				var key_errors = parsed.error_by_keywords;
+				for (var key in obj) {
+					if (obj.hasOwnProperty(key)) {
+						var val = obj[key];
+						entries.push({ "label" : key, "value" : val, "color": "008ee4", "appliedSmartLabel": true });
+					}
+				}
+				count = 0;
+				for (var key in key_errors) {
+					var val = key_errors[key];
+					if (val == 0) count++;
+						keys.push({ "label" : key, "value" : val });
+				}
+				if (count == keys.length)
+					keys = null;
+				graph_line_chart(entries);
+				graph_bar_chart(keys);
+				num_events.innerHTML = parsed.total_entries;
+				occurences.innerHTML = parsed.num_error;
+				rate.innerHTML = parsed.error_rate + "%";
+		}
+		
+		function graph_line_chart(entries) {
+			FusionCharts.ready(function() {
+	  		var chart1 = new FusionCharts({
+		    	"type": "line",
+		    	"renderAt": "chartContainer1",
+		    	"width": "800px",
+		    	"height": "400px",
+		    	"dataFormat": "json",
+		    	"dataSource": {
+		      		"chart": {
+		        		"caption": "Occurences of Keywords Over Time Period",
+		        		"yAxisName": "Appearance",
+		        		"xAxisName": "Time",
+		        		"showalternatehgridcolor": "0",
+		        		"plotbordercolor": "008ee4",
+		        		"plotborderthickness": "3",
+		        		"showvalues": "0",
+		        		"exportEnabled": "1",
+				        "exportTargetWindow": "_self",
+				        "exportFileName": "keyword_analytics",
+		        		"divlinecolor": "CCCCCC",
+		        		"showcanvasborder": "0",
+			        	"tooltipbordercolor": "00396d",
+			        	"numdivlines": "2",
+				        "yaxisvaluespadding": "20",
+				        "anchorbgcolor": "008ee4",
+				        "anchorborderthickness": "0",
+				        "anchorradius": "4",
+				        "chartrightmargin": "25",
+				        "canvasborderalpha": "0",
+				        "showborder": "0",
+				        "theme": "fint",
+			      	},
+		      	"data" : entries
+		    	}
+	 		});
+	  		chart1.render();
+		})
+		}
+		
+		function graph_bar_chart(data) {
+			FusionCharts.ready(function() {
+		  		var chart0 = new FusionCharts({
+			    	"type": "column2d",
+			    	"renderAt": "chartContainer0",
+			    	"width": "800px",
+			    	"height": "400px",
+			    	"dataFormat": "json",
+			    	"dataSource": {
+				      	"chart": {
+				      		"bgAlpha": "10",
+				        	"caption": "Keyword Occurence",
+				        	"xAxisName": "Keyword",
+				        	"yAxisName": "Appearance",
+				        	"theme": "fint",
+				        	"exportEnabled": "1",
+				        	"exportTargetWindow": "_self",
+				        	"exportFileName": "keyword_analytics"
+				      	},
+				      	"data": keys
+			    	}
+		  		});
+	  			chart0.render();
+			})
+		}
+		
+		function graph_doghnut_chart(data, chartLabel, destination, radius) {
+			FusionCharts.ready(function() {
+				var chart = new FusionCharts({
+			    	"type": "doughnut2d",
+			    	"renderAt": destination,
+			    	"dataFormat": "json",
+			    	"dataSource": {
+				      	"chart": {
+				        	"theme": "fint",
+				        	"showBorder": "0",
+				        	"use3DLighting": "0",
+				        	"showLabels": "0",
+				        	"defaultCenterLabel": chartLabel,
+				        	"centerLabel": "$label: $value",
+				        	"centerLabelBold": "1",
+				        	"showLegend": "0",
+				        	"decimals": "1",
+				        	"exportEnabled": "0",
+				        	"pieRadius" : radius
+				      	},
+				      	"data": data
+			    	}
+		  		});
+	  			chart.render();
+			})
+		}
+		
+		function scrollFunction() {
+		    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+		        document.getElementById("myBtn").style.display = "block";
+		    } else {
+		        document.getElementById("myBtn").style.display = "none";
+		    }
+		}
+		
+		// When the user clicks on the button, scroll to the top of the document
+		function topFunction() {
+		    document.body.scrollTop = 0; // For Safari
+		    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+		}
+		
+	  	init();
+
+	</script>
 </head>
 <body>
 
@@ -384,110 +548,6 @@
     </div>
   </footer>
   <!-- // [END footer] -->
-
-  <script type="text/javascript">
-  	function init() {
-    	window.matchMedia("(max-width: 600px)").addListener(hitMQ);
- 	}
-
-	function myFunction() {
-		var x = document.getElementById("myTopnav");
-		if (x.className === "topnav") {
-			x.className += " responsive";
-		} else {
-	      	x.className = "topnav";
-	    }
-	}
   
-	function delete_file(log_name) {
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "{% url 'api:delete' %}?file=" + log_name, true);
-		xhttp.send()
-		elem = document.getElementById(log_name);
-		if (!elem)
-			return;
-		elem.innerHTML = "";
-	}
-	
-	function graph_line_chart(entries) {
-		FusionCharts.ready(function() {
-  		var chart1 = new FusionCharts({
-	    	"type": "line",
-	    	"renderAt": "chartContainer1",
-	    	"width": "800px",
-	    	"height": "400px",
-	    	"dataFormat": "json",
-	    	"dataSource": {
-	      		"chart": {
-	        		"caption": "Occurences of Keywords Over Time Period",
-	        		"yAxisName": "Appearance",
-	        		"xAxisName": "Time",
-	        		"showalternatehgridcolor": "0",
-	        		"plotbordercolor": "008ee4",
-	        		"plotborderthickness": "3",
-	        		"showvalues": "0",
-	        		"divlinecolor": "CCCCCC",
-	        		"showcanvasborder": "0",
-		        	"tooltipbordercolor": "00396d",
-		        	"numdivlines": "2",
-			        "yaxisvaluespadding": "20",
-			        "anchorbgcolor": "008ee4",
-			        "anchorborderthickness": "0",
-			        "anchorradius": "4",
-			        "chartrightmargin": "25",
-			        "canvasborderalpha": "0",
-			        "showborder": "0",
-			        "theme": "fint",
-		      	},
-	      	"data" : entries
-	    	}
- 		});
-  		chart1.render();
-	})
-	}
-	
-	function graph_bar_chart(data) {
-		FusionCharts.ready(function() {
-	  		var chart0 = new FusionCharts({
-		    	"type": "column2d",
-		    	"renderAt": "chartContainer0",
-		    	"width": "800px",
-		    	"height": "400px",
-		    	"dataFormat": "json",
-		    	"dataSource": {
-			      	"chart": {
-			      		"bgAlpha": "10",
-			        	"caption": "Keyword Occurence",
-			        	"xAxisName": "Keyword",
-			        	"yAxisName": "Appearance",
-			        	"theme": "fint",
-			        	"exportEnabled": "1",
-			        	"exportTargetWindow": "_self",
-			        	"exportFileName": "keyword_analytics"
-			      	},
-			      	"data": keys
-		    	}
-	  		});
-  			chart0.render();
-		})
-	}
-	
-	function scrollFunction() {
-	    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-	        document.getElementById("myBtn").style.display = "block";
-	    } else {
-	        document.getElementById("myBtn").style.display = "none";
-	    }
-	}
-	
-	// When the user clicks on the button, scroll to the top of the document
-	function topFunction() {
-	    document.body.scrollTop = 0; // For Safari
-	    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-	}
-	
-  	init();
-
-</script>
 </body>
 </html>
