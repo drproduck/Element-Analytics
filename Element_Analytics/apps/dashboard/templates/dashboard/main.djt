@@ -46,7 +46,6 @@
 {% block section3 %}
     {% if user.logfile_set.all %}
         <p>Your files are here:</p>
-        <p><b>Click on the file to view the analytics!</b></p>
         <table align="center">
         {% for log in user.logfile_set.all %}
         	<tr id="{{ log.log_name }}">
@@ -54,9 +53,9 @@
             		<label>{{ log.log_name }}</label>
             	</th>
             	<td style="text-align: right; padding: 10px">
-            		<button onclick="window.location.href='/analytics/{{ log.log_name }}'">Analyze</button>
-            		<button onclick="window.location.href='/api/download/{{ log.log_name }}'">Download CSV</button>
-            		<button onclick="delete_file('{{ log.log_name }}')">Delete</button>
+            		<button class="btn blue" onclick="window.location.href='/analytics/{{ log.log_name }}'"><span>Analyze</span></button>
+            		<button class="btn" onclick="window.location.href='/api/download/{{ log.log_name }}'"><span>Download CSV</span></button>
+            		<button class="btn red" onclick="delete_file('{{ log.log_name }}')"><span>Delete</span></button>
             	</td>
             </tr>
         {% endfor %}
