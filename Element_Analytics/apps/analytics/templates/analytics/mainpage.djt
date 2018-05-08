@@ -13,30 +13,22 @@
 		<tr>
 			<th align="left">
 				<div id="userInfo">
-					<table>
+					<table padding="10px">
 						<style>
-							th { text-align: left;}
-							td { text-align: left; padding-left: 10px}
+							th { vertical-align: center; text-align: left;  }
+							td { text-align: left; padding-left: 10px; }
 						</style>
 						<tr>
 							<th><h4>Number of events: </h4></th>
-							<td><h4 style="font-weight: normal" id="num_events"></h3></td>
+							<td><h4 style="font-weight: normal" id="num_events"></h4></td>
 						</tr>
 						<tr>
 							<th><h4>Events contain keywords: </h4></th>
-							<td><h4 style="font-weight: normal" id="occurences"></h3></td>
+							<td><h4 style="font-weight: normal" id="occurences"></h4></td>
 						</tr>
 						<tr>
-							<th><h4>Keywords occurence rate: <h4></th>
+							<th><h4>Keywords occurence rate: </h4></th>
 							<td><h4 style="font-weight: normal" id="rate"></h4></td>
-						</tr>
-						<tr>
-							<th><h4>Events contain use cases: <h4></th>
-							<td><h4 style="font-weight: normal" id="occurences_use"></h4></td>
-						</tr>
-						<tr>
-							<th><h4>Usage occurence rate: <h4></th>
-							<td><h4 style="font-weight: normal" id="rate_use"></h4></td>
 						</tr>
 					</table>
 				</div>
@@ -48,36 +40,91 @@
 		<tr>
 			<th>
 				<div id="userInput" width="800px" height="600px">
+					<table>
+						<style>
+							th { text-align: left; vertical-align: top;}
+							td { text-align: left; padding-left: 10px; padding-bottom: 10px;}
+						</style>
+						<tr>
+							<th>
+								<h4> Search Field: </h4>
+							</th>
+							<td>
+								<select id="search_field">
+									<option value="message">Event Message (Error Analytics)</option>
+									<option value="metainfo">Event (Usage Analytics)</option>
+  									<option value="date">Date</option>
+  									<option value="sv_name">Server</option>
+  									<option value="type">Type</option>
+								</select> 
+							</td>
+						</tr>
+						<tr>
+							<th>
+								<label> Keywords (Regex) : </label> <br>
+								<label style="font-size: small; font-weight: normal"> (Separated by line break) </label>
+							</th>
+							<td>
+								<textarea id="keywords" style="resize: none;"  cols="40" rows="10"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<th>
+							</th>
+							<td>
+								<button id="submit_regex" onclick="apply_regex()">Graph</button>
+								<button id="clear_area" onclick="clear_keywords()">Clear</button>
+								<button id="show_text">Show Result</button>
+							</td>
+						</tr>
+					</table>
 				</div>
 			</th>
 			<td style="text-align: right">
 				<div id="chartContainer1"></div>
 			</td>
 		</tr>
-		<tr>
-			<th>
-				<div id="userInput" width="800px" height="600px">
-				</div>
-			</th>
-			<td style="text-align: right">
-				<div id="chartContainer2"></div>
-			</td>
-		</tr>
 	</table>
 
 	<script type="text/javascript">
-		var entries = [];
-		var keys = [];
-		var keys_use = [];
+		var type = "{{ type }}";
+		if (type == "usage")
+			url = "/api/usage_analytics/{{ log_name }}";
+		else if (type == "error")
+			url = "/api/error_analytics/{{ log_name }}";
 		$.ajax({
-			  async: true,
-			  type: 'GET',
-			  url: "/api/error_analytics/{{ log_name }}",
-			  success: function(data) {
-			  	show_analytics(data);
+			async: true,
+			type: 'GET',
+			url: url,
+			success: function(data) {
+				show_analytics(data);
 			}
 		});
 		window.onscroll = function() {scrollFunction()};
+		
+		function apply_regex() {
+	    	var data = $('#keywords').val();
+			var search = $('#search_field').val();
+			$.ajaxSetup({
+        			headers: { "X-CSRFToken": "{{ csrf_token }}" }
+   			});
+   			
+			$.ajax({
+				async: true,
+    			type: "POST",
+    			url: "/api/gen_analytics/{{ log_name }}/",
+    			data: { keywords : data, search_field : search },
+    			success: function(data) {
+    				if (data != 0)
+    					show_analytics(data);
+    			}
+			});
+		}
+		
+		function clear_keywords() {
+			keywords.value = "";
+		};
+		
 	</script>
 {% endblock %}
 

@@ -23,6 +23,7 @@ COMMON_ERROR_KEYS = [
      '505 '
 ]
 
+
 COMMON_USE_CASES = [
      'DockerServerController',
      'DockerVolumeController',
@@ -43,27 +44,51 @@ def build_regex(key_list):
     return re.compile(res)
 
 
-def error_analytics(dataframe):
-    """ Return a JSON object contains insight
-    about the errors of this log file"""
+def analytics(dataframe, keywords, search_field):
+    """ Helper function that returns result
+    according to keywords and search field"""
+    if not keywords:
+        keywords = COMMON_ERROR_KEYS
     res_dict = {}
-    regex = build_regex(COMMON_ERROR_KEYS)
-    regex_use = build_regex(COMMON_USE_CASES)
-    result = dataframe[dataframe['message'].str.contains(pat=regex) == True]
-    result_use = dataframe[dataframe['metainfo'].str.contains(pat=regex_use) == True]
+    regex = build_regex(keywords)
+    result = dataframe[dataframe[search_field].str.contains(pat=regex) == True]
     res_dict['total_entries'] = len(dataframe.index)
     res_dict['num_error'] = len(result.index)
-    res_dict['num_use'] = len(result_use.index)
     res_dict['error_rate'] = (res_dict['num_error'] / res_dict['total_entries']) * 100
-    res_dict['error_by_keywords'] = count_error_occurences(result)
-    res_dict['use_rate'] = (res_dict['num_use'] / res_dict['total_entries']) * 100
-    res_dict['use_cases'] = count_use_cases(result_use)
+    res_dict['error_by_keywords'] = count_occurences(result, keywords, search_field)
     err_dates = result.groupby(pd.Grouper(key='date', freq='H')).size()
     err_dict = {}
     for name in err_dates.index:
         err_dict[name.ctime()] = err_dates.loc[name]
     res_dict['error_by_dates'] = err_dict
     return json.dumps(res_dict, cls=encoder, indent=4, sort_keys=True)
+
+
+def general_analytics(dataframe, keywords=None, search_field=None):
+    """ General case for analytics """
+    if not keywords:
+        print("WARNING: Keywords list is empty, set to empty string")
+        keywords = ''
+    if not search_field:
+        print("WARNING: search field is empty, set to date")
+        search_field = 'date'
+    return analytics(dataframe, keywords, search_field)
+      
+  
+def error_analytics(dataframe, keywords=None, search_field='message'):
+    """ Return a JSON object contains insight
+    about the errors of this log file"""
+    if not keywords:
+        keywords = COMMON_ERROR_KEYS
+    return analytics(dataframe, keywords, search_field)
+
+
+def usercase_analytics(dataframe, keywords=None, search_field='metainfo'):
+    """ Return a JSON object contains insight
+    about the use cases of this log file"""
+    if not keywords:
+        keywords = COMMON_USE_CASES
+    return analytics(dataframe, keywords, search_field)
 
 
 def user_analytics(user):
@@ -77,19 +102,12 @@ def user_analytics(user):
     return json.dumps(res_dict, indent=4, sort_keys=True)
 
 
-def count_error_occurences(dataframe):
+def count_occurences(dataframe, keywords, search_field):
     error_dict = {}
-    for key in COMMON_ERROR_KEYS:
-        for row in dataframe[(dataframe.message.str.contains(key))].count():
-            error_dict[key] = row
+    for key in keywords:
+        error_dict[key] = len(dataframe[(dataframe[search_field].str.contains(key))])
     return error_dict
 
-def count_use_cases(dataframe):
-    use_dict = {}
-    for key in COMMON_USE_CASES:
-        for row in dataframe[(dataframe.metainfo.str.contains(key))].count():
-            use_dict[key] = row
-    return use_dict
 
 class encoder(json.JSONEncoder):
     """ Customized encoder to encode numpy types"""
