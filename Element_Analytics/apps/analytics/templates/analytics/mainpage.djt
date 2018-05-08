@@ -65,15 +65,15 @@
 								<label style="font-size: small; font-weight: normal"> (Separated by line break) </label>
 							</th>
 							<td>
-								<textarea style="resize: none;" id="keywords" cols="40" rows="10"></textarea>
+								<textarea id="keywords" style="resize: none;"  cols="40" rows="10"></textarea>
 							</td>
 						</tr>
 						<tr>
 							<th>
 							</th>
 							<td>
-								<button id="submit_regex">Graph</button>
-								<button id="clear_area">Clear</button>
+								<button id="submit_regex" onclick="apply_regex()">Graph</button>
+								<button id="clear_area" onclick="clear_keywords()">Clear</button>
 								<button id="show_text">Show Result</button>
 							</td>
 						</tr>
@@ -89,21 +89,42 @@
 	<script type="text/javascript">
 		var type = "{{ type }}";
 		if (type == "usage")
-			url = "/api/usage_analytics/{{ log_name }}"
+			url = "/api/usage_analytics/{{ log_name }}";
 		else if (type == "error")
-			url = "/api/error_analytics/{{ log_name }}"
-		var entries = [];
-		var keys = [];
-		var keys_use = [];
+			url = "/api/error_analytics/{{ log_name }}";
 		$.ajax({
-			  async: true,
-			  type: 'GET',
-			  url: url,
-			  success: function(data) {
-			  	show_analytics(data);
+			async: true,
+			type: 'GET',
+			url: url,
+			success: function(data) {
+				show_analytics(data);
 			}
 		});
 		window.onscroll = function() {scrollFunction()};
+		
+		function apply_regex() {
+	    	var data = $('#keywords').val();
+			var search = $('#search_field').val();
+			$.ajaxSetup({
+        			headers: { "X-CSRFToken": "{{ csrf_token }}" }
+   			});
+   			
+			$.ajax({
+				async: true,
+    			type: "POST",
+    			url: "/api/gen_analytics/{{ log_name }}/",
+    			data: { keywords : data, search_field : search },
+    			success: function(data) {
+    				if (data != 0)
+    					show_analytics(data);
+    			}
+			});
+		}
+		
+		function clear_keywords() {
+			keywords.value = "";
+		};
+		
 	</script>
 {% endblock %}
 

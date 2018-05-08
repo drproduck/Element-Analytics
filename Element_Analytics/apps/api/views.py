@@ -7,6 +7,7 @@ import libs.utilities.dbutils as du
 import libs.utilities.pathtools as pt
 import os
 
+
 @login_required
 def validate_request(request, file_name):
     user = request.user
@@ -19,28 +20,49 @@ def validate_request(request, file_name):
 
 
 @login_required
+def analytics(request, file_name):
+    if not validate_request(request, file_name):
+        return HttpResponseForbidden("Content doesn't exist")
+    if request.method == 'POST':
+        sf = request.POST.get('search_field', '')
+        reg = request.POST.get('keywords', '')
+        if not sf or not reg:
+            return HttpResponse("0")
+        dframe = lp.read_log(request.user.username, file_name)
+        json_obj = anal.analytics(dframe, reg.split("\n"), sf)
+        return JsonResponse(json_obj, safe=False)
+    return HttpResponseForbidden("ERROR: Wrong HTTP method. Expected: POST")
+
+
+@login_required
 def error_analytics(request, file_name):
     if not validate_request(request, file_name):
         return HttpResponseForbidden("Content doesn't exist")
-    dframe = lp.read_log(request.user.username, file_name)
-    json_obj = anal.error_analytics(dframe)
-    return JsonResponse(json_obj, safe=False)
+    if request.method == 'GET':
+        dframe = lp.read_log(request.user.username, file_name)
+        json_obj = anal.error_analytics(dframe)
+        return JsonResponse(json_obj, safe=False)
+    return HttpResponseForbidden("ERROR: Wrong HTTP method. Expected: GET")
 
 
 @login_required
 def usage_analytics(request, file_name):
     if not validate_request(request, file_name):
         return HttpResponseForbidden("Content doesn't exist")
-    dframe = lp.read_log(request.user.username, file_name)
-    json_obj = anal.usercase_analytics(dframe)
-    return JsonResponse(json_obj, safe=False)
+    if request.method == 'GET':
+        dframe = lp.read_log(request.user.username, file_name)
+        json_obj = anal.usercase_analytics(dframe)
+        return JsonResponse(json_obj, safe=False)
+    return HttpResponseForbidden("ERROR: Wrong HTTP method. Expected: GET")
 
 
 @login_required
 def user_analytics(request):
     if request.user.is_authenticated:
-        return JsonResponse(anal.user_analytics(request.user), safe=False)
-    return HttpResponseForbidden()
+        if request.method == 'GET':
+            return JsonResponse(anal.user_analytics(request.user), safe=False)
+        return HttpResponseForbidden("ERROR: Wrong HTTP method. Expected: GET")
+    return HttpResponseForbidden("ERROR: User is not authenticated")
 
 
 @login_required

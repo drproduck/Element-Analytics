@@ -367,7 +367,7 @@
 		function delete_file(log_name) {
 			var xhttp = new XMLHttpRequest();
 			xhttp.open("GET", "{% url 'api:delete' %}?file=" + log_name, true);
-			xhttp.send()
+			xhttp.send();
 			elem = document.getElementById(log_name);
 			if (!elem)
 				return;
@@ -375,34 +375,23 @@
 		}
 
 		function show_analytics(data) {
+			var entries = [];
+			var keys = [];
 			var parsed = JSON.parse(data);
 			var obj = parsed.error_by_dates;
 			var key_errors = parsed.error_by_keywords;
         	var use_cases = parsed.use_cases;
-			for (var key in obj) {
+			for (key in obj) {
 				if (obj.hasOwnProperty(key)) {
-					var val = obj[key];
+					val = obj[key];
 					entries.push({ "label" : key, "value" : val, "color": "008ee4", "appliedSmartLabel": true });
 				}
 			}
 
-			count = 0;
-			for (var key in key_errors) {
-				var val = key_errors[key];
-				if (val == 0) count++;
-					keys.push({ "label" : key, "value" : val });
+			for (key in key_errors) {
+				val = key_errors[key];
+				keys.push({ "label" : key, "value" : val });
 			}
-			if (count == keys.length)
-				keys = null;
-
-        	count_use = 0;
-  			for (var key in use_cases) {
-  				var val = use_cases[key];
-  				if (val == 0) count_use++;
-  					keys_use.push({ "label" : key, "value" : val });
-  			}
-  			if (count_use == keys_use.length)
-  				keys_use = null;
 
 			graph_line_chart(entries);
 			graph_bar_chart(keys);
@@ -412,15 +401,16 @@
 			rate.innerHTML = parsed.error_rate + "%";
 		}
 
+
 		function graph_line_chart(entries) {
 			FusionCharts.ready(function() {
-	  		var chart1 = new FusionCharts({
-		    	"type": "line",
-		    	"renderAt": "chartContainer1",
-		    	"width": "800px",
-		    	"height": "400px",
-		    	"dataFormat": "json",
-		    	"dataSource": {
+	  			var chart1 = new FusionCharts({
+		    		"type": "line",
+		    		"renderAt": "chartContainer1",
+		    		"width": "800px",
+		    		"height": "400px",
+		    		"dataFormat": "json",
+		    		"dataSource": {
 		      		"chart": {
 		        		"caption": "Occurences of Keywords Over Time Period",
 		        		"yAxisName": "Appearance",
@@ -445,11 +435,11 @@
 				        "showborder": "0",
 				        "theme": "fint",
 			      	},
-		      	"data" : entries
+		      		"data" : entries
 		    	}
-	 		});
-	  		chart1.render();
-		})
+	 			});
+	  			chart1.render();
+			});
 		}
 
 		function graph_bar_chart(data) {
@@ -461,24 +451,24 @@
 			    	"height": "400px",
 			    	"dataFormat": "json",
 			    	"dataSource": {
-				      	"chart": {
-				      		"bgAlpha": "10",
-				        	"caption": "Keyword Occurence",
-				        	"xAxisName": "Keyword",
-				        	"yAxisName": "Appearance",
-				        	"theme": "fint",
-				        	"exportEnabled": "1",
-				        	"exportTargetWindow": "_self",
-				        	"exportFileName": "keyword_analytics"
-				      	},
-				      	"data": keys
-			    	}
-		  		});
+						"chart": {
+							"bgAlpha": "10",
+							"caption": "Keyword Occurence",
+							"xAxisName": "Keyword",
+			        		"yAxisName": "Appearance",
+			        		"theme": "fint",
+			        		"exportEnabled": "1",
+			        		"exportTargetWindow": "_self",
+			        		"exportFileName": "keyword_analytics"
+			      			},
+						"data": data
+			    		}
+		  			});
 	  			chart0.render();
-			})
+			});
 		}
 
-    function graph_bar_chart_use(data) {
+    	function graph_bar_chart_use(data) {
 			FusionCharts.ready(function() {
 		  		var chart2 = new FusionCharts({
 			    	"type": "column2d",
@@ -501,7 +491,7 @@
 			    	}
 		  		});
 	  			chart2.render();
-			})
+			});
 		}
 
 		function graph_doghnut_chart(data, chartLabel, destination, radius) {
@@ -528,7 +518,7 @@
 			    	}
 		  		});
 	  			chart.render();
-			})
+			});
 		}
 
 		function scrollFunction() {

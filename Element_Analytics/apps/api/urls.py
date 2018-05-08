@@ -6,6 +6,7 @@ app_name = 'api'
 urlpatterns = [
      path('error_analytics/<file_name>/', view.error_analytics),
      path('usage_analytics/<file_name>/', view.usage_analytics),
+     path('gen_analytics/<file_name>/', view.analytics),
      path('user_analytics/', view.user_analytics),
      path('regex_search/<regex>', view.regex_search),
      path('delete/', view.delete, name='delete'),
