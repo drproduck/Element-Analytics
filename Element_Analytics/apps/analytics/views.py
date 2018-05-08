@@ -13,5 +13,6 @@ STATIC_DIR = os.path.join(BASE_DIR, 'apps/analytics/static/analytics/')
 @login_required
 def main_view(request, log_name):
     """ Analytics main view """
-    return render(request, "analytics/mainpage.djt", {"log_name" : log_name})
+    anl_type = request.GET.get('type', ' ')
+    return render(request, "analytics/mainpage.djt", {"log_name" : log_name, "type" : anl_type})
     

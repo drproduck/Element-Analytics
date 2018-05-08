@@ -30,14 +30,6 @@
 							<th><h4>Keywords occurence rate: <h4></th>
 							<td><h4 style="font-weight: normal" id="rate"></h4></td>
 						</tr>
-						<tr>
-							<th><h4>Events contain use cases: <h4></th>
-							<td><h4 style="font-weight: normal" id="occurences_use"></h4></td>
-						</tr>
-						<tr>
-							<th><h4>Usage occurence rate: <h4></th>
-							<td><h4 style="font-weight: normal" id="rate_use"></h4></td>
-						</tr>
 					</table>
 				</div>
 			</th>
@@ -66,13 +58,18 @@
 	</table>
 
 	<script type="text/javascript">
+		var type = "{{ type }}";
+		if (type == "usage")
+			url = "/api/usage_analytics/{{ log_name }}"
+		else
+			url = "/api/error_analytics/{{ log_name }}"
 		var entries = [];
 		var keys = [];
 		var keys_use = [];
 		$.ajax({
 			  async: true,
 			  type: 'GET',
-			  url: "/api/error_analytics/{{ log_name }}",
+			  url: url,
 			  success: function(data) {
 			  	show_analytics(data);
 			}

@@ -1,24 +1,38 @@
 from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse, HttpResponseForbidden,\
     HttpResponse
-from django.shortcuts import redirect
 import libs.analytics.analytics as anal
 import libs.analytics.logpreprocessor as lp
 import libs.utilities.dbutils as du
 import libs.utilities.pathtools as pt
 import os
-import html.parser as htmlparser
+
+@login_required
+def validate_request(request, file_name):
+    user = request.user
+    if not user.is_authenticated:
+        return False
+    log_file = user.logfile_set.get(log_name=file_name)
+    if not log_file:
+        return False
+    return True
+
 
 @login_required
 def error_analytics(request, file_name):
-    user = request.user
-    if not user.is_authenticated:
-        return HttpResponseForbidden()
-    log_file = user.logfile_set.get(log_name=file_name)
-    if not log_file:
-        return HttpResponseForbidden()
+    if not validate_request(request, file_name):
+        return HttpResponseForbidden("Content doesn't exist")
     dframe = lp.read_log(request.user.username, file_name)
     json_obj = anal.error_analytics(dframe)
+    return JsonResponse(json_obj, safe=False)
+
+
+@login_required
+def usage_analytics(request, file_name):
+    if not validate_request(request, file_name):
+        return HttpResponseForbidden("Content doesn't exist")
+    dframe = lp.read_log(request.user.username, file_name)
+    json_obj = anal.usercase_analytics(dframe)
     return JsonResponse(json_obj, safe=False)
 
 
