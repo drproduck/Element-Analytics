@@ -13,21 +13,21 @@
 		<tr>
 			<th align="left">
 				<div id="userInfo">
-					<table>
+					<table padding="10px">
 						<style>
-							th { text-align: left;}
-							td { text-align: left; padding-left: 10px}
+							th { vertical-align: center; text-align: left;  }
+							td { text-align: left; padding-left: 10px; }
 						</style>
 						<tr>
 							<th><h4>Number of events: </h4></th>
-							<td><h4 style="font-weight: normal" id="num_events"></h3></td>
+							<td><h4 style="font-weight: normal" id="num_events"></h4></td>
 						</tr>
 						<tr>
 							<th><h4>Events contain keywords: </h4></th>
-							<td><h4 style="font-weight: normal" id="occurences"></h3></td>
+							<td><h4 style="font-weight: normal" id="occurences"></h4></td>
 						</tr>
 						<tr>
-							<th><h4>Keywords occurence rate: <h4></th>
+							<th><h4>Keywords occurence rate: </h4></th>
 							<td><h4 style="font-weight: normal" id="rate"></h4></td>
 						</tr>
 					</table>
@@ -40,19 +40,48 @@
 		<tr>
 			<th>
 				<div id="userInput" width="800px" height="600px">
+					<table>
+						<style>
+							th { text-align: left; vertical-align: top;}
+							td { text-align: left; padding-left: 10px; padding-bottom: 10px;}
+						</style>
+						<tr>
+							<th>
+								<h4> Search Field: </h4>
+							</th>
+							<td>
+								<select id="search_field">
+									<option value="message">Event Message (Error Analytics)</option>
+									<option value="metainfo">Event (Usage Analytics)</option>
+  									<option value="date">Date</option>
+  									<option value="sv_name">Server</option>
+  									<option value="type">Type</option>
+								</select> 
+							</td>
+						</tr>
+						<tr>
+							<th>
+								<label> Keywords (Regex) : </label> <br>
+								<label style="font-size: small; font-weight: normal"> (Separated by line break) </label>
+							</th>
+							<td>
+								<textarea style="resize: none;" id="keywords" cols="40" rows="10"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<th>
+							</th>
+							<td>
+								<button id="submit_regex">Graph</button>
+								<button id="clear_area">Clear</button>
+								<button id="show_text">Show Result</button>
+							</td>
+						</tr>
+					</table>
 				</div>
 			</th>
 			<td style="text-align: right">
 				<div id="chartContainer1"></div>
-			</td>
-		</tr>
-		<tr>
-			<th>
-				<div id="userInput" width="800px" height="600px">
-				</div>
-			</th>
-			<td style="text-align: right">
-				<div id="chartContainer2"></div>
 			</td>
 		</tr>
 	</table>
@@ -61,7 +90,7 @@
 		var type = "{{ type }}";
 		if (type == "usage")
 			url = "/api/usage_analytics/{{ log_name }}"
-		else
+		else if (type == "error")
 			url = "/api/error_analytics/{{ log_name }}"
 		var entries = [];
 		var keys = [];
