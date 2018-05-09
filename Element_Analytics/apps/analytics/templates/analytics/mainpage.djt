@@ -58,7 +58,7 @@
   									<option value="date">Date</option>
   									<option value="sv_name">Server</option>
   									<option value="type">Type</option>
-								</select> 
+								</select>
 							</td>
 						</tr>
 						<tr>
@@ -74,9 +74,9 @@
 							<th>
 							</th>
 							<td>
-								<button id="submit_regex" onclick="apply_regex()">Graph</button>
-								<button id="clear_area" onclick="clear_keywords()">Clear</button>
-								<button id="show_text">Show Result</button>
+								<button class="btn" id="submit_regex" onclick="apply_regex()"><span>Graph</span></button>
+								<button class="btn red" id="clear_area" onclick="clear_keywords()"><span>Clear</span></button>
+								<!--<button id="show_text">Show Result</button>-->
 							</td>
 						</tr>
 					</table>
@@ -90,12 +90,12 @@
 
 	<script type="text/javascript">
 		var type = "{{ type }}";
-		
+
 		if (type == "usage")
 			url = "/api/usage_analytics/{{ log_name }}";
 		else if (type == "error")
 			url = "/api/error_analytics/{{ log_name }}";
-		
+
 		// Load cache
 		var cached = localStorage['{{ log_name }}_' + type];
 		if (cached) {
@@ -114,16 +114,16 @@
 				}
 			});
 		}
-		
+
 		window.onscroll = function() {scrollFunction()};
-		
+
 		function apply_regex() {
 	    	var data = $('#keywords').val();
 			var search = $('#search_field').val();
 			$.ajaxSetup({
         			headers: { "X-CSRFToken": "{{ csrf_token }}" }
    			});
-   			
+
 			$.ajax({
 				async: true,
     			type: "POST",
@@ -135,11 +135,11 @@
     			}
 			});
 		}
-		
+
 		function clear_keywords() {
 			keywords.value = "";
 		};
-		
+
 	</script>
 {% endblock %}
 
