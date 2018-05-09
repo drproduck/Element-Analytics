@@ -385,7 +385,6 @@
 			var parsed = JSON.parse(data);
 			var obj = parsed.error_by_dates;
 			var key_errors = parsed.error_by_keywords;
-        	var use_cases = parsed.use_cases;
 			for (key in obj) {
 				if (obj.hasOwnProperty(key)) {
 					val = obj[key];
@@ -470,32 +469,6 @@
 			    		}
 		  			});
 	  			chart0.render();
-			});
-		}
-
-    	function graph_bar_chart_use(data) {
-			FusionCharts.ready(function() {
-		  		var chart2 = new FusionCharts({
-			    	"type": "column2d",
-			    	"renderAt": "chartContainer2",
-			    	"width": "800px",
-			    	"height": "400px",
-			    	"dataFormat": "json",
-			    	"dataSource": {
-				      	"chart": {
-				      		"bgAlpha": "10",
-				        	"caption": "Use Cases Occurence",
-				        	"xAxisName": "Usage",
-				        	"yAxisName": "Appearance",
-				        	"theme": "fint",
-				        	"exportEnabled": "1",
-				        	"exportTargetWindow": "_self",
-				        	"exportFileName": "usage_analytics"
-				      	},
-				      	"data": keys_use
-			    	}
-		  		});
-	  			chart2.render();
 			});
 		}
 

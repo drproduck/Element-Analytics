@@ -18,9 +18,9 @@ COMMON_ERROR_KEYS = [
      'timeout',
      'refused',
      'NoSuchPageException',
-     '404 ',
-     '401 ',
-     '505 '
+     '404',
+     '401',
+     '505'
 ]
 
 
@@ -56,6 +56,7 @@ def analytics(dataframe, keywords, search_field):
     res_dict['num_error'] = len(result.index)
     res_dict['error_rate'] = (res_dict['num_error'] / res_dict['total_entries']) * 100
     res_dict['error_by_keywords'] = count_occurences(result, keywords, search_field)
+    result['date'] = pd.to_datetime(result['date'])
     err_dates = result.groupby(pd.Grouper(key='date', freq='H')).size()
     err_dict = {}
     for name in err_dates.index:
@@ -73,8 +74,8 @@ def general_analytics(dataframe, keywords=None, search_field=None):
         print("WARNING: search field is empty, set to date")
         search_field = 'date'
     return analytics(dataframe, keywords, search_field)
-      
-  
+
+
 def error_analytics(dataframe, keywords=None, search_field='message'):
     """ Return a JSON object contains insight
     about the errors of this log file"""
