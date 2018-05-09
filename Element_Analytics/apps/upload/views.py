@@ -39,13 +39,13 @@ def _request_is_valid(request, current_user):
 
     if current_user.logfile_set.count() >= settings.NUM_LOG_LIMIT:
         print("User attempts to upload more than allowed")
-        return False  
+        return False
 
     size = pt.get_user_dir_size(current_user.username) + (uploaded_file.size / 2 ** 20)
     if size >= settings.STORAGE_LIMIT:
         print("Not enough storage space")
-        return False 
- 
+        return False
+
     # If log name is not specified replace with the name of uploaded_file
     alias = pt.get_valid_filename(form.cleaned_data['log_name'])
     if not alias:
@@ -56,10 +56,11 @@ def _request_is_valid(request, current_user):
         while alias + "_" + str(count) in logs:
             count += 1
         alias += "_" + str(count)
- 
 
-    regex = form.cleaned_data['regex']
-     
+
+    #regex = form.cleaned_data['regex']
+    regex = ''
+
     return (uploaded_file, alias, regex)
 
 
@@ -70,11 +71,11 @@ def _upload_file(request, current_user):
         validated = _request_is_valid(request, current_user)
         if not validated:
             break
-          
+
         uploaded_file = validated[0]
         alias = validated[1]
         regex = validated[2]
-          
+
         # Create new log object in the database
         log = LogFile.objects.create(log_name=alias, file=uploaded_file, user=current_user, regex=regex)
         log.save()
