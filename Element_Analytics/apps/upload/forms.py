@@ -14,7 +14,7 @@ class LogFileForm(forms.ModelForm):
 
     class Meta:
         model = LogFile
-        fields = ["log_name", "file", "regex"]
+        fields = ["log_name", "file"]
 
     def clean(self):
         cleaned_data = super().clean()

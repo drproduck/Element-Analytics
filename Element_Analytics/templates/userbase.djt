@@ -365,10 +365,15 @@
 		}
 
 		function delete_file(log_name) {
+			// clean up local cache
+			localStorage.removeItem(log_name + '_error')
+			localStorage.removeItem(log_name + '_usage')
+			// send delete request to server together with log name
 			var xhttp = new XMLHttpRequest();
 			xhttp.open("GET", "{% url 'api:delete' %}?file=" + log_name, true);
 			xhttp.send();
 			elem = document.getElementById(log_name);
+			// clear element
 			if (!elem)
 				return;
 			elem.innerHTML = "";

@@ -4,6 +4,8 @@
 {% endblock %}
 {% block section1 %}
 <h1>Analytics - {{ log_name }}</h1>
+<button class="btn blue" onclick="window.location.href='/analytics/{{ log_name }}/?type=error'"><span>Error Analytics</span></button>
+<button class="btn blue" onclick="window.location.href='/analytics/{{ log_name }}/?type=usage'"><span>Usage Analytics</span></button>
 <h3>
 	<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
 </h3>
@@ -88,18 +90,31 @@
 
 	<script type="text/javascript">
 		var type = "{{ type }}";
+		
 		if (type == "usage")
 			url = "/api/usage_analytics/{{ log_name }}";
 		else if (type == "error")
 			url = "/api/error_analytics/{{ log_name }}";
-		$.ajax({
-			async: true,
-			type: 'GET',
-			url: url,
-			success: function(data) {
-				show_analytics(data);
-			}
-		});
+		
+		// Load cache
+		var cached = localStorage['{{ log_name }}_' + type];
+		if (cached) {
+			data = JSON.parse(cached);
+			show_analytics(data)
+		}
+		else {
+			$.ajax({
+				async: true,
+				type: 'GET',
+				url: url,
+				success: function(data) {
+					// Cache result locally
+					localStorage['{{ log_name }}_' + type] = JSON.stringify(data);
+					show_analytics(data);
+				}
+			});
+		}
+		
 		window.onscroll = function() {scrollFunction()};
 		
 		function apply_regex() {
