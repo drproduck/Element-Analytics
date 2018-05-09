@@ -55,7 +55,7 @@
 								<select id="search_field">
 									<option value="message">Event Message (Error Analytics)</option>
 									<option value="metainfo">Event (Usage Analytics)</option>
-  									<option value="date">Date</option>
+  									<!--<option value="date">Date</option>-->
   									<option value="sv_name">Server</option>
   									<option value="type">Type</option>
 								</select>
