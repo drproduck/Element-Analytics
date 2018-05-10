@@ -56,7 +56,7 @@ def analytics(dataframe, keywords, search_field):
     res_dict['num_error'] = len(result.index)
     res_dict['error_rate'] = (res_dict['num_error'] / res_dict['total_entries']) * 100
     res_dict['error_by_keywords'] = count_occurences(result, keywords, search_field)
-    result['date'] = pd.to_datetime(result['date'])
+    result['date'] = pd.to_datetime(result['date'], format="%m-%d %H:%M:%S")
     err_dates = result.groupby(pd.Grouper(key='date', freq='H')).size()
     err_dict = {}
     for name in err_dates.index:
@@ -121,10 +121,3 @@ class encoder(json.JSONEncoder):
             return obj.tolist()
         return super(encoder, self).default(obj)
 
-# start_time = time.process_time()
-# log = lp.read_log("lynguyen", "syslogClassShare.5")
-# elapsed_time = time.process_time() - start_time
-# error_analytics(log)
-# elapsed_time1 = time.process_time() - elapsed_time
-# print("read speed: " + str(elapsed_time))
-# print("processing speed: " + str(elapsed_time1))
