@@ -8,8 +8,7 @@ urlpatterns = [
      path('usage_analytics/<file_name>/', view.usage_analytics),
      path('gen_analytics/<file_name>/', view.analytics),
      path('user_analytics/', view.user_analytics),
-     path('regex_search/<regex>', view.regex_search),
      path('delete/', view.delete, name='delete'),
-     path('download/<file_name>', view.download),
-     path('regex_search/', view.regex_search)
+     path('download/<file_name>/', view.download),
+     path('get_csv/<file_name>/', view.get_csv)
 ]

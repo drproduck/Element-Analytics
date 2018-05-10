@@ -14,7 +14,7 @@
 	<table align="center" width="80%" height="100%">
 		<tr>
 			<th align="left">
-				<div id="userInfo">
+				<div align="center" id="userInfo">
 					<table padding="10px">
 						<style>
 							th { vertical-align: center; text-align: left;  }
@@ -33,7 +33,8 @@
 							<td><h4 style="font-weight: normal" id="rate"></h4></td>
 						</tr>
 					</table>
-				</div>
+					<button style="width: 200px; height: 40px" class="btn" onclick="download_csv()">Download</button> 
+				</div>		
 			</th>
 			<td style="text-align: right" >
 				<div id="chartContainer0"></div>
@@ -55,7 +56,7 @@
 								<select id="search_field">
 									<option value="message">Event Message (Error Analytics)</option>
 									<option value="metainfo">Event (Usage Analytics)</option>
-  									<!--<option value="date">Date</option>-->
+  									<option value="date">Date</option>
   									<option value="sv_name">Server</option>
   									<option value="type">Type</option>
 								</select>
@@ -63,7 +64,7 @@
 						</tr>
 						<tr>
 							<th>
-								<label> Keywords (Regex) : </label> <br>
+								<label> Keywords : </label> <br>
 								<label style="font-size: small; font-weight: normal"> (Separated by line break) </label>
 							</th>
 							<td>
@@ -76,7 +77,6 @@
 							<td>
 								<button class="btn" id="submit_regex" onclick="apply_regex()"><span>Graph</span></button>
 								<button class="btn red" id="clear_area" onclick="clear_keywords()"><span>Clear</span></button>
-								<!--<button id="show_text">Show Result</button>-->
 							</td>
 						</tr>
 					</table>
@@ -90,17 +90,23 @@
 
 	<script type="text/javascript">
 		var type = "{{ type }}";
-
-		if (type == "usage")
+		var globl_keys = [];
+		var search_key = "";
+		
+		if (type == "usage") {
 			url = "/api/usage_analytics/{{ log_name }}";
-		else if (type == "error")
+			search_key = "metainfo";
+		}
+		else if (type == "error") {
 			url = "/api/error_analytics/{{ log_name }}";
-
+			search_key = "message";
+		}
+		
 		// Load cache
 		var cached = localStorage['{{ log_name }}_' + type];
 		if (cached) {
 			data = JSON.parse(cached);
-			show_analytics(data)
+			globl_keys = show_analytics(data);
 		}
 		else {
 			$.ajax({
@@ -110,7 +116,7 @@
 				success: function(data) {
 					// Cache result locally
 					localStorage['{{ log_name }}_' + type] = JSON.stringify(data);
-					show_analytics(data);
+					globl_keys = show_analytics(data);
 				}
 			});
 		}
@@ -123,22 +129,35 @@
 			$.ajaxSetup({
         			headers: { "X-CSRFToken": "{{ csrf_token }}" }
    			});
-
-			$.ajax({
-				async: true,
-    			type: "POST",
-    			url: "/api/gen_analytics/{{ log_name }}/",
-    			data: { keywords : data, search_field : search },
-    			success: function(data) {
-    				if (data != 0)
-    					show_analytics(data);
-    			}
-			});
+			data = data.replace(/^\s+|\s+$/g, '');
+			if (data) {
+				$.ajax({
+					async: true,
+	    			type: "POST",
+	    			url: "/api/gen_analytics/{{ log_name }}/",
+	    			data: { keywords : data, search_field : search },
+	    			success: function(data) {
+	    				if (data != 0) {
+	    					globl_keys = show_analytics(data);
+	    					search_key = search;
+	    				}
+	    			}
+				});
+			}
 		}
 
 		function clear_keywords() {
 			keywords.value = "";
-		};
+		}
+		
+		function download_csv() {
+			var url = "/api/get_csv/{{ log_name }}/?keys=";
+			for (var i = 0; i < globl_keys.length; i++) {
+    			url += globl_keys[i] + "\\n";
+    		}
+    		url += "&search_field=" + search_key;
+			window.location.href=url;
+		}
 
 	</script>
 {% endblock %}

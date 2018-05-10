@@ -55,7 +55,8 @@
             	<td style="text-align: right; padding: 10px">
             		<button class="btn blue" onclick="window.location.href='/analytics/{{ log.log_name }}/?type=error'"><span>Error Analytics</span></button>
 					<button class="btn blue" onclick="window.location.href='/analytics/{{ log.log_name }}/?type=usage'"><span>Usage Analytics</span></button>
-            		<button class="btn" onclick="window.location.href='/api/download/{{ log.log_name }}'"><span>Download CSV</span></button>
+            		<button class="btn" onclick="window.location.href='/api/download/{{ log.log_name }}/'"><span>Download CSV</span></button>
+            		<button class="btn" onclick="window.location.href='/api/download/{{ log.log_name }}/?type=og'"><span>Download Original</span></button>
             		<button class="btn red" onclick="delete_file('{{ log.log_name }}')"><span>Delete</span></button>
             	</td>
             </tr>

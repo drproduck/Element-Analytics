@@ -380,6 +380,7 @@
 		}
 
 		function show_analytics(data) {
+			var current_keys = [];
 			var entries = [];
 			var keys = [];
 			var parsed = JSON.parse(data);
@@ -388,21 +389,23 @@
 			for (key in obj) {
 				if (obj.hasOwnProperty(key)) {
 					val = obj[key];
-					entries.push({ "label" : key, "value" : val, "color": "008ee4", "appliedSmartLabel": true });
+					entries.push({ "label" : key, "value" : val, "color": "008ee4", "appliedSmartLabel": true });			
 				}
 			}
 
 			for (key in key_errors) {
 				val = key_errors[key];
 				keys.push({ "label" : key, "value" : val });
+				current_keys.push(key);
 			}
-
+			
 			graph_line_chart(entries);
 			graph_bar_chart(keys);
 
 			num_events.innerHTML = parsed.total_entries;
 			occurences.innerHTML = parsed.num_error;
 			rate.innerHTML = parsed.error_rate + "%";
+			return current_keys;
 		}
 
 

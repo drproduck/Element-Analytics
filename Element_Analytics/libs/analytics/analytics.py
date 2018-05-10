@@ -18,9 +18,9 @@ COMMON_ERROR_KEYS = [
      'timeout',
      'refused',
      'NoSuchPageException',
-     '404',
-     '401',
-     '505'
+     '404 ',
+     '401 ',
+     '505 '
 ]
 
 
@@ -44,14 +44,19 @@ def build_regex(key_list):
     return re.compile(res)
 
 
+def search(dataframe, keywords, search_field):
+    """ Filter out entries that doesn't match keywords"""
+    if not keywords:
+        keywords = COMMON_ERROR_KEYS
+    regex = build_regex(keywords)
+    return dataframe[dataframe[search_field].str.contains(pat=regex) == True]
+
+
 def analytics(dataframe, keywords, search_field):
     """ Helper function that returns result
     according to keywords and search field"""
-    if not keywords:
-        keywords = COMMON_ERROR_KEYS
     res_dict = {}
-    regex = build_regex(keywords)
-    result = dataframe[dataframe[search_field].str.contains(pat=regex) == True]
+    result = search(dataframe, keywords, search_field)
     res_dict['total_entries'] = len(dataframe.index)
     res_dict['num_error'] = len(result.index)
     res_dict['error_rate'] = (res_dict['num_error'] / res_dict['total_entries']) * 100

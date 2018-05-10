@@ -6,6 +6,9 @@ import libs.analytics.logpreprocessor as lp
 import libs.utilities.dbutils as du
 import libs.utilities.pathtools as pt
 import os
+import urllib
+import pandas as pd
+import re
 
 
 @login_required
@@ -28,8 +31,9 @@ def analytics(request, file_name):
         reg = request.POST.get('keywords', '')
         if not sf or not reg:
             return HttpResponse("0")
+        str_list = list(filter(None, reg.split("\n")))
         dframe = lp.read_log(request.user.username, file_name)
-        json_obj = anal.analytics(dframe, reg.split("\n"), sf)
+        json_obj = anal.analytics(dframe, str_list, sf)
         return JsonResponse(json_obj, safe=False)
     return HttpResponseForbidden("ERROR: Wrong HTTP method. Expected: POST")
 
@@ -66,11 +70,6 @@ def user_analytics(request):
 
 
 @login_required
-def regex_search(request, regex):
-    pass
-
-
-@login_required
 def delete(request):
     if request.user.is_authenticated:
         file_name = request.GET.get('file', ' ')
@@ -84,11 +83,39 @@ def delete(request):
 @login_required
 def download(request, file_name):
     user = request.user
-    file_path = os.path.join(pt.get_log_dir_abs(user.username, file_name), file_name + ".csv")
+    file_actual = (file_name if request.GET.get('type', '') == 'og' else file_name + ".csv")
+    file_path = os.path.join(pt.get_log_dir_abs(user.username, file_name), file_actual)
     if not os.path.isfile(file_path):
         return HttpResponseForbidden("File doesn't exist")
     with open(file_path, 'r') as fp:
         response = HttpResponse(fp.read(), content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename=' + file_name + ".csv"
+        response['Content-Disposition'] = 'attachment; filename=' + file_actual
         return response
 
+
+@login_required
+def get_csv(request, file_name):
+    """ Stream pandas dataframe to client in csv format """
+    if not validate_request(request, file_name):
+        return HttpResponseForbidden("Content doesn't exist")
+    if request.method != 'GET':
+        return HttpResponseForbidden("ERROR: Wrong HTTP method. Expected: GET")
+    
+    keywords = request.GET.get('keys', '')
+    search_field = request.GET.get('search_field', '')
+    keywords = urllib.parse.unquote(keywords)
+    search_field = urllib.parse.unquote(search_field)
+    if not (keywords and search_field):
+        return HttpResponseForbidden("ERROR: Missing URL parameters")
+
+    keywords = filter(None, keywords.split("\\n"))
+    dframe = lp.read_log(request.user.username, file_name)
+    res = anal.search(dframe, keywords, search_field)
+    
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=result.csv'
+    
+    pd.DataFrame.to_csv(res, path_or_buf=response, index=False)
+    
+    return response
+    
